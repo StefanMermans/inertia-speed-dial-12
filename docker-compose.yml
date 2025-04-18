@@ -1,3 +1,6 @@
+volumes:
+    speed-dial-db:
+
 services:
     app:
         restart: unless-stopped
@@ -6,8 +9,9 @@ services:
             dockerfile: Dockerfile
         volumes:
             - .:/var/www/app:delegated
+        shm_size: 128mb
         ports:
-            -   "${FPM_PORT}:9000"
+            - "${FPM_PORT}:9000"
     nginx:
         image: nginx:1.27.4
         restart: unless-stopped
@@ -21,6 +25,8 @@ services:
     db:
         image: postgres:17.3
         restart: unless-stopped
+        volumes:
+            - speed-dial-db:/var/lib/postgresql/data
         environment:
             POSTGRES_USER: ${DB_USERNAME}
             POSTGRES_PASSWORD: ${DB_PASSWORD}
