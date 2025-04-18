@@ -1,0 +1,28 @@
+services:
+    app:
+        restart: unless-stopped
+        build:
+            context: .
+            dockerfile: Dockerfile
+        volumes:
+            - .:/var/www/app:delegated
+        ports:
+            -   "${FPM_PORT}:9000"
+    nginx:
+        image: nginx:1.27.4
+        restart: unless-stopped
+        volumes:
+            - ./nginx.conf:/etc/nginx/conf.d/default.conf
+            - .:/var/www/app:delegated
+        ports:
+            -   "8024:80"
+        depends_on:
+            -   app
+    db:
+        image: postgres:17.3
+        restart: unless-stopped
+        environment:
+            POSTGRES_USER: ${DB_USERNAME}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            POSTGRES_DB: ${DB_DATABASE}
+
