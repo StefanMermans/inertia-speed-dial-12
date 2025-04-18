@@ -3,7 +3,7 @@ import SiteForm from '@/components/site-form/site-form';
 import Clock from '@/components/speed-dial/clock';
 import EditButton from '@/components/speed-dial/edit-button';
 import NewSite from '@/components/speed-dial/new-site';
-import { Site as SiteComponent } from '@/components/speed-dial/Site';
+import { Site as SiteComponent } from '@/components/speed-dial/site';
 import { Head, router, useRemember } from '@inertiajs/react';
 import styles from './SpeedDial.module.css';
 import { cn } from '@/lib/utils';

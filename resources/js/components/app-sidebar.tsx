@@ -13,6 +13,11 @@ const mainNavItems: NavItem[] = [
         url: '/dashboard',
         icon: LayoutGrid,
     },
+    {
+        title: 'Speed Dial',
+        url: route('speed-dial'),
+        icon: LayoutGrid,
+    }
 ];
 
 const footerNavItems: NavItem[] = [

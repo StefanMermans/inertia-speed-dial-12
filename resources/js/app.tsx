@@ -10,6 +10,13 @@ declare global {
     const route: typeof routeFn;
 }
 
+
+declare module 'ziggy-js' {
+    interface TypeConfig {
+        strictRouteNames: true;
+    }
+}
+
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({

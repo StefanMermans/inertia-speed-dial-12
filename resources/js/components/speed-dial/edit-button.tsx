@@ -1,6 +1,5 @@
 import { cn } from '@/lib/utils';
-import { Link, useRemember } from '@inertiajs/react';
-import { LogOut } from 'lucide-react';
+import { useRemember } from '@inertiajs/react';
 
 type Props = {
     onEdit(): void;
@@ -27,12 +26,6 @@ export default function EditButton({ onEdit }: Props) {
                     Edit
                 </button>
             </div>
-            <button className='cursor-pointer'>
-                <Link className="block w-full" method="post" href={route('logout')} as="button">
-                    <LogOut className="mr-2" />
-                    Log out
-                </Link>
-            </button>
         </div>
     );
 }

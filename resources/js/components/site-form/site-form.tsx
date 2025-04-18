@@ -1,7 +1,7 @@
 import Button from '@/components/controls/button';
 import ColorPicker from '@/components/controls/colorPicker';
 import Input from '@/components/controls/input';
-import { Site as SiteComponent } from '@/components/speed-dial/Site';
+import { Site as SiteComponent } from '@/components/speed-dial/site';
 import { type Site } from '@/pages/speed-dial';
 import { router, useForm } from '@inertiajs/react';
 import axios from 'axios';
