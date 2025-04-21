@@ -1,47 +1,57 @@
-FROM node:22.14 AS node
-FROM php:8.3-fpm
+# Base PHP + Composer + Node.js
+FROM php:8.4-fpm
 
-# Install node and npm
-COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
-COPY --from=node /usr/local/bin/node /usr/local/bin/node
-RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm
-
-# Install common php extension dependencies
-RUN apt-get update && apt-get install -y \
-    libfreetype-dev \
-    libjpeg62-turbo-dev \
-    libpng-dev \
-    zlib1g-dev \
-    libzip-dev \
+# Install system dependencies
+RUN apt-get update \
+    && apt-get install -y \
+    curl \ 
+    gnupg2 \
+    git \
     unzip \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-install zip
+    zip \
+    nginx \
+    supervisor \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    libzip-dev \
+    libpq-dev \
+    && docker-php-ext-install pdo pdo_pgsql mbstring zip exif pcntl bcmath
 
-# Install Postgre PDO
-RUN apt-get install -y libpq-dev \
-    && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
-    && docker-php-ext-install pdo pdo_pgsql pgsql
+# Install Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-COPY . /var/www/app
-WORKDIR /var/www/app
+# Install Node.js (LTS)
+RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
+    && apt-get install -y nodejs \
+    && curl -L https://npmjs.org/install.sh | sh
 
-RUN chown -R www-data:www-data /var/www/app \
-    && chmod -R 775 /var/www/app/storage
+# Set working directory
+WORKDIR /var/www
 
-# install composer
-COPY --from=composer:2.6.5 /usr/bin/composer /usr/local/bin/composer
-
-# copy composer.json to workdir & install dependencies
-COPY composer.json ./
-RUN composer install
-
-RUN php artisan storage:link
-
-RUN apt-get install -y supervisor
-RUN mkdir -p /var/log/supervisor
-
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-CMD ["/usr/bin/supervisord"]
+# Copy application files
+COPY . .
 
 
+# Install Laravel and JS dependencies
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader \ 
+    && php artisan storage:link \    
+    && npm install \
+    && npm run build \
+    && php artisan ziggy:generate
+
+# Create Laravel cache & logs folders
+RUN mkdir -p storage/logs bootstrap/cache && \
+    chown -R www-data:www-data /var/www
+
+# Copy Nginx config
+COPY nginx.conf /etc/nginx/sites-available/default
+
+# Copy Supervisor config to manage multiple services
+COPY supervisord.conf /etc/supervisord.conf
+
+# Expose ports
+EXPOSE 80
+
+# Start services with Supervisor
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
