@@ -1,6 +1,10 @@
 volumes:
     speed-dial-db:
 
+networks:
+  app:
+    driver: bridge
+
 services:
     app:
         restart: unless-stopped
@@ -15,6 +19,8 @@ services:
             - ./storage:/var/www/html/storage
         depends_on:
             - db
+        networks:
+            - app
     db:
         image: postgres:17.3
         restart: unless-stopped
@@ -24,4 +30,6 @@ services:
             POSTGRES_USER: ${DB_USERNAME}
             POSTGRES_PASSWORD: ${DB_PASSWORD}
             POSTGRES_DB: ${DB_DATABASE}
+        networks:
+            - app
 
