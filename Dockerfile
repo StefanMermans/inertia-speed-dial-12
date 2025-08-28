@@ -44,9 +44,6 @@ RUN composer install --no-interaction --prefer-dist --optimize-autoloader \
 RUN mkdir -p storage/logs bootstrap/cache && \
     chown -R www-data:www-data /var/www
 
-# Migrate database
-RUN php artisan migrate --force
-
 # Copy Nginx config
 COPY nginx.conf /etc/nginx/sites-available/default
 
