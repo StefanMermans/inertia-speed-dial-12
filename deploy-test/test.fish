@@ -1,5 +1,6 @@
 function setup
     set -l test_dir ./inertia-speed-dial-deploy/
+    set -l branch deploy-test
 
     if test -e $test_dir
         echo "Cleaning up old test folder 🧹"
@@ -14,6 +15,7 @@ function setup
     cd $test_dir
 
     git clone git@github.com:StefanMermans/iniertia-speed-dial-12.git .
+    git switch $branch
 end
 
 function run
