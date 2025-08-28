@@ -18,9 +18,14 @@ function setup
     git switch $branch
 end
 
+function local-only-addon
+    cp -r ../../storage/app/public/images/ ./storage/app/public/images
+end
+
 function run
     echo "Starting test 🏁"
     cp .env.prod .env
+    local-only-addon
     echo "ADMIN_USERNAME=\"stefanmermans99@gmail.com\"" >> .env
     echo "ADMIN_PASSWORD=\"Welkom01\"" >> .env
     echo "APP_KEY=\"base64:EnZEpRlok7A2MvTqtG7v9yPKP+ECIdaUE+L+yvF83oc=\"" >> .env
