@@ -15,7 +15,7 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Speed Dial',
-        url: route('speed-dial'),
+        url: '/speed-dial',
         icon: LayoutGrid,
     }
 ];
