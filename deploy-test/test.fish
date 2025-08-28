@@ -20,7 +20,9 @@ end
 
 function run
     echo "Starting test 🏁"
-    cp ../.env .env
+    cp .env.prod .env
+    echo "ADMIN_USERNAME=\"stefanmermans99@gmail.com\"" >> .env
+    echo "ADMIN_PASSWORD=\"Welkom01\"" >> .env
     docker compose up --build -d
     docker compose exec app php artisan migrate --force
 end
