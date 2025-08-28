@@ -38,7 +38,7 @@ RUN composer install --no-interaction --prefer-dist --optimize-autoloader \
     && php artisan storage:link \    
     && npm install \
     && php artisan ziggy:generate \
-    && npm run build:srr
+    && npm run build:ssr
 
 # Create Laravel cache & logs folders
 RUN mkdir -p storage/logs bootstrap/cache && \
