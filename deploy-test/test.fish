@@ -22,7 +22,7 @@ function run
     echo "Starting test 🏁"
     cp ../.env .env
     docker compose up --build -d
-    docker compose exec app "php artisan migrate --force"
+    docker compose exec app php artisan migrate --force
 end
 
 # TODO: uncomment
