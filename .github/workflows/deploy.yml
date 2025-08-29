@@ -1,6 +1,9 @@
 name: Deploy
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -30,14 +33,12 @@ jobs:
             
             # Inject .env
             cp .env.prod .env
-            cat > .env <<EOL
-            DB_USERNAME=${{ secrets.DB_USERNAME }}
-            DB_DATABASE=${{ secrets.DB_DATABASE }}
-            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-            APP_KEY=${{ secrets.APP_KEY }}
-            ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }}
-            ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}
-            EOL
+            echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
+            echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
+            echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+            echo "APP_KEY=${{ secrets.APP_KEY }}" >> .env
+            echo "ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }}" >> .env
+            echo "ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}" >> .env
 
             # Build + run docker
             sudo docker compose down
