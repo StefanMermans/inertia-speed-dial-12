@@ -1,0 +1,48 @@
+name: Deploy Laravel App
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            set -e
+
+            # Ensure deployment dir exists
+            DEPLOY_DIR=./inertia-speed-dial-12-deploy/
+            rm -rf $DEPLOY_DIR
+            mkdir -p $DEPLOY_DIR
+
+            cd $DEPLOY_DIR
+
+            # Clone latest repo
+            git clone --depth 1 -b main git@github.com:${{ github.repository }} .
+            
+            # Inject .env
+            cp .env.prod .env
+            cat > .env <<EOL
+            APP_ENV=production
+            APP_DEBUG=false
+            APP_URL=https://test.spyx.family
+
+            APP_KEY=${{ secrets.APP_KEY }}
+            ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }}
+            ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}
+            EOL
+
+            # Build + run docker
+            docker compose down
+            docker compose up --build -d
+
+            # Clean up repo (code lives inside docker image)
+            cd ..//
+            rm -rf $DEPLOY_DIR
