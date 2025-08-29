@@ -16,7 +16,7 @@ services:
         ports:
             - "8024:80"
         volumes:
-            - speed-dial-storage:/var/www/html/storage
+            - speed-dial-storage:/var/www/storage
         depends_on:
             db:
                 condition: service_healthy
