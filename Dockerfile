@@ -38,8 +38,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
     && php artisan storage:link \    
     && npm install \
     && php artisan ziggy:generate \
-    && npm run build:ssr \
-    && php artisan optimize
+    && npm run build:ssr
 
 # Create Laravel cache & logs folders
 RUN mkdir -p storage/logs bootstrap/cache && \

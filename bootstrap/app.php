@@ -14,19 +14,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->use([
+            \App\Http\Middleware\TrustProxies::class,
+        ]);
         $middleware->web(append: [
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
         ]);
-        $middleware->trustProxies(
-            at: [
-                '172.17.0.0'
-            ],
-            headers: Request::HEADER_X_FORWARDED_FOR |
-                    Request::HEADER_X_FORWARDED_HOST |
-                    Request::HEADER_X_FORWARDED_PORT |
-                    Request::HEADER_X_FORWARDED_PROTO
-        );
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
