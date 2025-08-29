@@ -52,7 +52,7 @@ export default function SiteForm({ site, creating }: Props) {
     const save = () => {
         clearErrors();
 
-        if (!creating || !site) {
+        if (creating || !site) {
             create();
         } else {
             update();
