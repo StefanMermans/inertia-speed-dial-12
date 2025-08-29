@@ -31,10 +31,9 @@ jobs:
             # Inject .env
             cp .env.prod .env
             cat > .env <<EOL
-            APP_ENV=production
-            APP_DEBUG=false
-            APP_URL=https://test.spyx.family
-
+            DB_USERNAME=${{ secrets.DB_USERNAME }}
+            DB_DATABASE=${{ secrets.DB_DATABASE }}
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
             APP_KEY=${{ secrets.APP_KEY }}
             ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }}
             ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}
