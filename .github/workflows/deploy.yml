@@ -19,7 +19,7 @@ jobs:
             set -e
 
             # Ensure deployment dir exists
-            DEPLOY_DIR=./inertia-speed-dial-12-deploy/
+            DEPLOY_DIR=./inertia-speed-dial-12/
             rm -rf $DEPLOY_DIR
             mkdir -p $DEPLOY_DIR
 
