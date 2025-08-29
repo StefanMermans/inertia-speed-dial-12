@@ -43,6 +43,7 @@ jobs:
             # Build + run docker
             sudo docker compose down
             sudo docker compose up --build -d
+            sudo docker compose exec app php artisan migrate --force
 
             # Clean up repo (code lives inside docker image)
             cd ..//
