@@ -31,6 +31,7 @@ function run
     echo "APP_KEY=\"base64:EnZEpRlok7A2MvTqtG7v9yPKP+ECIdaUE+L+yvF83oc=\"" >> .env
     docker compose up --build -d
     docker compose exec app php artisan migrate --force
+    docker compose exec app php artisan optimize
 end
 
 # TODO: uncomment
