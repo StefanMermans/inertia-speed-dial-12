@@ -37,7 +37,7 @@ export default function SpeedDial({
 }: Props) {
     const [editing, setEditing] = useRemember(false, 'SpeedDial.editing');
     const [selectedSite, setSelectedSite] = useRemember<Site|null>(null, 'SpeedDial.selectedSite');
-    // const [mykey, setMyKey] = useQueryState('myKey');
+    const [mykey, setMyKey] = useQueryState('myKey', '');
     const [otherKey, setOtherKey] = useQueryState('otherKey', 'test');
 
     const handleEdit = () => {
@@ -64,9 +64,8 @@ export default function SpeedDial({
                     boxShadow: 'inset 0px 0px 200px 16px rgba(0,0,0,0.75)',
                 }}
             >
-                {otherKey}
-                {/* <input value={mykey} onChange={(e) => setMyKey(e.target.value)} /> */}
-                {/* <input value={otherKey} onChange={(e) => setOtherKey(e.target.value)} /> */}
+                <input value={mykey} onChange={(e) => setMyKey(e.target.value)} />
+                <input value={otherKey} onChange={(e) => setOtherKey(e.target.value)} />
                 {isLoggedIn && <EditButton onEdit={handleEdit} />}
                 <div className="flex h-full flex-col justify-between p-4">
                     <div className={cn(styles.grid)}>

@@ -30,18 +30,15 @@ export function useQueryState(key: string, defaultValue?: string | undefined, pu
     }, [key]);
 
     const updateQueryParam = useCallback((value: string | undefined) => {
-        console.log('Updating query param:', key, value);
-
         if (pushState) {
             window.history.pushState(...buildNextState(value))
         } else {
             window.history.replaceState(...buildNextState(value))
         }
-    }, [buildNextState, key, pushState]);
+    }, [buildNextState, pushState]);
 
     const [state, setState] = useState<string | undefined>(() => {
         const initial = getQueryParam();
-        console.log('Initial query param:', initial);
         window.history.replaceState(...buildNextState(initial));
 
         return initial;
