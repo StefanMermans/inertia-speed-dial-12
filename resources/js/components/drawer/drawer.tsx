@@ -2,11 +2,12 @@ import { ReactNode } from 'react';
 
 type Props = {
     children: ReactNode;
+    onClose?: () => void;
 };
 
-export default function Drawer({ children }: Props) {
+export default function Drawer({ children, onClose }: Props) {
     function handleBackgroundClick() {
-        history.back();
+        onClose?.();
     }
 
     return (

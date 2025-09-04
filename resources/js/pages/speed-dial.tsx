@@ -7,6 +7,8 @@ import { Site as SiteComponent } from '@/components/speed-dial/site';
 import { Head, router, useRemember } from '@inertiajs/react';
 import styles from './SpeedDial.module.css';
 import { cn } from '@/lib/utils';
+import { useQueryState } from '@/hooks/use-query-state';
+import { useState } from 'react';
 
 export type Site = {
     id: number;
@@ -34,6 +36,9 @@ export default function SpeedDial({
     isLoggedIn,
 }: Props) {
     const [editing, setEditing] = useRemember(false, 'SpeedDial.editing');
+    const [selectedSite, setSelectedSite] = useRemember<Site|null>(null, 'SpeedDial.selectedSite');
+    // const [mykey, setMyKey] = useQueryState('myKey');
+    const [otherKey, setOtherKey] = useQueryState('otherKey', 'test');
 
     const handleEdit = () => {
         setEditing((prev) => !prev);
@@ -59,6 +64,9 @@ export default function SpeedDial({
                     boxShadow: 'inset 0px 0px 200px 16px rgba(0,0,0,0.75)',
                 }}
             >
+                {otherKey}
+                {/* <input value={mykey} onChange={(e) => setMyKey(e.target.value)} /> */}
+                {/* <input value={otherKey} onChange={(e) => setOtherKey(e.target.value)} /> */}
                 {isLoggedIn && <EditButton onEdit={handleEdit} />}
                 <div className="flex h-full flex-col justify-between p-4">
                     <div className={cn(styles.grid)}>
@@ -67,6 +75,7 @@ export default function SpeedDial({
                                 editable={editing}
                                 key={site.name}
                                 site={site}
+                                onClick={() => setSelectedSite(site)}   
                             />
                         ))}
                         {editing && <NewSite onClick={handleNewSiteClick} />}
@@ -77,8 +86,8 @@ export default function SpeedDial({
                         </div>
                     </div>
                 </div>
-                {(site || creating) && (
-                    <Drawer>
+                {(selectedSite || creating) && (
+                    <Drawer onClose={() => setSelectedSite(null)}>
                         <SiteForm site={site} creating={creating} />
                     </Drawer>
                 )}

@@ -5,6 +5,7 @@ import { CSSProperties, useMemo } from 'react';
 type Props = {
     clickable?: boolean;
     editable: boolean;
+    onClick?: () => void;
     site: Partial<
         Pick<
             SiteType,
@@ -18,7 +19,7 @@ type Props = {
     >;
 };
 
-export const Site = ({ site, editable }: Props) => {
+export const Site = ({ site, editable, onClick }: Props) => {
     const style = useMemo(
         (): CSSProperties => ({
             backgroundColor: site.background_color || 'white',
@@ -33,8 +34,9 @@ export const Site = ({ site, editable }: Props) => {
         : site.url;
 
     return (
-        <a
-            href={url}
+        <button
+            // href={url}
+            onClick={onClick}
             className={cn(
                 'block h-24 w-24 transform cursor-pointer overflow-hidden rounded-2xl shadow-md transition-transform hover:scale-110 hover:shadow-xl',
                 { 'p-2': !site.no_padding },
@@ -46,6 +48,6 @@ export const Site = ({ site, editable }: Props) => {
             style={style}
         >
             <img src={`${site.icon_url}`} alt={`${site.name} logo`} />
-        </a>
+        </button>
     );
 };
