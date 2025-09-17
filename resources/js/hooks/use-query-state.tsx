@@ -1,23 +1,32 @@
+import { router } from "@inertiajs/react";
 import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
 
 type StateSetter<T> = Dispatch<SetStateAction<T>>;
 
 // Overload for when no defaultValue is provided (undefined return type)
 export function useQueryState(key: string, defaultValue?: undefined, pushState?: boolean): [string | undefined, StateSetter<string | undefined>];
+export function useQueryState(key: string, defaultValue: boolean, pushState?: boolean): [boolean, StateSetter<boolean>];
 // Overload for when defaultValue is provided (non-nullable return type)
 export function useQueryState(key: string, defaultValue: string, pushState?: boolean): [string, StateSetter<string>];
 
-export function useQueryState(key: string, defaultValue?: string | undefined, pushState: boolean = false) {
+export function useQueryState(key: string, defaultValue?: string | undefined | boolean, pushState: boolean = false) {
     const getQueryParam = useCallback(() => {
-        return new URLSearchParams(window.location.search).get(key) ?? defaultValue
+        const queryValue = new URLSearchParams(window.location.search).get(key);
+
+        if (typeof defaultValue === 'boolean') {
+            return queryValue === 'true'
+        }
+
+        return queryValue ?? defaultValue
     }, [defaultValue, key]);
 
-    const buildNextState = useCallback((value: string | undefined) => {
+    const buildNextState = useCallback((value: string | undefined | boolean) => {
         const currentParams = new URLSearchParams(window.location.search);
-        if (value === undefined || value === '') {
+        console.log('building next state with value:', value);
+        if (value === undefined || value === '' || value === false) {
             currentParams.delete(key);
         } else {
-            currentParams.set(key, value);
+            currentParams.set(key, value.toString());
         }
 
         let nextState = window.location.pathname;
@@ -26,25 +35,28 @@ export function useQueryState(key: string, defaultValue?: string | undefined, pu
             nextState += `?${currentParams.toString()}`;
         }
 
-        return [null, '', nextState] as const
+        return nextState;
     }, [key]);
 
-    const updateQueryParam = useCallback((value: string | undefined) => {
+    const updateQueryParam = useCallback((value: string | undefined | boolean) => {
         if (pushState) {
-            window.history.pushState(...buildNextState(value))
+            console.log('Pushing state:', value);
+            const nextState = buildNextState(value);
+            // window.history.pushState({}, '', nextState)
+            router.visit(nextState)
         } else {
-            window.history.replaceState(...buildNextState(value))
+            window.history.replaceState({}, '', buildNextState(value))
         }
     }, [buildNextState, pushState]);
 
-    const [state, setState] = useState<string | undefined>(() => {
+    const [state, setState] = useState<string | undefined | boolean>(() => {
         const initial = getQueryParam();
-        window.history.replaceState(...buildNextState(initial));
+        window.history.replaceState({}, '', buildNextState(initial));
 
         return initial;
     });
 
-    const updateState: StateSetter<string | undefined> = useCallback((value) => {
+    const updateState: StateSetter<string | undefined | boolean> = useCallback((value) => {
         setState(prevState => {
             const newValue = typeof value === 'function' ? value(prevState) : value;
             updateQueryParam(newValue);

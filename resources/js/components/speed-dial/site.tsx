@@ -2,11 +2,7 @@ import { cn } from '@/lib/utils';
 import { Site as SiteType } from '@/pages/speed-dial';
 import { CSSProperties, useMemo } from 'react';
 
-type Props = {
-    clickable?: boolean;
-    editable: boolean;
-    onClick?: () => void;
-    site: Partial<
+type SiteButtonSite = Partial<
         Pick<
             SiteType,
             | 'background_color'
@@ -17,37 +13,66 @@ type Props = {
             | 'icon_url'
         >
     >;
+
+type SiteEditButtonProps = Readonly<{
+    className: string;
+    onClick: () => void;
+    style: CSSProperties;
+    site: SiteButtonSite;
+}>;
+
+function SiteEditButton({ className, onClick, style, site }: SiteEditButtonProps) {
+    return (
+          <button
+            type="button"
+            onClick={onClick}
+            className={className}
+            style={style}
+        >
+            <img src={`${site.icon_url}`} alt={`${site.name} logo`} />
+        </button>
+    );
 };
 
-export const Site = ({ site, editable, onClick }: Props) => {
+type SiteLinkProps = Readonly<{
+    className: string;
+    style: CSSProperties;
+    site: SiteButtonSite;
+}>;
+
+function SiteLink({className, style, site}: SiteLinkProps) {
+    return (
+        <a href={site.url} className={className} style={style}>
+            <img src={`${site.icon_url}`} alt={`${site.name} logo`} />
+        </a>
+    );
+}
+
+type SiteProps = Readonly<{
+    editable: boolean;
+    onClick?: () => void;
+    site: SiteButtonSite;
+}>;
+
+export function Site({ site, editable, onClick }: SiteProps) {
     const style = useMemo(
         (): CSSProperties => ({
             backgroundColor: site.background_color || 'white',
         }),
         [site.background_color],
     );
-
-    const url = editable
-        ? route('speed-dial', {
-              site: site.id,
-          })
-        : site.url;
-
-    return (
-        <button
-            // href={url}
-            onClick={onClick}
-            className={cn(
+    const className = cn(
                 'block h-24 w-24 transform cursor-pointer overflow-hidden rounded-2xl shadow-md transition-transform hover:scale-110 hover:shadow-xl',
                 { 'p-2': !site.no_padding },
                 {
                     'bg-slate-700 hover:outline-4 hover:outline-offset-4 hover:outline-white hover:outline-dashed':
                         editable,
                 },
-            )}
-            style={style}
-        >
-            <img src={`${site.icon_url}`} alt={`${site.name} logo`} />
-        </button>
-    );
+            );
+
+    if (editable) {
+        return <SiteEditButton className={className} onClick={onClick!} style={style} site={site} />;
+    }
+
+    return <SiteLink className={className} style={style} site={site} />;
 };

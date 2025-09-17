@@ -4,11 +4,11 @@ import Clock from '@/components/speed-dial/clock';
 import EditButton from '@/components/speed-dial/edit-button';
 import NewSite from '@/components/speed-dial/new-site';
 import { Site as SiteComponent } from '@/components/speed-dial/site';
-import { Head, router, useRemember } from '@inertiajs/react';
+import { Head, useRemember } from '@inertiajs/react';
 import styles from './SpeedDial.module.css';
 import { cn } from '@/lib/utils';
 import { useQueryState } from '@/hooks/use-query-state';
-import { useState } from 'react';
+import { useMemo } from 'react';
 
 export type Site = {
     id: number;
@@ -23,7 +23,6 @@ export type Site = {
 };
 
 type Props = {
-    site?: Site;
     sites: Site[];
     creating: boolean;
     isLoggedIn?: boolean;
@@ -31,25 +30,21 @@ type Props = {
 
 export default function SpeedDial({
     sites,
-    site,
-    creating,
     isLoggedIn,
-}: Props) {
-    const [editing, setEditing] = useRemember(false, 'SpeedDial.editing');
-    const [selectedSite, setSelectedSite] = useRemember<Site|null>(null, 'SpeedDial.selectedSite');
-    const [mykey, setMyKey] = useQueryState('myKey', '');
-    const [otherKey, setOtherKey] = useQueryState('otherKey', 'test');
+}: Readonly<Props>) {
+    const [editing, setEditing] = useQueryState('editing', false, false);
+    const [selectedSiteId, setSelectedSiteId] = useQueryState('selectedSite', undefined, true);
+    const [creating, setCreating] = useRemember(false, 'SpeedDial:creating');
+
+    const selectedSite = useMemo(() => sites.find((s) => s.id.toString() === selectedSiteId), [selectedSiteId, sites]);
 
     const handleEdit = () => {
         setEditing((prev) => !prev);
     };
 
     const handleNewSiteClick = () => {
-        router.visit(
-            route('speed-dial', {
-                creating: true,
-            }),
-        );
+        setCreating(true);
+        setSelectedSiteId(undefined);
     };
 
     return (
@@ -64,8 +59,6 @@ export default function SpeedDial({
                     boxShadow: 'inset 0px 0px 200px 16px rgba(0,0,0,0.75)',
                 }}
             >
-                <input value={mykey} onChange={(e) => setMyKey(e.target.value)} />
-                <input value={otherKey} onChange={(e) => setOtherKey(e.target.value)} />
                 {isLoggedIn && <EditButton onEdit={handleEdit} />}
                 <div className="flex h-full flex-col justify-between p-4">
                     <div className={cn(styles.grid)}>
@@ -74,7 +67,7 @@ export default function SpeedDial({
                                 editable={editing}
                                 key={site.name}
                                 site={site}
-                                onClick={() => setSelectedSite(site)}   
+                                onClick={() => setSelectedSiteId(site.id.toString())}
                             />
                         ))}
                         {editing && <NewSite onClick={handleNewSiteClick} />}
@@ -86,8 +79,11 @@ export default function SpeedDial({
                     </div>
                 </div>
                 {(selectedSite || creating) && (
-                    <Drawer onClose={() => setSelectedSite(null)}>
-                        <SiteForm site={site} creating={creating} />
+                    <Drawer onClose={() => {
+                        setCreating(false)
+                        setSelectedSiteId(undefined)
+                    }}>
+                        <SiteForm site={selectedSite} creating={creating} />
                     </Drawer>
                 )}
                 {/*<RegisterServiceWorker />*/}
