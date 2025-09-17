@@ -5,11 +5,11 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
 import { route as routeFn } from 'ziggy-js';
 import { initializeTheme } from './hooks/use-appearance';
+import registerServiceWorker from './register-service-worker';
 
 declare global {
     const route: typeof routeFn;
 }
-
 
 declare module 'ziggy-js' {
     interface TypeConfig {
@@ -34,3 +34,5 @@ createInertiaApp({
 
 // This will set light / dark mode on load...
 initializeTheme();
+// This will register the service worker...
+registerServiceWorker();
