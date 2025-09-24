@@ -14,17 +14,20 @@ export default function Clock() {
     const [date, setDate] = useState<Date|null>(null);
 
     useEffect(() => {
-        const intervalId = setInterval(() => {
+        function updateDate() {
             setDate((prevDate) => {
                 const newDate = new Date();
-
+    
                 if (newDate.getUTCMinutes() === prevDate?.getUTCMinutes()) {
                     return prevDate;
                 }
-
+    
                 return newDate;
             });
-        }, 1000);
+        }
+
+        const intervalId = setInterval(updateDate, 1000);
+        updateDate();
 
         return () => {
             clearInterval(intervalId);
