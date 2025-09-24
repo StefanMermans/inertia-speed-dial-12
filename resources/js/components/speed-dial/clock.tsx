@@ -11,15 +11,15 @@ const DateFormatter = Intl.DateTimeFormat('nl', {
 });
 
 export default function Clock() {
-    const [date, setDate] = useState<Date>(new Date());
+    const [date, setDate] = useState<Date|null>(null);
 
     useEffect(() => {
         const intervalId = setInterval(() => {
-            setDate((date) => {
+            setDate((prevDate) => {
                 const newDate = new Date();
 
-                if (newDate.getUTCMinutes() === date.getUTCMinutes()) {
-                    return date;
+                if (newDate.getUTCMinutes() === prevDate?.getUTCMinutes()) {
+                    return prevDate;
                 }
 
                 return newDate;
@@ -30,6 +30,10 @@ export default function Clock() {
             clearInterval(intervalId);
         };
     }, []);
+
+    if (!date) {
+        return null;
+    }
 
     return (
         <div className="flex flex-shrink-0 flex-col justify-end text-white">
