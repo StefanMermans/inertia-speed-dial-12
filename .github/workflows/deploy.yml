@@ -30,7 +30,7 @@ jobs:
       - name: Package application
         run: |
           RELEASE_ARCHIVE="release-${GITHUB_SHA}.tar.gz"
-          tar -czf "$RELEASE_ARCHIVE" --exclude=".git" --exclude="node_modules" --exclude="vendor" .
+          git archive --format=tar.gz -o "$RELEASE_ARCHIVE" HEAD
           echo "RELEASE_ARCHIVE=$RELEASE_ARCHIVE" >> "$GITHUB_ENV"
 
       - name: Prepare remote directories
