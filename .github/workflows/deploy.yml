@@ -6,44 +6,98 @@ on:
       - main
   workflow_dispatch:
 
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
 jobs:
   deploy:
-    environment: production
+    name: Deploy to server
     runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 20
+    env:
+      REMOTE_APP_PATH: inertia-speed-dial-12
+      COMPOSE_PROJECT: inertia-speed-dial-12
 
     steps:
-      - name: Deploy over SSH
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Package application
+        run: |
+          RELEASE_ARCHIVE="release-${GITHUB_SHA}.tar.gz"
+          tar -czf "$RELEASE_ARCHIVE" --exclude=".git" --exclude="node_modules" --exclude="vendor" .
+          echo "RELEASE_ARCHIVE=$RELEASE_ARCHIVE" >> "$GITHUB_ENV"
+
+      - name: Prepare remote directories
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          REMOTE_APP_PATH: ${{ env.REMOTE_APP_PATH }}
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            set -e
+            set -euo pipefail
+            mkdir -p "$HOME/${REMOTE_APP_PATH}/releases"
 
-            # Ensure deployment dir exists
-            DEPLOY_DIR=./inertia-speed-dial-12/
-            rm -rf $DEPLOY_DIR
-            mkdir -p $DEPLOY_DIR
+      - name: Upload release archive
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          source: ${{ env.RELEASE_ARCHIVE }}
+          target: ${{ format('~/{0}/releases', env.REMOTE_APP_PATH) }}
 
-            cd $DEPLOY_DIR
+      - name: Deploy release
+        uses: appleboy/ssh-action@v1.0.3
+        env:
+          REMOTE_APP_PATH: ${{ env.REMOTE_APP_PATH }}
+          RELEASE_ARCHIVE: ${{ env.RELEASE_ARCHIVE }}
+          COMPOSE_PROJECT: ${{ env.COMPOSE_PROJECT }}
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          envs: REMOTE_APP_PATH,RELEASE_ARCHIVE,COMPOSE_PROJECT,GITHUB_SHA
+          script: |
+            set -euo pipefail
 
-            # Clone latest repo
-            git clone --depth 1 -b main git@github.com:${{ github.repository }} .
-            
-            # Inject .env
-            cp .env.prod .env
-            echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
-            echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
-            echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-            echo "APP_KEY=${{ secrets.APP_KEY }}" >> .env
-            echo "ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }}" >> .env
-            echo "ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}" >> .env
+            DEPLOY_BASE="$HOME/${REMOTE_APP_PATH}"
+            RELEASES_DIR="$DEPLOY_BASE/releases"
+            CURRENT_LINK="$DEPLOY_BASE/current"
+            ARCHIVE="$RELEASES_DIR/$RELEASE_ARCHIVE"
+            RELEASE_DIR="$RELEASES_DIR/$GITHUB_SHA"
 
-            # Build + run docker
-            sudo docker compose up --build -d
-            sudo docker compose exec app php artisan migrate --force
+            mkdir -p "$RELEASE_DIR"
+            tar -xzf "$ARCHIVE" -C "$RELEASE_DIR"
+            rm -f "$ARCHIVE"
 
-            # Clean up repo (code lives inside docker image)
-            cd ..//
-            rm -rf $DEPLOY_DIR
+            cp "$RELEASE_DIR/.env.prod" "$RELEASE_DIR/.env"
+            {
+              echo "DB_USERNAME=${{ secrets.DB_USERNAME }}"
+              echo "DB_DATABASE=${{ secrets.DB_DATABASE }}"
+              echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}"
+              echo "APP_KEY=${{ secrets.APP_KEY }}"
+              echo "ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }}"
+              echo "ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}"
+            } >> "$RELEASE_DIR/.env"
+
+            cd "$RELEASE_DIR"
+            sudo docker compose -p "$COMPOSE_PROJECT" up --build -d
+            sudo docker compose -p "$COMPOSE_PROJECT" exec app php artisan migrate --force
+
+            ln -sfn "$RELEASE_DIR" "$CURRENT_LINK"
+
+            if [ -d "$RELEASES_DIR" ]; then
+              cd "$RELEASES_DIR"
+              COUNT=$(find . -maxdepth 1 -mindepth 1 -type d | wc -l)
+              if [ "$COUNT" -gt 3 ]; then
+                find . -maxdepth 1 -mindepth 1 -type d -printf '%T@ %p\n' | sort -nr | tail -n +4 | cut -d' ' -f2- | xargs -r rm -rf --
+              fi
+            fi
