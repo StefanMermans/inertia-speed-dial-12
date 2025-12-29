@@ -90,8 +90,13 @@ jobs:
             } >> "$RELEASE_DIR/.env"
 
             cd "$RELEASE_DIR"
-            sudo docker compose -p "$COMPOSE_PROJECT" up --build -d
-            sudo docker compose -p "$COMPOSE_PROJECT" exec app php artisan migrate --force
+            if ! docker info >/dev/null 2>&1; then
+              echo "Deploy user cannot access docker. Add user to the docker group or enable passwordless docker access."
+              exit 1
+            fi
+
+            docker compose -p "$COMPOSE_PROJECT" up --build -d
+            docker compose -p "$COMPOSE_PROJECT" exec app php artisan migrate --force
 
             ln -sfn "$RELEASE_DIR" "$CURRENT_LINK"
 
