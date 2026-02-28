@@ -22,8 +22,9 @@
         "laravel/pint": "^1.18",
         "laravel/sail": "^1.41",
         "mockery/mockery": "^1.6",
-        "pestphp/pest": "^3.8",
-        "pestphp/pest-plugin-laravel": "^3.2"
+        "pestphp/pest": "^4.0",
+        "pestphp/pest-plugin-browser": "^4.3",
+        "pestphp/pest-plugin-laravel": "^4.1"
     },
     "autoload": {
         "psr-4": {
@@ -52,6 +53,17 @@
             "@php artisan key:generate --ansi",
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --graceful --ansi"
+        ],
+        "lint": [
+            "pint --parallel"
+        ],
+        "lint:check": [
+            "pint --parallel --test"
+        ],
+        "test": [
+            "@php artisan config:clear --ansi",
+            "@lint:check",
+            "@php artisan test"
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",

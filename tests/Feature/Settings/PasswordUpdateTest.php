@@ -32,3 +32,11 @@ it('requires the correct current password to update the password', function () {
         ->assertSessionHasErrors('current_password')
         ->assertRedirect('/settings/password');
 });
+
+it('renders the password settings page', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->get('/settings/password')
+        ->assertOk();
+});

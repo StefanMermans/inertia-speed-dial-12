@@ -48,3 +48,14 @@ it('resets the password with a valid token', function () {
         ->assertSessionHasNoErrors()
         ->assertRedirect(route('login'));
 });
+
+it('does not reset the password with an invalid token', function () {
+    $user = User::factory()->create();
+
+    $this->post('/reset-password', [
+        'token' => 'invalid-token',
+        'email' => $user->email,
+        'password' => 'new-password',
+        'password_confirmation' => 'new-password',
+    ])->assertSessionHasErrors('email');
+});

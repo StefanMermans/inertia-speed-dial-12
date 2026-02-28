@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSiteRequest;
@@ -10,16 +12,6 @@ use Inertia\Inertia;
 
 class SiteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        return Inertia::render('Sites/Index', [
-            'sites' => Site::all(),
-        ]);
-    }
-
     /**
      * Show the form for creating a new resource.
      */

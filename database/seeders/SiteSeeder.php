@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
 use App\Models\Site;
@@ -33,15 +35,59 @@ class SiteSeeder extends Seeder
             ["name" => "Nyaa", "url" => "https://nyaa.si/", "icon_path" => "images/nyaa.png", "background_color" => "#0084ff"],
             ["name" => "use hooks", "url" => "https://usehooks.com/", "icon_path" => "images/tablericons.png", "background_color" => "#fff"],
             [
-                "name" => "Subs please", "url" => "https://subsplease.org/", "icon_path" => "images/iseria.png", "background_color" => "#fbf5f0"], [
-                "name" => "Pulse", "url" => "https://pulse.scrumble.nl/", "icon_path" => "images/pulse-min.png", "background_color" => "#3f4852"], [
-                "name" => "Font awesome", "url" => "https://fontawesome.com", "icon_path" => "images/font-awesome.png", "background_color" => "#528cd7"], [
-                "name" => "Jenkins", "url" => "https://jenkins.scrumble.customer.cloud.nl", "icon_path" => "images/jenkins.png", "background_color" => "black"], [
-                "name" => "RegExr", "url" => "https://regexr.com", "icon_path" => "images/regexr-logo.png", "background_color" => "#70b1e1"], [
-                "name" => "Duolingo", "url" => "https://www.duolingo.com/learn", "icon_path" => "images/duolingo.svg", "background_color" => "#50c800"], [
-                "name" => "Aniwave", "url" => "https://aniwave.to/home", "icon_path" => "images/aniwave.png", "background_color" => "#1c1c1c"], [
-                "name" => "ChatGPT", "url" => "https://chat.openai.com", "icon_path" => "images/openai.svg", "background_color" => "#74AA9C"], [
-                "name" => "Home Assistant", "url" => "https://home-assistant.spyx.family", "icon_path" => "images/home-assistant.svg", "background_color" => "#41BDF5"]
+                "name" => "Subs please",
+                "url" => "https://subsplease.org/",
+                "icon_path" => "images/iseria.png",
+                "background_color" => "#fbf5f0"
+            ],
+            [
+                "name" => "Pulse",
+                "url" => "https://pulse.scrumble.nl/",
+                "icon_path" => "images/pulse-min.png",
+                "background_color" => "#3f4852"
+            ],
+            [
+                "name" => "Font awesome",
+                "url" => "https://fontawesome.com",
+                "icon_path" => "images/font-awesome.png",
+                "background_color" => "#528cd7"
+            ],
+            [
+                "name" => "Jenkins",
+                "url" => "https://jenkins.scrumble.customer.cloud.nl",
+                "icon_path" => "images/jenkins.png",
+                "background_color" => "black"
+            ],
+            [
+                "name" => "RegExr",
+                "url" => "https://regexr.com",
+                "icon_path" => "images/regexr-logo.png",
+                "background_color" => "#70b1e1"
+            ],
+            [
+                "name" => "Duolingo",
+                "url" => "https://www.duolingo.com/learn",
+                "icon_path" => "images/duolingo.svg",
+                "background_color" => "#50c800"
+            ],
+            [
+                "name" => "Aniwave",
+                "url" => "https://aniwave.to/home",
+                "icon_path" => "images/aniwave.png",
+                "background_color" => "#1c1c1c"
+            ],
+            [
+                "name" => "ChatGPT",
+                "url" => "https://chat.openai.com",
+                "icon_path" => "images/openai.svg",
+                "background_color" => "#74AA9C"
+            ],
+            [
+                "name" => "Home Assistant",
+                "url" => "https://home-assistant.spyx.family",
+                "icon_path" => "images/home-assistant.svg",
+                "background_color" => "#41BDF5"
+            ]
         ];
 
         foreach ($data as $site) {

@@ -35,3 +35,21 @@ it('logs out authenticated users', function () {
 
     $this->assertGuest();
 });
+
+it('throttles login after too many failed attempts', function () {
+    $user = User::factory()->create();
+
+    foreach (range(1, 5) as $_) {
+        $this->post('/login', [
+            'email' => $user->email,
+            'password' => 'wrong-password',
+        ]);
+    }
+
+    $this->post('/login', [
+        'email' => $user->email,
+        'password' => 'wrong-password',
+    ])->assertSessionHasErrors('email');
+
+    $this->assertGuest();
+});

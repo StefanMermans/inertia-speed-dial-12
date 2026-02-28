@@ -35,17 +35,14 @@ it('creates a site and redirects to speed-dial', function () {
 
 it('persists the site with the correct attributes', function () {
     $user = User::factory()->create();
+    $data = validSiteData();
 
-    $this->actingAs($user)->post(route('sites.store'), validSiteData([
-        'name' => 'YouTube',
-        'url' => 'https://youtube.com',
-        'background_color' => '#ff0000',
-    ]));
+    $this->actingAs($user)->post(route('sites.store'), $data);
 
     assertDatabaseHas(Site::class, [
-        'name' => 'YouTube',
-        'url' => 'https://youtube.com',
-        'background_color' => '#ff0000',
+        'name' => $data['name'],
+        'url' => $data['url'],
+        'background_color' => $data['background_color'],
         'no_padding' => false,
     ]);
 });

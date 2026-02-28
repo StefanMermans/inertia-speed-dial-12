@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\Site;
@@ -18,8 +20,8 @@ class SpeedDialController extends Controller
             'sites' => Site::all(),
             'site' => $request->whenFilled(
                 'site',
-                static fn () => Site::findOrFail($request->site),
-                static fn () => null,
+                static fn() => Site::findOrFail($request->site),
+                static fn() => null,
             ),
             'isLoggedIn' => $request->user() !== null,
             'creating' => $request->boolean('creating'),
