@@ -17,7 +17,16 @@ class SiteFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->words(2, true),
+            'url' => fake()->url(),
+            'icon_path' => 'images/' . fake()->slug() . '.png',
+            'background_color' => fake()->hexColor(),
+            'no_padding' => false,
         ];
+    }
+
+    public function withNoPadding(): static
+    {
+        return $this->state(['no_padding' => true]);
     }
 }

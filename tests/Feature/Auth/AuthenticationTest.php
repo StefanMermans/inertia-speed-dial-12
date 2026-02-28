@@ -1,54 +1,37 @@
 <?php
 
-namespace Tests\Feature\Auth;
-
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
-class AuthenticationTest extends TestCase
-{
-    use RefreshDatabase;
+it('renders the login screen', function () {
+    $this->get('/login')->assertOk();
+});
 
-    public function test_login_screen_can_be_rendered()
-    {
-        $response = $this->get('/login');
+it('authenticates users via the login screen', function () {
+    $user = User::factory()->create();
 
-        $response->assertStatus(200);
-    }
+    $this->post('/login', [
+        'email' => $user->email,
+        'password' => 'password',
+    ])->assertRedirect(route('dashboard'));
 
-    public function test_users_can_authenticate_using_the_login_screen()
-    {
-        $user = User::factory()->create();
+    $this->assertAuthenticated();
+});
 
-        $response = $this->post('/login', [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
+it('does not authenticate users with an invalid password', function () {
+    $user = User::factory()->create();
 
-        $this->assertAuthenticated();
-        $response->assertRedirect(route('dashboard', absolute: false));
-    }
+    $this->post('/login', [
+        'email' => $user->email,
+        'password' => 'wrong-password',
+    ]);
 
-    public function test_users_can_not_authenticate_with_invalid_password()
-    {
-        $user = User::factory()->create();
+    $this->assertGuest();
+});
 
-        $this->post('/login', [
-            'email' => $user->email,
-            'password' => 'wrong-password',
-        ]);
+it('logs out authenticated users', function () {
+    $user = User::factory()->create();
 
-        $this->assertGuest();
-    }
+    $this->actingAs($user)->post('/logout')->assertRedirect('/');
 
-    public function test_users_can_logout()
-    {
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)->post('/logout');
-
-        $this->assertGuest();
-        $response->assertRedirect('/');
-    }
-}
+    $this->assertGuest();
+});
