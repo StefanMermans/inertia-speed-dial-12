@@ -31,6 +31,7 @@ class StoreSiteRequest extends FormRequest
             'url' => ['required', 'string', 'max:255', 'url'],
             'background_color' => ['required', 'string', 'max:255', 'hex_color'],
             'icon' => ['required', File::types(['png', 'jpg', 'jpeg', 'svg'])],
+            'no_padding' => ['sometimes', 'boolean'],
         ];
     }
 }

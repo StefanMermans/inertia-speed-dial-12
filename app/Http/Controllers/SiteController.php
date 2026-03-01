@@ -10,6 +10,8 @@ use App\Models\Site;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 
+use Illuminate\Support\Facades\Storage;
+
 class SiteController extends Controller
 {
     /**
@@ -21,7 +23,8 @@ class SiteController extends Controller
         $iconPath = $icon->store('images', [
             'disk' => 'public'
         ]);
-        $site = Site::make($request->all());
+
+        $site = Site::make($request->safe()->except(['icon']));
         $site->icon_path = $iconPath;
         $site->save();
 
@@ -33,7 +36,16 @@ class SiteController extends Controller
      */
     public function update(UpdateSiteRequest $request, Site $site): RedirectResponse
     {
-        $site->update($request->all());
+        $site->fill($request->safe()->except(['icon']));
+
+        if ($request->hasFile('icon')) {
+            if ($site->icon_path) {
+                Storage::disk('public')->delete($site->icon_path);
+            }
+            $site->icon_path = $request->file('icon')->store('images', ['disk' => 'public']);
+        }
+
+        $site->save();
 
         return to_route('speed-dial');
     }

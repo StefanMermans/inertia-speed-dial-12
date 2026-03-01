@@ -24,13 +24,17 @@ function validSiteUpdateData(array $overrides = []): array
 
 it('updates the site and redirects to speed-dial', function () {
     $user = User::factory()->create();
-    $site = Site::factory()->create();
+    $site = Site::factory()->create([
+        'icon_path' => 'images/old_icon.png'
+    ]);
+    Storage::disk('public')->put('images/old_icon.png', 'old content');
 
     $this->actingAs($user)
         ->put(route('sites.update', $site), validSiteUpdateData([
             'name' => 'Updated Name',
             'url' => 'https://updated.com',
             'background_color' => '#ffffff',
+            'icon' => UploadedFile::fake()->image('new_icon.png'),
         ]))
         ->assertRedirect(route('speed-dial'));
 
@@ -40,6 +44,11 @@ it('updates the site and redirects to speed-dial', function () {
         'url' => 'https://updated.com',
         'background_color' => '#ffffff',
     ]);
+
+    $site->refresh();
+    expect($site->icon_path)->not->toBe('images/old_icon.png');
+    Storage::disk('public')->assertExists($site->icon_path);
+    Storage::disk('public')->assertMissing('images/old_icon.png');
 });
 
 // ─── Authentication ───────────────────────────────────────────────────────────

@@ -75,7 +75,9 @@ it('defaults no_padding to false when omitted', function () {
 it('stores no_padding as true when explicitly provided', function () {
     $user = User::factory()->create();
 
-    $this->actingAs($user)->post(route('sites.store'), validSiteData(['no_padding' => true]));
+    $this
+        ->actingAs($user)
+        ->post(route('sites.store'), validSiteData(['no_padding' => true]));
 
     assertDatabaseHas(Site::class, ['no_padding' => true]);
 });
