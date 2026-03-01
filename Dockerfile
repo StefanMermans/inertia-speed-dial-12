@@ -46,7 +46,7 @@ COPY nginx.conf /etc/nginx/sites-available/default
 COPY supervisord.conf /etc/supervisord.conf
 
 # Install PHP dependencies
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader
+RUN composer install --no-interaction --prefer-dist --no-dev --optimize-autoloader
 
 # Laravel setup
 RUN php artisan storage:link \
