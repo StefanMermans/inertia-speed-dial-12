@@ -29,5 +29,6 @@ jobs:
           username: deployer
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
+          passphrase: ${{ secrets.SSH_PRIVATE_KEY_PASSPHRASE }}
           # Points exactly to the script you created for this specific app
           script: /home/deployer/scripts/deploy-inertia-speed-dial.sh
