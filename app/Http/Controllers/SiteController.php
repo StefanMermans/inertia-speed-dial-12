@@ -13,14 +13,6 @@ use Inertia\Inertia;
 class SiteController extends Controller
 {
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(StoreSiteRequest $request)
@@ -34,22 +26,6 @@ class SiteController extends Controller
         $site->save();
 
         return to_route('speed-dial');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Site $site)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Site $site)
-    {
-        //
     }
 
     /**
