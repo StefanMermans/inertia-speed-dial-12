@@ -1,19 +1,44 @@
-name: tests
+name: linter
 
 on:
   push:
     branches:
-      - develop
       - main
       - master
   pull_request:
     branches:
-      - develop
       - main
       - master
 
+permissions:
+  contents: write
+
 jobs:
-  ci:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: [ '8.4', '8.5' ]
+
+      - name: Install Dependencies
+        run: |
+          composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+          npm install
+
+      - name: Run Pint
+        run: composer lint
+
+      - name: Format Frontend
+        run: npm run format
+
+      - name: Lint Frontend
+        run: npm run lint
+
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -54,3 +79,12 @@ jobs:
 
       - name: Tests
         run: ./vendor/bin/pest
+
+  deploy:
+    name: Trigger deployment
+    needs: 
+      - quality
+      - test
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    uses: ./.github/workflows/deploy.yml
+    secrects: inherit
