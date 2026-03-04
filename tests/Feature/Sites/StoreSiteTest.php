@@ -89,13 +89,14 @@ it('stores no_padding as true when explicitly provided', function () {
 
 // ─── Accepted icon types ──────────────────────────────────────────────────────
 
-it('accepts a jpg icon', function () {
+it('accepts a icon', function (string $filetype) {
     $user = User::factory()->create();
 
     $this->actingAs($user)
         ->post(route('sites.store'), validSiteData(['icon' => UploadedFile::fake()->image('icon.jpg')]))
         ->assertRedirect(route('speed-dial'));
-});
+})
+->with(['png', 'jpg', 'jpeg', 'svg']);
 
 it('accepts a jpeg icon', function () {
     $user = User::factory()->create();
@@ -237,7 +238,7 @@ it('requires an icon', function () {
 
     $this->actingAs($user)
         ->post(route('sites.store'), validSiteData(['icon' => null]))
-        ->assertSessionHasErrors('icon');
+        ->assertSessionHasErrors(['icon' => __('validation.required', ['attribute' => 'icon'])]);
 
     assertDatabaseCount(Site::class, 0);
 });

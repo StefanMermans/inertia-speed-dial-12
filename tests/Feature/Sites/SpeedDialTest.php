@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Feature\Sites\SpeedDialTest;
+
 use App\Http\Controllers\SpeedDialController;
 use App\Models\Site;
 use App\Models\User;
@@ -10,6 +12,25 @@ covers(SpeedDialController::class, Site::class);
 beforeEach(function () {
     Storage::fake('public');
 });
+
+function siteFormSelector(null|string $subSelctor = null): string {
+    $siteFormSelector = '#site-form';
+
+    if ($subSelctor === null) {
+        return $siteFormSelector;
+    }
+
+    return $siteFormSelector . " $subSelctor";
+}
+
+function actingAsAuthorizedUser(): void {
+    test()->actingAs(User::factory()->createOne());
+}
+
+function selectorForSite(Site $site): string
+{
+    return "#site-{$site->id}";
+}
 
 it('renders the speed dial page for guests', function () {
     $this->get(route('speed-dial'))
@@ -82,7 +103,45 @@ it('renders a site with icon', function () {
         ->assertAttributeContains("$siteSelector > img", 'src', $site->iconUrl);
 });
 
-function selectorForSite(Site $site): string
-{
-    return "#site-{$site->id}";
-}
+it('renders pre-filled site edit form when site selected', function () {
+    $site = Site::factory()->createOne();
+    actingAsAuthorizedUser();
+
+    $page = visit(route('speed-dial', [
+        'site' => $site->getKey()
+    ]));
+
+    $page
+        ->assertPresent(siteFormSelector())
+        ->assertAttribute(siteFormSelector('> input[name=name]'), 'value', $site->name)
+        ->assertAttribute(siteFormSelector('> input[name=url]'), 'value', $site->url)
+        ->assertPresent(siteFormSelector('> input[name=icon]'));
+});
+
+it('renders speed dial edit button when logged in', function () {
+    actingAsAuthorizedUser();
+
+    $page = visit(route('speed-dial'));
+
+    $page->assertPresent('#speed-dial-edit-button');
+});
+
+it('does not render speed dial edit button when not loged in', function () {
+    $page = visit(route('speed-dial'));
+
+    $page->assertMissing('#speed-dial-edit-button');
+});
+
+it('shows empty site form when creating', function () {
+    actingAsAuthorizedUser();
+
+    $page = visit(route('speed-dial', [
+        'creating' => 1
+    ]));
+
+    $page
+        ->assertPresent(siteFormSelector())
+        ->assertAttribute(siteFormSelector('> input[name=name]'), 'value', '')
+        ->assertAttribute(siteFormSelector('> input[name=url]'), 'value', '')
+        ->assertPresent(siteFormSelector('> input[name=icon]'));
+});

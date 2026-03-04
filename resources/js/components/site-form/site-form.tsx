@@ -82,7 +82,7 @@ export default function SiteForm({ site, creating }: Props) {
     }, [data, site?.icon_url]);
 
     return (
-        <form onSubmit={submit} className="flex flex-col space-y-4 p-4">
+        <form onSubmit={submit} id='site-form' className="flex flex-col space-y-4 p-4">
             <div className={cn('flex w-full justify-center rounded-md p-4', 'bg-[url(/background-compressed.jpg)]')}>
                 <SiteComponent editable={false} site={sitePreview} />
             </div>

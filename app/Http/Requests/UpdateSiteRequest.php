@@ -28,7 +28,7 @@ class UpdateSiteRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'url' => ['required', 'string', 'max:255', 'url'],
-            'background_color' => ['required', 'string', 'max:255', 'hex_color'],
+            'background_color' => ['required', 'hex_color'],
             'icon' => ['required', 'image'],
         ];
     }

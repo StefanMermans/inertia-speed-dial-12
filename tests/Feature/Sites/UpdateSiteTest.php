@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Feature\Sites\UpdateSiteTest;
+
 use App\Http\Controllers\SiteController;
 use App\Http\Requests\UpdateSiteRequest;
 use App\Models\Site;
@@ -7,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
+use Illuminate\Testing\TestResponse;
 use function Pest\Laravel\assertDatabaseHas;
 
 covers(SiteController::class, UpdateSiteRequest::class, Site::class);
@@ -25,16 +28,24 @@ function validSiteUpdateData(array $overrides = []): array
     ], $overrides);
 }
 
+function updateSite(Site $site, array $override = []): TestResponse {
+    return test()->put(route('sites.update', $site), validSiteUpdateData($override));
+}
+
+function actingAsAuthorizedUser(): void {
+    test()->actingAs(User::factory()->createOne());
+}
+
 // ─── Happy path ───────────────────────────────────────────────────────────────
 
 it('updates the site and redirects to speed-dial', function () {
-    $user = User::factory()->create();
+    actingAsAuthorizedUser();
     $site = Site::factory()->create([
         'icon_path' => 'images/old_icon.png',
     ]);
     Storage::disk('public')->put('images/old_icon.png', 'old content');
 
-    $this->actingAs($user)
+    $this
         ->put(route('sites.update', $site), validSiteUpdateData([
             'name' => 'Updated Name',
             'url' => 'https://updated.com',
@@ -61,46 +72,68 @@ it('updates the site and redirects to speed-dial', function () {
 it('redirects guests to the login page', function () {
     $site = Site::factory()->create();
 
-    $this->put(route('sites.update', $site), validSiteUpdateData())
+    updateSite($site)
         ->assertRedirect(route('login'));
 });
 
 // ─── Validation: name ─────────────────────────────────────────────────────────
 
 it('requires a name to update', function () {
-    $user = User::factory()->create();
+    actingAsAuthorizedUser();
     $site = Site::factory()->create();
 
-    $this->actingAs($user)
+    $this
         ->put(route('sites.update', $site), validSiteUpdateData(['name' => '']))
         ->assertSessionHasErrors('name');
 });
 
 it('rejects a name longer than 255 characters when updating', function () {
-    $user = User::factory()->create();
+    actingAsAuthorizedUser();
     $site = Site::factory()->create();
 
-    $this->actingAs($user)
-        ->put(route('sites.update', $site), validSiteUpdateData(['name' => str_repeat('a', 256)]))
-        ->assertSessionHasErrors('name');
+    updateSite($site, [
+        'name' => fake()->sentence(50)
+    ])
+    ->assertSessionHasErrors(['name' => __('validation.max.string', [
+            'attribute' => 'name',
+            'max' => 255,
+        ])
+    ]);
 });
 
 // ─── Validation: url ──────────────────────────────────────────────────────────
 
 it('requires a url to update', function () {
-    $user = User::factory()->create();
+    actingAsAuthorizedUser();
     $site = Site::factory()->create();
 
-    $this->actingAs($user)
+    $this
         ->put(route('sites.update', $site), validSiteUpdateData(['url' => '']))
         ->assertSessionHasErrors('url');
 });
 
+it('rejects a url longer than 255 characters when updating', function () {
+    actingAsAuthorizedUser();
+    $site = Site::factory()->createOne();
+    
+    updateSite($site, [
+        'url' => fake()->url() . fake()->sentence(50)
+    ])
+    ->assertSessionHasErrors(['url' => __(
+            'validation.max.string',
+            [
+                'attribute' => 'url',
+                'max' => 255,
+            ]
+        )
+    ]);
+});
+
 it('rejects an invalid url when updating', function () {
-    $user = User::factory()->create();
+    actingAsAuthorizedUser();
     $site = Site::factory()->create();
 
-    $this->actingAs($user)
+    $this
         ->put(route('sites.update', $site), validSiteUpdateData(['url' => 'not-a-url']))
         ->assertSessionHasErrors('url');
 });
@@ -108,19 +141,19 @@ it('rejects an invalid url when updating', function () {
 // ─── Validation: background_color ─────────────────────────────────────────────
 
 it('requires a background_color to update', function () {
-    $user = User::factory()->create();
+    actingAsAuthorizedUser();
     $site = Site::factory()->create();
 
-    $this->actingAs($user)
+    $this
         ->put(route('sites.update', $site), validSiteUpdateData(['background_color' => '']))
         ->assertSessionHasErrors('background_color');
 });
 
 it('rejects an invalid hex background_color when updating', function () {
-    $user = User::factory()->create();
+    actingAsAuthorizedUser();
     $site = Site::factory()->create();
 
-    $this->actingAs($user)
+    $this
         ->put(route('sites.update', $site), validSiteUpdateData(['background_color' => 'red']))
         ->assertSessionHasErrors('background_color');
 });
@@ -128,21 +161,22 @@ it('rejects an invalid hex background_color when updating', function () {
 // ─── Validation: icon ─────────────────────────────────────────────────────────
 
 it('requires an icon to update', function () {
-    $user = User::factory()->create();
+    actingAsAuthorizedUser();
     $site = Site::factory()->create();
 
-    $this->actingAs($user)
+    $this
         ->put(route('sites.update', $site), validSiteUpdateData(['icon' => null]))
-        ->assertSessionHasErrors('icon');
+        ->assertSessionHasErrors(['icon' => __('validation.required', ['attribute' => 'icon'])]);
 });
 
 it('rejects a non-image file as icon when updating', function () {
-    $user = User::factory()->create();
+    actingAsAuthorizedUser();
     $site = Site::factory()->create();
 
-    $this->actingAs($user)
-        ->put(route('sites.update', $site), validSiteUpdateData([
+    $this
+        ->put(route('sites.update', $site), data: validSiteUpdateData([
             'icon' => UploadedFile::fake()->create('document.pdf', 100, 'application/pdf'),
         ]))
         ->assertSessionHasErrors('icon');
 });
+
