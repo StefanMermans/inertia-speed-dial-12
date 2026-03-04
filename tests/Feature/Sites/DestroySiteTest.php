@@ -6,7 +6,7 @@ use App\Models\User;
 
 use function Pest\Laravel\assertSoftDeleted;
 
-covers(SiteController::class);
+covers(SiteController::class, Site::class);
 
 it('soft deletes a site', function () {
     $user = User::factory()->create();

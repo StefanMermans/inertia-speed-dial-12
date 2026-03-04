@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
 
-covers(SiteController::class, StoreSiteRequest::class);
+covers(SiteController::class, StoreSiteRequest::class, Site::class);
 
 beforeEach(function () {
     Storage::fake('public');

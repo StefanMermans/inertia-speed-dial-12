@@ -5,7 +5,7 @@ use App\Models\Site;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 
-covers(SpeedDialController::class);
+covers(SpeedDialController::class, Site::class);
 
 beforeEach(function () {
     Storage::fake('public');
@@ -70,19 +70,19 @@ it('renders a site with padding', function () {
         ->assertAttributeContains($siteSelector, 'class', 'p-');
 });
 
-// it('renders a site with icon', function () {
-//     $site = Site::factory()->createOne();
+it('renders a site with icon', function () {
+    $site = Site::factory()->createOne();
 
-//     $page = visit(route('speed-dial'));
+    $page = visit(route('speed-dial'));
 
-//     $siteSelector = selectorForSite($site);
-//     $page
-//         ->assertCount($siteSelector, 1)
-//         ->assertCount("$siteSelector > img", 1);
-//         // ->assertAttributeContains("$siteSelector > img", 'src', $site->iconUrl);
-// });
+    $siteSelector = selectorForSite($site);
+    $page
+        ->assertCount($siteSelector, 1)
+        ->assertCount("$siteSelector > img", 1)
+        ->assertAttributeContains("$siteSelector > img", 'src', $site->iconUrl);
+});
 
 function selectorForSite(Site $site): string
 {
-    return "site-{$site->id}";
+    return "#site-{$site->id}";
 }

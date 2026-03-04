@@ -32,7 +32,7 @@ final class Site extends Model
     protected function casts(): array
     {
         return [
-            'no_padding' => 'boolean',
+            // 'no_padding' => 'boolean',
         ];
     }
 
