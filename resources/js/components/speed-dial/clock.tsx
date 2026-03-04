@@ -11,17 +11,17 @@ const DateFormatter = Intl.DateTimeFormat('nl', {
 });
 
 export default function Clock() {
-    const [date, setDate] = useState<Date|null>(null);
+    const [date, setDate] = useState<Date | null>(null);
 
     useEffect(() => {
         function updateDate() {
             setDate((prevDate) => {
                 const newDate = new Date();
-    
+
                 if (newDate.getUTCMinutes() === prevDate?.getUTCMinutes()) {
                     return prevDate;
                 }
-    
+
                 return newDate;
             });
         }
@@ -40,12 +40,8 @@ export default function Clock() {
 
     return (
         <div className="flex flex-shrink-0 flex-col justify-end text-white">
-            <time className="text-9xl font-thin">
-                {date && TimeFormatter.format(date)}
-            </time>
-            <time className="text-4xl font-light">
-                {date && DateFormatter.format(date)}
-            </time>
+            <time className="text-9xl font-thin">{date && TimeFormatter.format(date)}</time>
+            <time className="text-4xl font-light">{date && DateFormatter.format(date)}</time>
         </div>
     );
 }

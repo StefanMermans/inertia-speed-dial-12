@@ -4,9 +4,9 @@ import Clock from '@/components/speed-dial/clock';
 import EditButton from '@/components/speed-dial/edit-button';
 import NewSite from '@/components/speed-dial/new-site';
 import { Site as SiteComponent } from '@/components/speed-dial/site';
+import { cn } from '@/lib/utils';
 import { Head, router, useRemember } from '@inertiajs/react';
 import styles from './SpeedDial.module.css';
-import { cn } from '@/lib/utils';
 
 export type Site = {
     id: number;
@@ -27,12 +27,7 @@ type Props = {
     isLoggedIn?: boolean;
 };
 
-export default function SpeedDial({
-    sites,
-    site,
-    creating,
-    isLoggedIn,
-}: Props) {
+export default function SpeedDial({ sites, site, creating, isLoggedIn }: Props) {
     const [editing, setEditing] = useRemember(false, 'SpeedDial.editing');
 
     const handleEdit = () => {
@@ -63,11 +58,7 @@ export default function SpeedDial({
                 <div className="flex h-full flex-col justify-between p-4">
                     <div className={cn(styles.grid)}>
                         {sites.map((site) => (
-                            <SiteComponent
-                                editable={editing}
-                                key={site.name}
-                                site={site}
-                            />
+                            <SiteComponent editable={editing} key={site.name} site={site} />
                         ))}
                         {editing && <NewSite onClick={handleNewSiteClick} />}
                     </div>

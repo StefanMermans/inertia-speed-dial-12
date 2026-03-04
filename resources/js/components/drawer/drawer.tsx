@@ -11,13 +11,8 @@ export default function Drawer({ children }: Props) {
 
     return (
         <div className="absolute flex h-screen w-screen">
-            <div
-                onClick={handleBackgroundClick}
-                className="w-full h-full"
-            />
-            <div className="h-full w-96 border-l border-gray-500 bg-black/50 backdrop-blur-xl">
-                {children}
-            </div>
+            <div onClick={handleBackgroundClick} className="h-full w-full" />
+            <div className="h-full w-96 border-l border-gray-500 bg-black/50 backdrop-blur-xl">{children}</div>
         </div>
     );
 }

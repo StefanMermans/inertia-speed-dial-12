@@ -5,17 +5,7 @@ import { CSSProperties, useMemo } from 'react';
 type Props = {
     clickable?: boolean;
     editable: boolean;
-    site: Partial<
-        Pick<
-            SiteType,
-            | 'background_color'
-            | 'no_padding'
-            | 'id'
-            | 'url'
-            | 'name'
-            | 'icon_url'
-        >
-    >;
+    site: Partial<Pick<SiteType, 'background_color' | 'no_padding' | 'id' | 'url' | 'name' | 'icon_url'>>;
 };
 
 export const Site = ({ site, editable }: Props) => {
@@ -40,8 +30,7 @@ export const Site = ({ site, editable }: Props) => {
                 'block h-24 w-24 transform cursor-pointer overflow-hidden rounded-2xl shadow-md transition-transform hover:scale-110 hover:shadow-xl',
                 { 'p-2': !site.no_padding },
                 {
-                    'bg-slate-700 hover:outline-4 hover:outline-offset-4 hover:outline-white hover:outline-dashed':
-                        editable,
+                    'bg-slate-700 hover:outline-4 hover:outline-offset-4 hover:outline-white hover:outline-dashed': editable,
                 },
             )}
             style={style}

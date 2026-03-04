@@ -11,14 +11,14 @@ import AuthLayout from '@/layouts/auth-layout';
 type ResetPasswordProps = {
     token: string;
     email: string;
-}
+};
 
 type ResetPasswordForm = {
     token: string;
     email: string;
     password: string;
     password_confirmation: string;
-}
+};
 
 export default function ResetPassword({ token, email }: ResetPasswordProps) {
     const { data, setData, post, processing, errors, reset } = useForm<ResetPasswordForm>({
