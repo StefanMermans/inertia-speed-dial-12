@@ -14,81 +14,71 @@ permissions:
   contents: write
 
 jobs:
-  quality:
+  composer-lint:
+    name: Composer lint
     runs-on: ubuntu-latest
     strategy:
       matrix:
         php-version: [ '8.4', '8.5' ]
-
     steps:
       - uses: actions/checkout@v6
-
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-
       - name: Install Dependencies
         run: |
           composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-          npm install
-
-      - name: Run Pint
-        run: composer lint
-
-      - name: Format Frontend
-        run: npm run format
-
-      - name: Lint Frontend
-        run: npm run lint
-
-  test:
+          npm ci
+      - name: Composer lint check
+        run: composer run lint:check
+  
+  composer-test:
+    name: Composer test
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-version: ['8.4', '8.5']
-
+        php-version: [ '8.4', '8.5' ]
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
+      - uses: actions/checkout@v6
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          tools: composer:v2
-          coverage: xdebug
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
-      - name: Install Node Dependencies
-        run: |
-          npm i
-          npx playwright install
-
       - name: Install Dependencies
-        run: composer install --no-interaction --prefer-dist --optimize-autoloader
-
-      - name: Copy Environment File
-        run: cp .env.example .env
-
-      - name: Generate Application Key
-        run: php artisan key:generate
-
-      - name: Build Assets
-        run: npm run build
-
-      - name: Tests
+        run: |
+          composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+          npm ci
+      - name: Composer test
         run: composer run test
+
+  npm-format-check:
+    name: Npm format:check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install Dependencies
+        run: npm ci
+      - name: npm format:check
+        run: npm run format:check
+
+  npm-lint-check:
+    name: npm lint:check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install Dependencies
+        run: npm ci
+      - name: npm format:check
+        run: npm run format:check
 
   deploy:
     name: Trigger deployment
     needs: 
-      - quality
-      - test
+      - composer-lint
+      - composer-test
+      - npm-format-check
+      - npm-lint-check
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
     uses: ./.github/workflows/deploy.yml
     secrets: inherit

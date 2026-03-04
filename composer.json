@@ -58,11 +58,11 @@
             "pint --parallel"
         ],
         "lint:check": [
+            "@php artisan config:clear --ansi",
             "pint --parallel --test"
         ],
         "test": [
             "@php artisan config:clear --ansi",
-            "@lint:check",
             "@php artisan test"
         ],
         "dev": [
