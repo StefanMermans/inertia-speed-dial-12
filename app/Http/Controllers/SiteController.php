@@ -8,8 +8,6 @@ use App\Http\Requests\StoreSiteRequest;
 use App\Http\Requests\UpdateSiteRequest;
 use App\Models\Site;
 use Illuminate\Http\RedirectResponse;
-use Inertia\Inertia;
-
 use Illuminate\Support\Facades\Storage;
 
 class SiteController extends Controller
@@ -21,7 +19,7 @@ class SiteController extends Controller
     {
         $icon = $request->file('icon');
         $iconPath = $icon->store('images', [
-            'disk' => 'public'
+            'disk' => 'public',
         ]);
 
         $site = Site::make($request->safe()->except(['icon']));

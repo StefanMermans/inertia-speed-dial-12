@@ -6,6 +6,7 @@ use App\Models\Site;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+
 use function Pest\Laravel\assertDatabaseHas;
 
 covers(SiteController::class, UpdateSiteRequest::class, Site::class);
@@ -29,7 +30,7 @@ function validSiteUpdateData(array $overrides = []): array
 it('updates the site and redirects to speed-dial', function () {
     $user = User::factory()->create();
     $site = Site::factory()->create([
-        'icon_path' => 'images/old_icon.png'
+        'icon_path' => 'images/old_icon.png',
     ]);
     Storage::disk('public')->put('images/old_icon.png', 'old content');
 

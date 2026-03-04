@@ -21,7 +21,7 @@ class SiteFactory extends Factory
         return [
             'name' => fake()->words(2, true),
             'url' => fake()->url(),
-            'icon_path' => 'images/' . fake()->slug() . '.png',
+            'icon_path' => 'images/'.fake()->slug().'.png',
             'background_color' => fake()->hexColor(),
             'no_padding' => false,
         ];
@@ -32,7 +32,8 @@ class SiteFactory extends Factory
         return $this->state(['no_padding' => true]);
     }
 
-    public function withPadding(): static {
+    public function withPadding(): static
+    {
         return $this->state(['no_padding' => false]);
     }
 }

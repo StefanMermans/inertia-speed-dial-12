@@ -3,6 +3,7 @@
 use App\Http\Controllers\SiteController;
 use App\Models\Site;
 use App\Models\User;
+
 use function Pest\Laravel\assertSoftDeleted;
 
 covers(SiteController::class);

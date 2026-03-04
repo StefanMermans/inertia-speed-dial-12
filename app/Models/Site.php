@@ -15,6 +15,7 @@ final class Site extends Model
 {
     /** @use HasFactory<SiteFactory> */
     use HasFactory;
+
     use SoftDeletes;
 
     protected $fillable = [
@@ -37,6 +38,6 @@ final class Site extends Model
 
     public function iconUrl(): Attribute
     {
-        return Attribute::get(fn() => Storage::disk('public')->url($this->icon_path));
+        return Attribute::get(fn () => Storage::disk('public')->url($this->icon_path));
     }
 }

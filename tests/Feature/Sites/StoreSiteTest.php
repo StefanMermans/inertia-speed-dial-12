@@ -6,6 +6,7 @@ use App\Models\Site;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
 
@@ -185,7 +186,7 @@ it('rejects a url longer than 255 characters', function () {
     $user = User::factory()->create();
 
     $this->actingAs($user)
-        ->post(route('sites.store'), validSiteData(['url' => 'https://' . str_repeat('a', 248) . '.com']))
+        ->post(route('sites.store'), validSiteData(['url' => 'https://'.str_repeat('a', 248).'.com']))
         ->assertSessionHasErrors('url');
 
     assertDatabaseCount(Site::class, 0);

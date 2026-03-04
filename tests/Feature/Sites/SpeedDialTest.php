@@ -82,6 +82,7 @@ it('renders a site with padding', function () {
 //         // ->assertAttributeContains("$siteSelector > img", 'src', $site->iconUrl);
 // });
 
-function selectorForSite(Site $site): string {
+function selectorForSite(Site $site): string
+{
     return "site-{$site->id}";
 }

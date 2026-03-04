@@ -6,7 +6,6 @@ namespace App\Policies;
 
 use App\Models\Site;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class SitePolicy
 {

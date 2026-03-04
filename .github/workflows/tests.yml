@@ -82,7 +82,7 @@ jobs:
         run: npm run build
 
       - name: Tests
-        run: php artisan test -p
+        run: composer run test
 
   deploy:
     name: Trigger deployment
