@@ -4,21 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
-use App\Models\Site;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rules\File;
 
 class StoreSiteRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return Gate::check('create', Site::class);
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *

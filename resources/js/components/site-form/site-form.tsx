@@ -59,13 +59,13 @@ export default function SiteForm({ site, creating }: Props) {
         }
     };
 
-    const destroy = () => {
+    const destroy = async () => {
         if (!site) {
             return;
         }
 
         if (confirm('Are you sure you want to delete this site?')) {
-            axios.delete(route('sites.destroy', { site: site.id }));
+            await axios.delete(route('sites.destroy', { site: site.id }));
             router.visit(route('speed-dial'));
         }
     };
@@ -95,22 +95,27 @@ export default function SiteForm({ site, creating }: Props) {
             >
                 <SiteComponent editable={false} site={sitePreview} />
             </div>
+            <label htmlFor="name">Name</label>
             <Input
+                name="name"
                 className="text-black"
                 type="text"
                 value={data.name}
                 onChange={(e) => setData('name', e.target.value)}
             />
             {errors.name && <div className="text-red-500">{errors.name}</div>}
+            <label htmlFor="url">Url</label>
             <Input
+                name="url"
                 className="text-black"
                 type="text"
                 value={data.url}
                 onChange={(e) => setData('url', e.target.value)}
             />
             {errors.url && <div className="text-red-500">{errors.url}</div>}
-            <label className="flex gap-2">
+            <label htmlFor="color" className="flex gap-2">
                 <ColorPicker
+                    name="color"
                     className="text-black"
                     value={data.background_color}
                     onChange={(e) =>
@@ -122,15 +127,17 @@ export default function SiteForm({ site, creating }: Props) {
             {errors.background_color && (
                 <div className="text-red-500">{errors.background_color}</div>
             )}
+            <label htmlFor="icon">Icon</label>
             <Input
-                className="text-black"
+                name="icon"
+                className="text-black mt-4"
                 type="file"
                 onChange={(e) =>
                     setData('icon', e.target.files?.item(0) ?? undefined)
                 }
             />
             {errors.icon && <div className="text-red-500">{errors.icon}</div>}
-            <div className="flex gap-4">
+            <div className="flex gap-4 mt-4">
                 {site && (
                     <Button type="button" variant="danger" onClick={destroy}>
                         Delete

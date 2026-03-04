@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\SpeedDialController;
 use App\Models\Site;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
+
+covers(SpeedDialController::class);
 
 beforeEach(function () {
     Storage::fake('public');
@@ -44,3 +47,41 @@ it('renders the speed dial page without the site query param', function () {
     $this->get(route('speed-dial'))
         ->assertOk();
 });
+
+it('renders a site without padding', function () {
+    $site = Site::factory()->withoutPadding()->createOne();
+
+    $page = visit(route('speed-dial'));
+
+    $siteSelector = selectorForSite($site);
+    $page
+        ->assertCount($siteSelector, 1)
+        ->assertAttributeDoesntContain($siteSelector, 'class', 'p-');
+});
+
+it('renders a site with padding', function () {
+    $site = Site::factory()->withPadding()->createOne();
+
+    $page = visit(route('speed-dial'));
+
+    $siteSelector = selectorForSite($site);
+    $page
+        ->assertCount($siteSelector, 1)
+        ->assertAttributeContains($siteSelector, 'class', 'p-');
+});
+
+// it('renders a site with icon', function () {
+//     $site = Site::factory()->createOne();
+
+//     $page = visit(route('speed-dial'));
+
+//     $siteSelector = selectorForSite($site);
+//     $page
+//         ->assertCount($siteSelector, 1)
+//         ->assertCount("$siteSelector > img", 1);
+//         // ->assertAttributeContains("$siteSelector > img", 'src', $site->iconUrl);
+// });
+
+function selectorForSite(Site $site): string {
+    return "site-{$site->id}";
+}

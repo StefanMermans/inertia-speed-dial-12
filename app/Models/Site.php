@@ -24,10 +24,6 @@ final class Site extends Model
         'no_padding',
     ];
 
-    protected $attributes = [
-        'no_padding' => false,
-    ];
-
     protected $appends = [
         'icon_url',
     ];

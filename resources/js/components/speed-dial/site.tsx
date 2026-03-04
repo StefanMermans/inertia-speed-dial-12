@@ -34,6 +34,7 @@ export const Site = ({ site, editable }: Props) => {
 
     return (
         <a
+            id={`site-${site.id}`}
             href={url}
             className={cn(
                 'block h-24 w-24 transform cursor-pointer overflow-hidden rounded-2xl shadow-md transition-transform hover:scale-110 hover:shadow-xl',

@@ -24,7 +24,7 @@ export default function Button({
             className={cn(
                 'm-0 rounded-md border px-4 py-1',
                 {
-                    'border-gray-400 bg-white hover:bg-gray-200 active:bg-gray-300':
+                    'border-gray-400 bg-white hover:bg-gray-200 active:bg-gray-300 text-black':
                         isVariant('contained'),
                     'bg-red-500 text-white hover:bg-red-600 active:bg-red-700':
                         isVariant('danger'),

@@ -4,6 +4,8 @@ use App\Models\Site;
 use App\Models\User;
 use App\Policies\SitePolicy;
 
+covers(SitePolicy::class);
+
 it('denies viewAny for authenticated users', function () {
     expect((new SitePolicy)->viewAny(User::factory()->make()))->toBeFalse();
 });

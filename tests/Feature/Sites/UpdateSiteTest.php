@@ -1,10 +1,14 @@
 <?php
 
+use App\Http\Controllers\SiteController;
+use App\Http\Requests\UpdateSiteRequest;
 use App\Models\Site;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use function Pest\Laravel\assertDatabaseHas;
+
+covers(SiteController::class, UpdateSiteRequest::class, Site::class);
 
 beforeEach(function () {
     Storage::fake('public');

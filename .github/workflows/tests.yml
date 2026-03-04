@@ -82,7 +82,7 @@ jobs:
         run: npm run build
 
       - name: Tests
-        run: ./vendor/bin/pest
+        run: php artisan test -p
 
   deploy:
     name: Trigger deployment

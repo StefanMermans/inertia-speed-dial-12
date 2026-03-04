@@ -27,8 +27,12 @@ class SiteFactory extends Factory
         ];
     }
 
-    public function withNoPadding(): static
+    public function withoutPadding(): static
     {
         return $this->state(['no_padding' => true]);
+    }
+
+    public function withPadding(): static {
+        return $this->state(['no_padding' => false]);
     }
 }
