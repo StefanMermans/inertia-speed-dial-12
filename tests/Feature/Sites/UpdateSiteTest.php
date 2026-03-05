@@ -13,7 +13,7 @@ use Str;
 
 use function Pest\Laravel\assertDatabaseHas;
 
-covers(SiteController::class, UpdateSiteRequest::class, Site::class);
+covers(SiteController::class, UpdateSiteRequest::class);
 
 beforeEach(function () {
     Storage::fake('public');

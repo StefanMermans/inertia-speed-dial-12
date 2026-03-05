@@ -18,6 +18,9 @@ final class Site extends Model
 
     use SoftDeletes;
 
+    /**
+     * @pest-mutate-ignore
+     */
     protected $fillable = [
         'name',
         'url',
