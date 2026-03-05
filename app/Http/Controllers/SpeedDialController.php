@@ -20,7 +20,7 @@ class SpeedDialController extends Controller
             'sites' => Site::all(),
             'site' => $request->whenFilled(
                 'site',
-                static fn () => Site::findOrFail($request->site),
+                static fn () => Site::findOrFail($request->site)->append('icon_url'),
                 static fn () => null,
             ),
             'isLoggedIn' => $request->user() !== null,

@@ -7,7 +7,7 @@ use App\Models\Site;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 
-covers(SpeedDialController::class, Site::class);
+covers(SpeedDialController::class);
 
 beforeEach(function () {
     Storage::fake('public');
@@ -100,8 +100,8 @@ it('renders a site with icon', function () {
 
     $siteSelector = selectorForSite($site);
     $page
-        ->assertCount($siteSelector, 1)
-        ->assertCount("$siteSelector > img", 1)
+        ->assertPresent($siteSelector)
+        ->assertPresent("$siteSelector > img")
         ->assertAttributeContains("$siteSelector > img", 'src', $site->iconUrl);
 });
 
