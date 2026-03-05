@@ -87,7 +87,7 @@ it('requires a name to update', function () {
 
     $this
         ->put(route('sites.update', $site), validSiteUpdateData(['name' => '']))
-        ->assertSessionHasErrors('name');
+        ->assertSessionHasErrors(['name' => __('validation.required', ['attribute' => 'name'])]);
 });
 
 it('rejects a name longer than 255 characters when updating', function () {
@@ -107,6 +107,18 @@ it('rejects a name longer than 255 characters when updating', function () {
         ]);
 });
 
+it('rejects a non string name when updating', function () {
+    actingAsAuthorizedUser();
+    $site = Site::factory()->create();
+
+    updateSite($site, [
+        'name' => fake()->numberBetween(1, 300),
+    ])
+        ->assertSessionHasErrors([
+            'name' => __('validation.string', ['attribute' => 'name']),
+        ]);
+});
+
 // ─── Validation: url ──────────────────────────────────────────────────────────
 
 it('requires a url to update', function () {
@@ -115,7 +127,7 @@ it('requires a url to update', function () {
 
     $this
         ->put(route('sites.update', $site), validSiteUpdateData(['url' => '']))
-        ->assertSessionHasErrors('url');
+        ->assertSessionHasErrors(['url' => __('validation.required', ['attribute' => 'url'])]);
 });
 
 it('rejects a url longer than 255 characters when updating', function () {
@@ -135,13 +147,25 @@ it('rejects a url longer than 255 characters when updating', function () {
         ]);
 });
 
+it('rejects a non string url when updating', function () {
+    actingAsAuthorizedUser();
+    $site = Site::factory()->create();
+
+    updateSite($site, [
+        'url' => fake()->numberBetween(1, 300),
+    ])
+        ->assertSessionHasErrors([
+            'url' => __('validation.string', ['attribute' => 'url']),
+        ]);
+});
+
 it('rejects an invalid url when updating', function () {
     actingAsAuthorizedUser();
     $site = Site::factory()->create();
 
     $this
         ->put(route('sites.update', $site), validSiteUpdateData(['url' => 'not-a-url']))
-        ->assertSessionHasErrors('url');
+        ->assertSessionHasErrors(['url' => __('validation.url', ['attribute' => 'url'])]);
 });
 
 // ─── Validation: background_color ─────────────────────────────────────────────
@@ -152,7 +176,7 @@ it('requires a background_color to update', function () {
 
     $this
         ->put(route('sites.update', $site), validSiteUpdateData(['background_color' => '']))
-        ->assertSessionHasErrors('background_color');
+        ->assertSessionHasErrors(['background_color' => __('validation.required', ['attribute' => 'background color'])]);
 });
 
 it('rejects an invalid hex background_color when updating', function () {
@@ -161,7 +185,7 @@ it('rejects an invalid hex background_color when updating', function () {
 
     $this
         ->put(route('sites.update', $site), validSiteUpdateData(['background_color' => 'red']))
-        ->assertSessionHasErrors('background_color');
+        ->assertSessionHasErrors(['background_color' => __('validation.hex_color', ['attribute' => 'background color'])]);
 });
 
 // ─── Validation: icon ─────────────────────────────────────────────────────────
@@ -183,5 +207,5 @@ it('rejects a non-image file as icon when updating', function () {
         ->put(route('sites.update', $site), data: validSiteUpdateData([
             'icon' => UploadedFile::fake()->create('document.pdf', 100, 'application/pdf'),
         ]))
-        ->assertSessionHasErrors('icon');
+        ->assertSessionHasErrors(['icon' => __('validation.image', ['attribute' => 'icon'])]);
 });

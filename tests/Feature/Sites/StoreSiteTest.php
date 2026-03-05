@@ -137,7 +137,7 @@ it('requires a name', function () {
 
     $this->actingAs($user)
         ->post(route('sites.store'), validSiteData(['name' => '']))
-        ->assertSessionHasErrors('name');
+        ->assertSessionHasErrors(['name' => __('validation.required', ['attribute' => 'name'])]);
 
     assertDatabaseCount(Site::class, 0);
 });
@@ -147,7 +147,7 @@ it('rejects a name longer than 255 characters', function () {
 
     $this->actingAs($user)
         ->post(route('sites.store'), validSiteData(['name' => str_repeat('a', 256)]))
-        ->assertSessionHasErrors('name');
+        ->assertSessionHasErrors(['name' => __('validation.max.string', ['attribute' => 'name', 'max' => 255])]);
 
     assertDatabaseCount(Site::class, 0);
 });
@@ -179,9 +179,21 @@ it('requires a url', function () {
 
     $this->actingAs($user)
         ->post(route('sites.store'), validSiteData(['url' => '']))
-        ->assertSessionHasErrors('url');
+        ->assertSessionHasErrors(['url' => __('validation.required', ['attribute' => 'url'])]);
 
     assertDatabaseCount(Site::class, 0);
+});
+
+it('rejects a non string url', function () {
+    actingAsAuthorizedUser();
+
+    $this
+        ->post(route('sites.store'), validSiteData([
+            'url' => fake()->numberBetween(1, 300),
+        ]))
+        ->assertSessionHasErrors([
+            'url' => __('validation.string', ['attribute' => 'url']),
+        ]);
 });
 
 it('rejects a url without a valid format', function () {
@@ -189,7 +201,7 @@ it('rejects a url without a valid format', function () {
 
     $this->actingAs($user)
         ->post(route('sites.store'), validSiteData(['url' => 'not-a-valid-url']))
-        ->assertSessionHasErrors('url');
+        ->assertSessionHasErrors(['url' => __('validation.url', ['attribute' => 'url'])]);
 
     assertDatabaseCount(Site::class, 0);
 });
@@ -199,7 +211,7 @@ it('rejects a url without a scheme', function () {
 
     $this->actingAs($user)
         ->post(route('sites.store'), validSiteData(['url' => 'youtube.com']))
-        ->assertSessionHasErrors('url');
+        ->assertSessionHasErrors(['url' => __('validation.url', ['attribute' => 'url'])]);
 });
 
 it('rejects a url longer than 255 characters', function () {
@@ -207,7 +219,7 @@ it('rejects a url longer than 255 characters', function () {
 
     $this->actingAs($user)
         ->post(route('sites.store'), validSiteData(['url' => 'https://'.str_repeat('a', 248).'.com']))
-        ->assertSessionHasErrors('url');
+        ->assertSessionHasErrors(['url' => __('validation.max.string', ['attribute' => 'url', 'max' => 255])]);
 
     assertDatabaseCount(Site::class, 0);
 });
@@ -219,7 +231,35 @@ it('requires a background_color', function () {
 
     $this->actingAs($user)
         ->post(route('sites.store'), validSiteData(['background_color' => '']))
-        ->assertSessionHasErrors('background_color');
+        ->assertSessionHasErrors(['background_color' => __('validation.required', ['attribute' => 'background color'])]);
+
+    assertDatabaseCount(Site::class, 0);
+});
+
+it('rejects a non string background_color', function () {
+    actingAsAuthorizedUser();
+
+    $this
+        ->post(route('sites.store'), validSiteData([
+            'background_color' => fake()->numberBetween(1, 300),
+        ]))
+        ->assertSessionHasErrors([
+            'background_color' => __('validation.string', ['attribute' => 'background color']),
+        ]);
+
+    assertDatabaseCount(Site::class, 0);
+});
+
+it('rejects a background_color longer than 255 characters', function () {
+    actingAsAuthorizedUser();
+
+    $this
+        ->post(route('sites.store'), validSiteData([
+            'background_color' => '#'.str_repeat('a', 255),
+        ]))
+        ->assertSessionHasErrors([
+            'background_color' => __('validation.max.string', ['attribute' => 'background color', 'max' => 255]),
+        ]);
 
     assertDatabaseCount(Site::class, 0);
 });
@@ -229,7 +269,7 @@ it('rejects a background_color that is not a valid hex color', function () {
 
     $this->actingAs($user)
         ->post(route('sites.store'), validSiteData(['background_color' => 'red']))
-        ->assertSessionHasErrors('background_color');
+        ->assertSessionHasErrors(['background_color' => __('validation.hex_color', ['attribute' => 'background color'])]);
 
     assertDatabaseCount(Site::class, 0);
 });
@@ -239,7 +279,7 @@ it('rejects a background_color without a leading hash', function () {
 
     $this->actingAs($user)
         ->post(route('sites.store'), validSiteData(['background_color' => 'ff0000']))
-        ->assertSessionHasErrors('background_color');
+        ->assertSessionHasErrors(['background_color' => __('validation.hex_color', ['attribute' => 'background color'])]);
 });
 
 it('accepts a 3-digit shorthand hex color', function () {
@@ -267,7 +307,7 @@ it('rejects a gif icon', function () {
 
     $this->actingAs($user)
         ->post(route('sites.store'), validSiteData(['icon' => UploadedFile::fake()->create('icon.gif', 100, 'image/gif')]))
-        ->assertSessionHasErrors('icon');
+        ->assertSessionHasErrors(['icon' => __('validation.mimes', ['attribute' => 'icon', 'values' => 'png, jpg, jpeg, svg'])]);
 
     assertDatabaseCount(Site::class, 0);
 });
@@ -277,7 +317,7 @@ it('rejects a pdf file as icon', function () {
 
     $this->actingAs($user)
         ->post(route('sites.store'), validSiteData(['icon' => UploadedFile::fake()->create('document.pdf', 100, 'application/pdf')]))
-        ->assertSessionHasErrors('icon');
+        ->assertSessionHasErrors(['icon' => __('validation.mimes', ['attribute' => 'icon', 'values' => 'png, jpg, jpeg, svg'])]);
 
     assertDatabaseCount(Site::class, 0);
 });
@@ -287,7 +327,7 @@ it('rejects a webp icon', function () {
 
     $this->actingAs($user)
         ->post(route('sites.store'), validSiteData(['icon' => UploadedFile::fake()->create('icon.webp', 100, 'image/webp')]))
-        ->assertSessionHasErrors('icon');
+        ->assertSessionHasErrors(['icon' => __('validation.mimes', ['attribute' => 'icon', 'values' => 'png, jpg, jpeg, svg'])]);
 
     assertDatabaseCount(Site::class, 0);
 });
