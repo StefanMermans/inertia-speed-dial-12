@@ -96,7 +96,7 @@ it('accepts a icon', function (string $filetype) {
         ->post(route('sites.store'), validSiteData(['icon' => UploadedFile::fake()->image('icon.jpg')]))
         ->assertRedirect(route('speed-dial'));
 })
-->with(['png', 'jpg', 'jpeg', 'svg']);
+    ->with(['png', 'jpg', 'jpeg', 'svg']);
 
 it('accepts a jpeg icon', function () {
     $user = User::factory()->create();

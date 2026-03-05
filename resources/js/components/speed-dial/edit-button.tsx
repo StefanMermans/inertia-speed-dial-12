@@ -10,7 +10,7 @@ export default function EditButton({ onEdit }: Props) {
 
     return (
         <div
-            id='speed-dial-edit-button'
+            id="speed-dial-edit-button"
             className={cn(
                 'absolute -right-4 bottom-32 flex w-36 cursor-pointer flex-col rounded-md border border-gray-700 bg-black/15 backdrop-blur-xl transition-transform',
                 {

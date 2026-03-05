@@ -8,8 +8,9 @@ use App\Models\Site;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-
 use Illuminate\Testing\TestResponse;
+use Str;
+
 use function Pest\Laravel\assertDatabaseHas;
 
 covers(SiteController::class, UpdateSiteRequest::class, Site::class);
@@ -28,11 +29,13 @@ function validSiteUpdateData(array $overrides = []): array
     ], $overrides);
 }
 
-function updateSite(Site $site, array $override = []): TestResponse {
+function updateSite(Site $site, array $override = []): TestResponse
+{
     return test()->put(route('sites.update', $site), validSiteUpdateData($override));
 }
 
-function actingAsAuthorizedUser(): void {
+function actingAsAuthorizedUser(): void
+{
     test()->actingAs(User::factory()->createOne());
 }
 
@@ -92,13 +95,16 @@ it('rejects a name longer than 255 characters when updating', function () {
     $site = Site::factory()->create();
 
     updateSite($site, [
-        'name' => fake()->sentence(50)
+        'name' => fake()
+            ->valid(static fn (string $value) => Str::length($value) > 255)
+            ->sentence(60),
     ])
-    ->assertSessionHasErrors(['name' => __('validation.max.string', [
-            'attribute' => 'name',
-            'max' => 255,
-        ])
-    ]);
+        ->assertSessionHasErrors([
+            'name' => __('validation.max.string', [
+                'attribute' => 'name',
+                'max' => 255,
+            ]),
+        ]);
 });
 
 // ─── Validation: url ──────────────────────────────────────────────────────────
@@ -115,18 +121,18 @@ it('requires a url to update', function () {
 it('rejects a url longer than 255 characters when updating', function () {
     actingAsAuthorizedUser();
     $site = Site::factory()->createOne();
-    
+
     updateSite($site, [
-        'url' => fake()->url() . fake()->sentence(50)
+        'url' => fake()->url().fake()->sentence(50),
     ])
-    ->assertSessionHasErrors(['url' => __(
+        ->assertSessionHasErrors(['url' => __(
             'validation.max.string',
             [
                 'attribute' => 'url',
                 'max' => 255,
             ]
-        )
-    ]);
+        ),
+        ]);
 });
 
 it('rejects an invalid url when updating', function () {
@@ -179,4 +185,3 @@ it('rejects a non-image file as icon when updating', function () {
         ]))
         ->assertSessionHasErrors('icon');
 });
-

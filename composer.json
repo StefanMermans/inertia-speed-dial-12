@@ -67,7 +67,7 @@
         ],
         "validate:fix": [
             "@lint",
-            "@test",
+            "@php artisan test --parallel",
             "npm run format",
             "npm run lint"
         ],

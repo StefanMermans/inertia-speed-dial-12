@@ -13,17 +13,19 @@ beforeEach(function () {
     Storage::fake('public');
 });
 
-function siteFormSelector(null|string $subSelctor = null): string {
+function siteFormSelector(?string $subSelctor = null): string
+{
     $siteFormSelector = '#site-form';
 
     if ($subSelctor === null) {
         return $siteFormSelector;
     }
 
-    return $siteFormSelector . " $subSelctor";
+    return $siteFormSelector." $subSelctor";
 }
 
-function actingAsAuthorizedUser(): void {
+function actingAsAuthorizedUser(): void
+{
     test()->actingAs(User::factory()->createOne());
 }
 
@@ -108,7 +110,7 @@ it('renders pre-filled site edit form when site selected', function () {
     actingAsAuthorizedUser();
 
     $page = visit(route('speed-dial', [
-        'site' => $site->getKey()
+        'site' => $site->getKey(),
     ]));
 
     $page
@@ -136,7 +138,7 @@ it('shows empty site form when creating', function () {
     actingAsAuthorizedUser();
 
     $page = visit(route('speed-dial', [
-        'creating' => 1
+        'creating' => 1,
     ]));
 
     $page
