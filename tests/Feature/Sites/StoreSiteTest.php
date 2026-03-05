@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Feature\Sites\StoreSiteTest;
+
 use App\Http\Controllers\SiteController;
 use App\Http\Requests\StoreSiteRequest;
 use App\Models\Site;
@@ -24,6 +26,11 @@ function validSiteData(array $overrides = []): array
         'background_color' => fake()->hexColor(),
         'icon' => UploadedFile::fake()->image('icon.png'),
     ], $overrides);
+}
+
+function actingAsAuthorizedUser(): void
+{
+    test()->actingAs(User::factory()->createOne());
 }
 
 // ─── Happy path ───────────────────────────────────────────────────────────────
@@ -153,6 +160,18 @@ it('accepts a name of exactly 255 characters', function () {
         ->assertRedirect(route('speed-dial'));
 });
 
+it('rejects a non string name', function () {
+    actingAsAuthorizedUser();
+
+    $this
+        ->post(route('sites.store'), validSiteData([
+            'name' => fake()->numberBetween(1, 300),
+        ]))
+        ->assertSessionHasErrors([
+            'name' => __('validation.string', ['attribute' => 'name'])
+        ]);
+});
+
 // ─── Validation: url ──────────────────────────────────────────────────────────
 
 it('requires a url', function () {
@@ -224,9 +243,9 @@ it('rejects a background_color without a leading hash', function () {
 });
 
 it('accepts a 3-digit shorthand hex color', function () {
-    $user = User::factory()->create();
+    actingAsAuthorizedUser();
 
-    $this->actingAs($user)
+    $this
         ->post(route('sites.store'), validSiteData(['background_color' => '#f00']))
         ->assertRedirect(route('speed-dial'));
 });
@@ -272,3 +291,45 @@ it('rejects a webp icon', function () {
 
     assertDatabaseCount(Site::class, 0);
 });
+
+// ─── Validation: icon ─────────────────────────────────────────────────────────
+
+it('rejects a no_padding that is not a boolean', function () {
+    actingAsAuthorizedUser();
+
+    $this
+        ->post(route('sites.store'), validSiteData([
+            'no_padding' => fake()->sentence(),
+        ]))
+        ->assertSessionHasErrors([
+            'no_padding' => __('validation.boolean', [
+                'attribute' => 'no padding'
+            ])
+        ]);
+});
+
+it('accepts a missing no_padding', function () {
+    actingAsAuthorizedUser();
+
+    $data = validSiteData();
+    unset($data['no_padding']);
+
+    $this
+        ->post(route('sites.store'), $data)
+        ->assertSessionHasNoErrors();
+});
+
+it('rejects a null no_padding', function () {
+    actingAsAuthorizedUser();
+
+    $this
+        ->post(route('sites.store'), validSiteData([
+            'no_padding' => null,
+        ]))
+        ->assertSessionHasErrors([
+            'no_padding' => __('validation.required', [
+                'attribute' => 'no padding'
+            ])
+        ]);
+});
+
