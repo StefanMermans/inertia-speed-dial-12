@@ -96,7 +96,7 @@ it('rejects a name longer than 255 characters when updating', function () {
 
     updateSite($site, [
         'name' => fake()
-            ->valid(static fn (string $value) => Str::length($value) > 255)
+            ->valid(static fn(string $value) => Str::length($value) > 255)
             ->sentence(60),
     ])
         ->assertSessionHasErrors([
@@ -135,7 +135,11 @@ it('rejects a url longer than 255 characters when updating', function () {
     $site = Site::factory()->createOne();
 
     updateSite($site, [
-        'url' => fake()->url().fake()->sentence(50),
+        'url' => fake()->url()
+            .
+            fake()
+                ->valid(static fn (string $value) => Str::length($value) > 255)
+                ->sentence(60),
     ])
         ->assertSessionHasErrors(['url' => __(
             'validation.max.string',

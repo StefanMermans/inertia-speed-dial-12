@@ -25,14 +25,10 @@ final class Site extends Model
         'no_padding',
     ];
 
-    protected $appends = [
-        'icon_url',
-    ];
-
     protected function casts(): array
     {
         return [
-            // 'no_padding' => 'boolean',
+            'no_padding' => 'boolean',
         ];
     }
 

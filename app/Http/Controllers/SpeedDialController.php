@@ -17,7 +17,7 @@ class SpeedDialController extends Controller
     public function index(Request $request): Response
     {
         return Inertia::render('speed-dial', [
-            'sites' => Site::all(),
+            'sites' => Site::all()->append('icon_url'),
             'site' => $request->whenFilled(
                 'site',
                 static fn () => Site::findOrFail($request->site)->append('icon_url'),
