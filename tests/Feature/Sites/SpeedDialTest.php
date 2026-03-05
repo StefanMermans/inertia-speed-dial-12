@@ -97,7 +97,7 @@ it('renders a site with icon', function () {
     $site = Site::factory()->createOne();
     $site->append(['icon_url']);
 
-//    dd($site->toArray());
+    //    dd($site->toArray());
 
     $page = visit(route('speed-dial'));
 

@@ -168,7 +168,7 @@ it('rejects a non string name', function () {
             'name' => fake()->numberBetween(1, 300),
         ]))
         ->assertSessionHasErrors([
-            'name' => __('validation.string', ['attribute' => 'name'])
+            'name' => __('validation.string', ['attribute' => 'name']),
         ]);
 });
 
@@ -343,8 +343,8 @@ it('rejects a no_padding that is not a boolean', function () {
         ]))
         ->assertSessionHasErrors([
             'no_padding' => __('validation.boolean', [
-                'attribute' => 'no padding'
-            ])
+                'attribute' => 'no padding',
+            ]),
         ]);
 });
 
@@ -368,8 +368,7 @@ it('rejects a null no_padding', function () {
         ]))
         ->assertSessionHasErrors([
             'no_padding' => __('validation.required', [
-                'attribute' => 'no padding'
-            ])
+                'attribute' => 'no padding',
+            ]),
         ]);
 });
-
