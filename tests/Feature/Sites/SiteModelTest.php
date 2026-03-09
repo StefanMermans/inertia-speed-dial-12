@@ -10,5 +10,7 @@ it('icon_url returns the public storage url for the icon path', function () {
 
     $site = Site::factory()->create();
 
-    expect($site->icon_url)->toBe(Storage::disk('public')->url($site->icon_path));
+    $this->assertCount(1, $site->media);
+    $media = $site->media->first();
+    expect($site->icon_url)->toBe($media->getUrl());
 });

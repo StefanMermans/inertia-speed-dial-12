@@ -73,15 +73,8 @@ it('stores the icon on the public disk', function () {
 
     $this->actingAs($user)->post(route('sites.store'), validSiteData(['icon' => $icon]));
 
-    Storage::disk('public')->assertExists(Site::first()->icon_path);
-});
-
-it('stores the icon path under the images directory', function () {
-    $user = User::factory()->create();
-
-    $this->actingAs($user)->post(route('sites.store'), validSiteData());
-
-    expect(Site::first()->icon_path)->toStartWith('images/');
+    $site = Site::firstOrFail();
+    $this->assertCount(1, $site->media);
 });
 
 it('defaults no_padding to false when omitted', function () {

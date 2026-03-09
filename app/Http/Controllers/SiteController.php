@@ -17,13 +17,8 @@ class SiteController extends Controller
      */
     public function store(StoreSiteRequest $request)
     {
-        $icon = $request->file('icon');
-        $iconPath = $icon->store('images', [
-            'disk' => 'public',
-        ]);
-
         $site = Site::make($request->safe()->except(['icon']));
-        $site->icon_path = $iconPath;
+        $site->addMedia($request->file('icon'))->toMediaCollection();
         $site->save();
 
         return to_route('speed-dial');
@@ -37,10 +32,8 @@ class SiteController extends Controller
         $site->fill($request->safe()->except(['icon']));
 
         if ($request->hasFile('icon')) {
-            if ($site->icon_path) {
-                Storage::disk('public')->delete($site->icon_path);
-            }
-            $site->icon_path = $request->file('icon')->store('images', ['disk' => 'public']);
+            $site->deleteAllMedia();
+            $site->addMedia($request->file('icon'))->toMediaCollection();
         }
 
         $site->save();

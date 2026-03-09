@@ -52,10 +52,8 @@ function testValidationFail(string $field, mixed $value, string $expectedError):
 
 it('updates the site and redirects to speed-dial', function () {
     actingAsAuthorizedUser();
-    $site = Site::factory()->create([
-        'icon_path' => 'images/old_icon.png',
-    ]);
-    Storage::disk('public')->put('images/old_icon.png', 'old content');
+    $site = Site::factory()->createOne();
+    $originalMedia = $site->getFirstMedia();
 
     $this
         ->patch(route('sites.update', $site), validSiteUpdateData([
@@ -74,9 +72,8 @@ it('updates the site and redirects to speed-dial', function () {
     ]);
 
     $site->refresh();
-    expect($site->icon_path)->not->toBe('images/old_icon.png');
-    Storage::disk('public')->assertExists($site->icon_path);
-    Storage::disk('public')->assertMissing('images/old_icon.png');
+    $this->assertCount(1, $site->media);
+    expect($site->getFirstMedia()->getKey())->not->toBe($originalMedia->getKey());
 });
 
 // ─── Authentication ───────────────────────────────────────────────────────────
@@ -198,23 +195,23 @@ it('rejects a background_color longer than 255 characters when updating', functi
 
 it('updates a site without an icon', function () {
     actingAsAuthorizedUser();
-    $site = Site::factory()->create([
-        'icon_path' => 'images/existing_icon.png',
-    ]);
+    $site = Site::factory()->create();
+    $originalMedia = $site->getFirstMedia();
     Storage::disk('public')->put('images/existing_icon.png', 'content');
+    $updatedName = fake()->words(2, true);
 
     $this
         ->patch(route('sites.update', $site), [
-            'name' => 'Updated Name',
+            'name' => $updatedName,
             'url' => 'https://updated.com',
             'background_color' => '#aabbcc',
         ])
         ->assertRedirect(route('speed-dial'));
 
     $site->refresh();
-    expect($site->name)->toBe('Updated Name')
-        ->and($site->icon_path)->toBe('images/existing_icon.png');
-    Storage::disk('public')->assertExists('images/existing_icon.png');
+    expect($site->name)->toBe($updatedName)
+        ->and($site->getFirstMedia()->getKey())->toBe($originalMedia->getKey());
+    $this->assertCount(1, $site->media);
 });
 
 it('rejects a non-image file as icon when updating', function () {
