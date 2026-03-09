@@ -18,7 +18,7 @@ type SiteFormData = Pick<Site, 'name' | 'url' | 'background_color'> & {
 };
 
 export default function SiteForm({ site, creating }: Props) {
-    const { data, setData, errors, clearErrors, post } = useForm<SiteFormData>('SiteForm/create', {
+    const { data, setData, errors, clearErrors, post, patch } = useForm<SiteFormData>('SiteForm/create', {
         name: site?.name ?? '',
         url: site?.url ?? '',
         background_color: site?.background_color ?? '',
@@ -35,12 +35,11 @@ export default function SiteForm({ site, creating }: Props) {
             return;
         }
 
-        post(
+        patch(
             route('sites.update', {
                 site: site.id,
             }),
             {
-                method: 'put',
                 forceFormData: true,
             },
         );
