@@ -16,6 +16,10 @@ return new class extends Migration
         Site::eachById(function (Site $site) {
             $file = Storage::disk('public')->path($site->icon_path);
 
+            if (! Storage::disk('public')->exists($site->icon_path)) {
+                return;
+            }
+
             $site
                 ->addMedia($file)
                 ->preservingOriginal()
