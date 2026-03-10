@@ -39,10 +39,10 @@ function actingAsAuthorizedUser(): void
     test()->actingAs(User::factory()->createOne());
 }
 
-function testValidationFail(string $field, mixed $value, string $expectedError): void {
+function testValidationFail(string $field, mixed $value, string $expectedError): void
+{
     actingAsAuthorizedUser();
     $site = Site::factory()->createOne();
-
 
     updateSite($site, [$field => $value])
         ->assertSessionHasErrors([$field => $expectedError]);
@@ -220,7 +220,7 @@ it('rejects a non-image file as icon when updating', function () {
         value: UploadedFile::fake()->create('document.pdf', 100, 'application/pdf'),
         expectedError: __('validation.mimes', [
             'attribute' => 'icon',
-            'values' => 'png, jpg, jpeg, svg'
+            'values' => 'png, jpg, jpeg, svg',
         ])
     );
 });

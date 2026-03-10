@@ -16,6 +16,7 @@ final class Site extends Model implements HasMedia
 {
     /** @use HasFactory<SiteFactory> */
     use HasFactory;
+
     use InteractsWithMedia;
     use SoftDeletes;
 
