@@ -1,0 +1,171 @@
+{
+    "event": "media.pause",
+    "user": true,
+    "owner": true,
+    "Account": {
+        "id": 63204474,
+        "thumb": "https://plex.tv/users/ea224c9df2051e82/avatar?c=1768643438",
+        "title": "StefanMermans"
+    },
+    "Server": {
+        "title": "ServerStefan",
+        "uuid": "1294172e00f074281a2deua9bb22a78128e19201"
+    },
+    "Player": {
+        "local": true,
+        "publicAddress": "128.77.115.215",
+        "title": "Stefans-MacBook-Pro.local",
+        "uuid": "adfa2jun21na2aj2hejsog0i"
+    },
+    "Metadata": {
+        "librarySectionType": "show",
+        "ratingKey": "658",
+        "key": "/library/metadata/658",
+        "parentRatingKey": "645",
+        "grandparentRatingKey": "644",
+        "guid": "plex://episode/677fc79fd190812caa63ff30",
+        "parentGuid": "plex://season/66954bd8660c48cac4b025d7",
+        "grandparentGuid": "plex://show/5d9c0913ba6eb9001fbaf6ff",
+        "grandparentSlug": "dr-stone",
+        "type": "episode",
+        "title": "The Two Scientists",
+        "titleSort": "Two Scientists",
+        "grandparentKey": "/library/metadata/644",
+        "parentKey": "/library/metadata/645",
+        "librarySectionTitle": "TV Shows",
+        "librarySectionID": 2,
+        "librarySectionKey": "/library/sections/2",
+        "grandparentTitle": "Dr.STONE",
+        "parentTitle": "Season 4",
+        "originalTitle": "二人の科学者",
+        "contentRating": "TV-14",
+        "summary": "Senku had gotten his start in rocket building through an email exchange with Doctor Xeno. Their approaches to science soon diverged.",
+        "index": 7,
+        "parentIndex": 4,
+        "audienceRating": 8.5,
+        "viewCount": 1,
+        "lastViewedAt": 1767453566,
+        "year": 2025,
+        "thumb": "/library/metadata/658/thumb/1759113837",
+        "art": "/library/metadata/645/art/1757014134",
+        "parentThumb": "/library/metadata/645/thumb/1757014134",
+        "grandparentThumb": "/library/metadata/644/thumb/1767243522",
+        "grandparentArt": "/library/metadata/644/art/1767243522",
+        "grandparentTheme": "/library/metadata/644/theme/1767243522",
+        "duration": 1440000,
+        "originallyAvailableAt": "2025-02-20",
+        "addedAt": 1754917602,
+        "updatedAt": 1759113837,
+        "audienceRatingImage": "themoviedb://image.rating",
+        "chapterSource": "media",
+        "Image": [
+            {
+                "alt": "The Two Scientists",
+                "type": "coverPoster",
+                "url": "/library/metadata/644/thumb/1767243522"
+            },
+            {
+                "alt": "The Two Scientists",
+                "type": "snapshot",
+                "url": "/library/metadata/658/thumb/1759113837"
+            },
+            {
+                "alt": "The Two Scientists",
+                "type": "background",
+                "url": "/library/metadata/645/art/1757014134"
+            },
+            {
+                "alt": "The Two Scientists",
+                "type": "clearLogo",
+                "url": "/library/metadata/644/clearLogo/1767243522"
+            }
+        ],
+        "UltraBlurColors": {
+            "topLeft": "432511",
+            "topRight": "34393d",
+            "bottomRight": "17030a",
+            "bottomLeft": "3b1a04"
+        },
+        "Guid": [
+            {
+                "id": "imdb://tt35770114"
+            },
+            {
+                "id": "tmdb://5887543"
+            },
+            {
+                "id": "tvdb://10849851"
+            }
+        ],
+        "Rating": [
+            {
+                "image": "imdb://image.rating",
+                "value": 8.3,
+                "type": "audience"
+            },
+            {
+                "image": "themoviedb://image.rating",
+                "value": 8.5,
+                "type": "audience"
+            }
+        ],
+        "Role": [
+            {
+                "id": 25,
+                "filter": "actor=25",
+                "tag": "Yusuke Kobayashi",
+                "tagKey": "5d776e3b96b655001fe60ce4",
+                "role": "Senku Ishigami (voice)",
+                "thumb": "https://metadata-static.plex.tv/c/people/c5849c59f7953c7de85e1b7b774d4f12.jpg"
+            },
+            {
+                "id": 919,
+                "filter": "actor=919",
+                "tag": "Makoto Furukawa",
+                "tagKey": "5f3ff1545a76a80042d0ff9c",
+                "role": "Taiju Oki (voice)",
+                "thumb": "https://metadata-static.plex.tv/5/people/57d2fc4cae320f83040237aa3d0620e7.jpg"
+            },
+            {
+                "id": 1690,
+                "filter": "actor=1690",
+                "tag": "Kana Ichinose",
+                "tagKey": "5d9c08eb6c3e37001ecdac88",
+                "role": "Yuzuriha Ogawa (voice)",
+                "thumb": "https://metadata-static.plex.tv/a/people/a726d53d4ffb50c8b36476294e1f8056.jpg"
+            },
+            {
+                "id": 4276,
+                "filter": "actor=4276",
+                "tag": "Manami Numakura",
+                "tagKey": "5d776aa77a53e9001e70b782",
+                "role": "Kohaku (voice)",
+                "thumb": "https://metadata-static.plex.tv/f/people/f9b480461f8e012fb3e20ba634bf882e.jpg"
+            },
+            {
+                "id": 4210,
+                "filter": "actor=4210",
+                "tag": "Gen Sato",
+                "tagKey": "5f3fc5e5be690b00430db40d",
+                "role": "Chrome (voice)",
+                "thumb": "https://metadata-static.plex.tv/b/people/b90073df7d53b2c692295793a7c7c337.jpg"
+            },
+            {
+                "id": 51,
+                "filter": "actor=51",
+                "tag": "Kengo Kawanishi",
+                "tagKey": "5d7768b96f6af7001ee5bceb",
+                "role": "Asagiri Gen (voice)",
+                "thumb": "https://metadata-static.plex.tv/2/people/2e7a1294f34820047240e47bb09871fa.jpg"
+            },
+            {
+                "id": 3984,
+                "filter": "actor=3984",
+                "tag": "Ryota Suzuki",
+                "tagKey": "5d9c090f02391c001f594bc3",
+                "role": "Nanami Ryuusui (voice)",
+                "thumb": "https://metadata-static.plex.tv/6/people/610d2fdf85b99f940f5c79fce11b2949.jpg"
+            }
+        ]
+    }
+}
