@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Data;
+namespace App\Data\PlexEvent;
 
 use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\LaravelData\Data;
@@ -69,25 +69,55 @@ class PlexMetadataData extends Data
         public readonly string|Optional $titleSort,
 
         // PascalCase fields (nested objects from Plex API)
+        /**
+         * @var PlexImageData[]|Optional
+         */
         #[DataCollectionOf(PlexImageData::class)]
         public readonly array|Optional $Image,
         public readonly PlexUltraBlurColorsData|Optional $UltraBlurColors,
+        /**
+         * @var PlexGuidData[]|Optional
+         */
         #[DataCollectionOf(PlexGuidData::class)]
         public readonly array|Optional $Guid,
+        /**
+         * @var PlexRatingData[]|Optional
+         */
         #[DataCollectionOf(PlexRatingData::class)]
         public readonly array|Optional $Rating,
+        /**
+         * @var PlexTagData[]|Optional
+         */
         #[DataCollectionOf(PlexTagData::class)]
         public readonly array|Optional $Genre,
+        /**
+         * @var PlexTagData[]|Optional
+         */
         #[DataCollectionOf(PlexTagData::class)]
         public readonly array|Optional $Country,
+        /**
+         * @var PlexCrewData[]|Optional
+         */
         #[DataCollectionOf(PlexCrewData::class)]
         public readonly array|Optional $Director,
+        /**
+         * @var PlexCrewData[]|Optional
+         */
         #[DataCollectionOf(PlexCrewData::class)]
         public readonly array|Optional $Writer,
+        /**
+         * @var PlexRoleData[]|Optional
+         */
         #[DataCollectionOf(PlexRoleData::class)]
         public readonly array|Optional $Role,
+        /**
+         * @var PlexCrewData[]|Optional
+         */
         #[DataCollectionOf(PlexCrewData::class)]
         public readonly array|Optional $Producer,
+        /**
+         * @var PlexCommonSenseMediaData[]|Optional
+         */
         #[DataCollectionOf(PlexCommonSenseMediaData::class)]
         public readonly array|Optional $CommonSenseMedia,
     ) {}

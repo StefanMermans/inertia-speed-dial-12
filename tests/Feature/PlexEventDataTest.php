@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace Tests\Feature\PlexEventDataTest;
 
-use App\Data\PlexAccountData;
-use App\Data\PlexAgeRatingData;
-use App\Data\PlexCommonSenseMediaData;
-use App\Data\PlexCrewData;
-use App\Data\PlexEventData;
-use App\Data\PlexEventPayloadData;
-use App\Data\PlexGuidData;
-use App\Data\PlexImageData;
-use App\Data\PlexMetadataData;
-use App\Data\PlexPlayerData;
-use App\Data\PlexRatingData;
-use App\Data\PlexRoleData;
-use App\Data\PlexServerData;
-use App\Data\PlexTagData;
-use App\Data\PlexUltraBlurColorsData;
+use App\Data\PlexEvent\PlexAccountData;
+use App\Data\PlexEvent\PlexAgeRatingData;
+use App\Data\PlexEvent\PlexCommonSenseMediaData;
+use App\Data\PlexEvent\PlexCrewData;
+use App\Data\PlexEvent\PlexEventData;
+use App\Data\PlexEvent\PlexEventPayloadData;
+use App\Data\PlexEvent\PlexGuidData;
+use App\Data\PlexEvent\PlexImageData;
+use App\Data\PlexEvent\PlexMetadataData;
+use App\Data\PlexEvent\PlexPlayerData;
+use App\Data\PlexEvent\PlexRatingData;
+use App\Data\PlexEvent\PlexRoleData;
+use App\Data\PlexEvent\PlexServerData;
+use App\Data\PlexEvent\PlexTagData;
+use App\Data\PlexEvent\PlexUltraBlurColorsData;
 use Generator;
 
 covers(
