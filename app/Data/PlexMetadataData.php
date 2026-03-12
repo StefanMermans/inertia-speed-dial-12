@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Data;
 
+use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Optional;
 
@@ -67,27 +68,27 @@ class PlexMetadataData extends Data
         public readonly string|Optional $grandparentTheme,
         public readonly string|Optional $titleSort,
 
-        // PascalCase fields (arrays/objects from Plex API)
+        // PascalCase fields (nested objects from Plex API)
+        #[DataCollectionOf(PlexImageData::class)]
         public readonly array|Optional $Image,
-        public readonly array|Optional $UltraBlurColors,
+        public readonly PlexUltraBlurColorsData|Optional $UltraBlurColors,
+        #[DataCollectionOf(PlexGuidData::class)]
         public readonly array|Optional $Guid,
+        #[DataCollectionOf(PlexRatingData::class)]
         public readonly array|Optional $Rating,
+        #[DataCollectionOf(PlexTagData::class)]
         public readonly array|Optional $Genre,
+        #[DataCollectionOf(PlexTagData::class)]
         public readonly array|Optional $Country,
+        #[DataCollectionOf(PlexCrewData::class)]
         public readonly array|Optional $Director,
+        #[DataCollectionOf(PlexCrewData::class)]
         public readonly array|Optional $Writer,
+        #[DataCollectionOf(PlexRoleData::class)]
         public readonly array|Optional $Role,
+        #[DataCollectionOf(PlexCrewData::class)]
         public readonly array|Optional $Producer,
+        #[DataCollectionOf(PlexCommonSenseMediaData::class)]
         public readonly array|Optional $CommonSenseMedia,
     ) {}
-
-    public function isMovie(): bool
-    {
-        return $this->type === 'movie';
-    }
-
-    public function isEpisode(): bool
-    {
-        return $this->type === 'episode';
-    }
 }
