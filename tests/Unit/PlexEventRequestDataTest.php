@@ -9,7 +9,7 @@ use App\Data\PlexEvent\PlexAgeRatingData;
 use App\Data\PlexEvent\PlexCommonSenseMediaData;
 use App\Data\PlexEvent\PlexCrewData;
 use App\Data\PlexEvent\PlexEventData;
-use App\Data\PlexEvent\PlexEventPayloadData;
+use App\Data\PlexEvent\PlexEventRequestData;
 use App\Data\PlexEvent\PlexGuidData;
 use App\Data\PlexEvent\PlexImageData;
 use App\Data\PlexEvent\PlexMetadataData;
@@ -19,7 +19,6 @@ use App\Data\PlexEvent\PlexRoleData;
 use App\Data\PlexEvent\PlexServerData;
 use App\Data\PlexEvent\PlexTagData;
 use App\Data\PlexEvent\PlexUltraBlurColorsData;
-use Generator;
 
 covers(
     PlexAccountData::class,
@@ -27,7 +26,7 @@ covers(
     PlexCommonSenseMediaData::class,
     PlexCrewData::class,
     PlexEventData::class,
-    PlexEventPayloadData::class,
+    PlexEventRequestData::class,
     PlexGuidData::class,
     PlexImageData::class,
     PlexMetadataData::class,
@@ -39,15 +38,17 @@ covers(
     PlexUltraBlurColorsData::class
 );
 
-test('example', function (array $plexEvent) {
-    $dto = PlexEventPayloadData::from($plexEvent);
+it('parses to dto and back', function (array $plexEvent) {
+    $dto = PlexEventRequestData::from($plexEvent);
 
     $this->assertEquals($plexEvent, $dto->toArray());
-})
-    ->with(function (): Generator {
-        $fixturesPath = dirname(__DIR__, 2).'/tests/fixtures/plex/*.json';
+})->with('plex-events');
 
-        foreach (glob($fixturesPath) as $file) {
-            yield basename($file, '.json') => ['plexEvent' => ['payload' => json_decode(file_get_contents($file), true)]];
-        }
-    });
+it('is scrobble when event is media.scrobble', function (array $plexEvent) {
+    $dto = PlexEventRequestData::from($plexEvent);
+
+    $this->assertSame(
+        $plexEvent['payload']['event'] === 'media.scrobble',
+        $dto->payload->isScrobble()
+    );
+})->with('plex-events');

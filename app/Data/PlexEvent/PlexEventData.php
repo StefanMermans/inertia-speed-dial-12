@@ -17,4 +17,9 @@ class PlexEventData extends Data
         public readonly PlexPlayerData $Player,
         public readonly PlexMetadataData $Metadata,
     ) {}
+
+    public function isScrobble(): bool
+    {
+        return $this->event === 'media.scrobble';
+    }
 }

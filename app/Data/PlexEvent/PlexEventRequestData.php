@@ -6,7 +6,7 @@ namespace App\Data\PlexEvent;
 
 use Spatie\LaravelData\Data;
 
-class PlexEventPayloadData extends Data
+class PlexEventRequestData extends Data
 {
     public function __construct(
         public PlexEventData $payload,

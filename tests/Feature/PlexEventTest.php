@@ -4,24 +4,65 @@ declare(strict_types=1);
 
 namespace Tests\Feature\PlexEventTest;
 
+use App\Events\PlexScrobbleEvent;
+use App\Exceptions\InvalidPlexEventException;
 use App\Http\Controllers\PlexEventController;
-use Generator;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Exceptions;
+use Illuminate\Validation\ValidationException;
 
 covers(PlexEventController::class);
 
+function buildNonsenseArray(): array
+{
+    $keys = array_fill(0, fake()->numberBetween(1, 3), '');
+
+    return Arr::mapWithKeys($keys, function () {
+        if (fake()->boolean()) {
+            $value = buildNonsenseArray();
+        } else {
+            $value = fake()->word();
+        }
+
+        return [
+            fake()->word() => $value,
+        ];
+    });
+}
+
 describe('Plex event endpoint', function () {
-    it('handles plex events without error', function (array $plexEventPayload) {
+    it('handles plex events without error', function (array $plexEvent) {
         $this
-            ->postJson(route('api.plex-event'), ['payload' => $plexEventPayload])
+            ->postJson(route('api.plex-event'), $plexEvent)
             ->assertSuccessful();
     })
-        ->with(function (): Generator {
-            $fixturesPath = dirname(__DIR__, 2) . '/tests/fixtures/plex/*.json';
+        ->with('plex-events');
 
-            foreach (glob($fixturesPath) as $file) {
-                yield basename($file, '.json') => ['plexEventPayload' => json_decode(file_get_contents($file), true)];
-            }
+    it('handles nonsense events without error', function () {
+        $this
+            ->postJson(route('api.plex-event'), buildNonsenseArray())
+            ->assertSuccessful();
+    });
+
+    it('reports errors on invalid events', function () {
+        Exceptions::fake();
+
+        $this
+            ->postJson(route('api.plex-event'), buildNonsenseArray())
+            ->assertSuccessful();
+
+        Exceptions::assertReported(InvalidPlexEventException::class);
+        Exceptions::assertReported(function (InvalidPlexEventException $exception): bool {
+            return get_class($exception->getPrevious()) === ValidationException::class;
         });
+    });
+
+    it('returns no content for json', function () {
+        $this
+            ->postJson(route('api.plex-event'), buildNonsenseArray())
+            ->assertNoContent();
+    });
 
     it('listens on route api/plex-event', function () {
         $this->assertSame(
@@ -29,4 +70,13 @@ describe('Plex event endpoint', function () {
             route('api.plex-event')
         );
     });
+
+    it('dispatches scrobble event on plex scrobble', function (array $plexEvent) {
+        Event::fake();
+
+        $this->postJson(route('api.plex-event'), $plexEvent);
+
+        Event::assertDispatched(PlexScrobbleEvent::class);
+    })
+        ->with('plex-events.scrobble');
 });
