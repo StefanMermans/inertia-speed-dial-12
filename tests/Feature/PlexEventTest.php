@@ -41,7 +41,7 @@ describe('Plex event endpoint', function () {
 
     it('handles nonsense events without error', function () {
         $this
-            ->postJson(route('api.plex-event'), buildNonsenseArray())
+            ->postJson(route('api.plex-event'), ['payload' => json_encode(buildNonsenseArray())])
             ->assertSuccessful();
     });
 
@@ -49,7 +49,7 @@ describe('Plex event endpoint', function () {
         Exceptions::fake();
 
         $this
-            ->postJson(route('api.plex-event'), buildNonsenseArray())
+            ->postJson(route('api.plex-event'), ['payload' => json_encode(buildNonsenseArray())])
             ->assertSuccessful();
 
         Exceptions::assertReported(InvalidPlexEventException::class);
@@ -60,7 +60,7 @@ describe('Plex event endpoint', function () {
 
     it('returns no content for json', function () {
         $this
-            ->postJson(route('api.plex-event'), buildNonsenseArray())
+            ->postJson(route('api.plex-event'), ['payload' => json_encode(buildNonsenseArray())])
             ->assertNoContent();
     });
 

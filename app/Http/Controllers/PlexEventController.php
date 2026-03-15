@@ -32,9 +32,11 @@ class PlexEventController extends Controller
     private function parsePlexEvent(Request $request): ?PlexEventData
     {
         try {
+            $payload = json_decode($request->string('payload')->toString(), true);
+
             return PlexEventRequestData::factory()
                 ->alwaysValidate()
-                ->from($request->all())
+                ->from(['payload' => $payload])
                 ->payload;
         } catch (ValidationException $exception) {
             report(new InvalidPlexEventException(

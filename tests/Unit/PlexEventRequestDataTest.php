@@ -39,16 +39,18 @@ covers(
 );
 
 it('parses to dto and back', function (array $plexEvent) {
-    $dto = PlexEventRequestData::from($plexEvent);
+    $decoded = ['payload' => json_decode($plexEvent['payload'], true)];
+    $dto = PlexEventRequestData::from($decoded);
 
-    $this->assertEquals($plexEvent, $dto->toArray());
+    $this->assertEquals($decoded, $dto->toArray());
 })->with('plex-events');
 
 it('is scrobble when event is media.scrobble', function (array $plexEvent) {
-    $dto = PlexEventRequestData::from($plexEvent);
+    $decoded = ['payload' => json_decode($plexEvent['payload'], true)];
+    $dto = PlexEventRequestData::from($decoded);
 
     $this->assertSame(
-        $plexEvent['payload']['event'] === 'media.scrobble',
+        $decoded['payload']['event'] === 'media.scrobble',
         $dto->payload->isScrobble()
     );
 })->with('plex-events');

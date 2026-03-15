@@ -11,8 +11,7 @@ function loadPlexEvents(string $glob): Generator
     $fixturesPath = dirname(__DIR__)."/fixtures/plex/$glob.json";
 
     foreach (glob($fixturesPath) as $file) {
-        yield basename($file, '.json') => ['plexEvent' => ['payload' => json_decode(file_get_contents($file), true)]];
-
+        yield basename($file, '.json') => ['plexEvent' => ['payload' => file_get_contents($file)]];
     }
 }
 
