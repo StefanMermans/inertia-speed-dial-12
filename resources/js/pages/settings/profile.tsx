@@ -1,10 +1,13 @@
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Transition } from '@headlessui/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { Film, Tv } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
+import { ConnectionCard } from '@/components/connection-card';
 import DeleteUser from '@/components/delete-user';
 import HeadingSmall from '@/components/heading-small';
+import { PlexConnectionCard } from '@/components/plex-connection-card';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,7 +22,17 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
+interface ProfileProps {
+    mustVerifyEmail: boolean;
+    status?: string;
+    connections: {
+        tmdb: boolean;
+        trakt: boolean;
+        plex_account_id: number | null;
+    };
+}
+
+export default function Profile({ mustVerifyEmail, status, connections }: ProfileProps) {
     const { auth } = usePage<SharedData>().props;
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
@@ -113,6 +126,34 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                             </Transition>
                         </div>
                     </form>
+                </div>
+
+                <div className="space-y-6">
+                    <HeadingSmall title="Connected services" description="Connect your accounts to enable syncing and tracking" />
+
+                    <div className="space-y-3">
+                        <ConnectionCard
+                            service="tmdb"
+                            label="TMDB"
+                            description="Sync movies and TV shows to your TMDB lists"
+                            icon={Film}
+                            connected={connections.tmdb}
+                            connectUrl="/tmdb/auth"
+                            disconnectUrl="/settings/connections/tmdb"
+                        />
+
+                        <ConnectionCard
+                            service="trakt"
+                            label="Trakt"
+                            description="Sync your watch history to Trakt"
+                            icon={Tv}
+                            connected={connections.trakt}
+                            connectUrl="/trakt/auth"
+                            disconnectUrl="/settings/connections/trakt"
+                        />
+
+                        <PlexConnectionCard plexAccountId={connections.plex_account_id} />
+                    </div>
                 </div>
 
                 <DeleteUser />

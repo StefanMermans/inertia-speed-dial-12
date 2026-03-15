@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Settings\DisconnectServiceController;
 use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\ProfileController;
+use App\Http\Controllers\Settings\UpdatePlexAccountController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -11,6 +13,8 @@ Route::middleware('auth')->group(function () {
     Route::get('settings/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('settings/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('settings/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::delete('settings/connections/{service}', DisconnectServiceController::class)->name('connections.disconnect');
+    Route::patch('settings/connections/plex', UpdatePlexAccountController::class)->name('connections.plex.update');
 
     Route::get('settings/password', [PasswordController::class, 'edit'])->name('password.edit');
     Route::put('settings/password', [PasswordController::class, 'update'])->name('password.update');
