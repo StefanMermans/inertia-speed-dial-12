@@ -10,6 +10,7 @@ use App\Events\PlexScrobbleEvent;
 use App\Exceptions\InvalidPlexEventException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 class PlexEventController extends Controller
@@ -21,6 +22,7 @@ class PlexEventController extends Controller
         }
 
         if ($plexEvent->isScrobble()) {
+            Log::debug('Scrobble event');
             event(new PlexScrobbleEvent($plexEvent));
         }
 
@@ -35,7 +37,11 @@ class PlexEventController extends Controller
                 ->from($request->all())
                 ->payload;
         } catch (ValidationException $exception) {
-            report(new InvalidPlexEventException(previous: $exception));
+            report(new InvalidPlexEventException(
+                message: $exception->getMessage(),
+                code: $exception->getCode(),
+                previous: $exception
+            ));
         }
 
         return null;

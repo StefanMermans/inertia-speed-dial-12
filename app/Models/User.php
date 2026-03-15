@@ -28,6 +28,9 @@ final class User extends Authenticatable
         'tmdb_access_token',
         'tmdb_account_object_id',
         'plex_account_id',
+        'trakt_access_token',
+        'trakt_refresh_token',
+        'trakt_token_expires_at',
     ];
 
     /**
@@ -39,6 +42,8 @@ final class User extends Authenticatable
         'password',
         'remember_token',
         'tmdb_access_token',
+        'trakt_access_token',
+        'trakt_refresh_token',
     ];
 
     /**
@@ -52,6 +57,9 @@ final class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'tmdb_access_token' => 'encrypted',
+            'trakt_access_token' => 'encrypted',
+            'trakt_refresh_token' => 'encrypted',
+            'trakt_token_expires_at' => 'datetime',
         ];
     }
 

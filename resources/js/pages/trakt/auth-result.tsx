@@ -5,7 +5,7 @@ import { Head } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Dashboard', href: '/dashboard' },
-    { title: 'TMDB', href: '/tmdb/auth' },
+    { title: 'Trakt', href: '/trakt/auth' },
 ];
 
 interface AuthResultProps {
@@ -16,14 +16,14 @@ interface AuthResultProps {
 export default function AuthResult({ success, message }: AuthResultProps) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={success ? 'TMDB Connected' : 'TMDB Connection Failed'} />
+            <Head title={success ? 'Trakt Connected' : 'Trakt Connection Failed'} />
             <AuthResultCard
                 success={success}
                 message={message}
-                serviceName="TMDB"
-                successDescription="You can now add movies and TV shows to your TMDB lists."
-                failureDescription="Something went wrong while connecting your TMDB account. You can try again below."
-                retryUrl="/tmdb/auth"
+                serviceName="Trakt"
+                successDescription="Your watches will now be synced to your Trakt account."
+                failureDescription="Something went wrong while connecting your Trakt account. You can try again below."
+                retryUrl="/trakt/auth"
             />
         </AppLayout>
     );

@@ -41,4 +41,10 @@ return [
         'base_url' => 'https://api.themoviedb.org',
     ],
 
+    'trakt' => [
+        'client_id' => env('TRAKT_CLIENT_ID'),
+        'client_secret' => env('TRAKT_CLIENT_SECRET'),
+        'base_url' => 'https://api.trakt.tv',
+    ],
+
 ];
