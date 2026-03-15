@@ -37,7 +37,7 @@ it('redirects to trakt for authorization and stores state in session', function 
     $response->assertSessionHas('trakt_oauth_state');
 });
 
-it('shows success page when user already has a valid trakt connection', function () {
+it('redirects to profile when user already has a valid trakt connection', function () {
     $user = User::factory()->create([
         'trakt_access_token' => 'existing-access-token',
         'trakt_refresh_token' => 'existing-refresh-token',
@@ -46,14 +46,10 @@ it('shows success page when user already has a valid trakt connection', function
 
     $this->actingAs($user)
         ->get(route('trakt.redirect'))
-        ->assertOk()
-        ->assertInertia(fn (AssertableInertia $page) => $page
-            ->component('trakt/auth-result')
-            ->where('success', true)
-        );
+        ->assertRedirect(route('profile.edit'));
 });
 
-it('refreshes expired token and shows success page', function () {
+it('refreshes expired token and redirects to profile', function () {
     Http::fake([
         'api.trakt.tv/oauth/token' => Http::response([
             'access_token' => 'new-access-token',
@@ -73,11 +69,7 @@ it('refreshes expired token and shows success page', function () {
 
     $this->actingAs($user)
         ->get(route('trakt.redirect'))
-        ->assertOk()
-        ->assertInertia(fn (AssertableInertia $page) => $page
-            ->component('trakt/auth-result')
-            ->where('success', true)
-        );
+        ->assertRedirect(route('profile.edit'));
 
     $user->refresh();
     expect($user->trakt_access_token)->not->toBeNull();
@@ -110,7 +102,7 @@ it('requires authentication for redirect', function () {
 
 // ─── Callback: Success ───────────────────────────────────────────────────────
 
-it('exchanges code for token and renders success page', function () {
+it('exchanges code for token and redirects to profile', function () {
     Http::fake([
         'api.trakt.tv/oauth/token' => Http::response([
             'access_token' => 'trakt-access-token',
@@ -127,11 +119,7 @@ it('exchanges code for token and renders success page', function () {
     $this->actingAs($user)
         ->withSession(['trakt_oauth_state' => 'test-state'])
         ->get(route('trakt.callback', ['code' => 'auth-code', 'state' => 'test-state']))
-        ->assertOk()
-        ->assertInertia(fn (AssertableInertia $page) => $page
-            ->component('trakt/auth-result')
-            ->where('success', true)
-        );
+        ->assertRedirect(route('profile.edit'));
 
     $user->refresh();
 

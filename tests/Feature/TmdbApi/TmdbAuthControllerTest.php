@@ -36,7 +36,7 @@ it('redirects to tmdb for authorization and stores request token in session', fu
         ->assertSessionHas('tmdb_request_token', 'test-request-token');
 });
 
-it('shows success page when user already has a valid tmdb connection', function () {
+it('redirects to profile when user already has a valid tmdb connection', function () {
     Http::fake([
         'api.themoviedb.org/4/account/tmdb-account-123/lists*' => Http::response([
             'page' => 1,
@@ -53,11 +53,7 @@ it('shows success page when user already has a valid tmdb connection', function 
 
     $this->actingAs($user)
         ->get(route('tmdb.redirect'))
-        ->assertOk()
-        ->assertInertia(fn (AssertableInertia $page) => $page
-            ->component('tmdb/auth-result')
-            ->where('success', true)
-        );
+        ->assertRedirect(route('profile.edit'));
 });
 
 it('re-authenticates when existing tmdb token is invalid', function () {
@@ -93,7 +89,7 @@ it('requires authentication for redirect', function () {
 
 // ─── Callback: Success ───────────────────────────────────────────────────────
 
-it('exchanges request token for access token and renders success page', function () {
+it('exchanges request token for access token and redirects to profile', function () {
     Http::fake([
         'api.themoviedb.org/4/auth/access_token' => Http::response([
             'success' => true,
@@ -108,11 +104,7 @@ it('exchanges request token for access token and renders success page', function
 
     $this->actingAs($user)
         ->get(route('tmdb.callback', ['request_token' => 'approved-token']))
-        ->assertOk()
-        ->assertInertia(fn (AssertableInertia $page) => $page
-            ->component('tmdb/auth-result')
-            ->where('success', true)
-        );
+        ->assertRedirect(route('profile.edit'));
 
     $user->refresh();
 
@@ -136,11 +128,7 @@ it('falls back to session request token when query param is missing', function (
     $this->actingAs($user)
         ->withSession(['tmdb_request_token' => 'session-request-token'])
         ->get(route('tmdb.callback'))
-        ->assertOk()
-        ->assertInertia(fn (AssertableInertia $page) => $page
-            ->component('tmdb/auth-result')
-            ->where('success', true)
-        );
+        ->assertRedirect(route('profile.edit'));
 
     $user->refresh();
 

@@ -6,13 +6,14 @@ namespace App\Http\Controllers\Tmdb;
 
 use App\Services\TmdbApi\TmdbApi;
 use Illuminate\Http\Client\RequestException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class CallbackController
 {
-    public function __invoke(Request $request, TmdbApi $tmdbApi): Response
+    public function __invoke(Request $request, TmdbApi $tmdbApi): Response|RedirectResponse
     {
         $requestToken = $request->query('request_token') ?? $request->session()->pull('tmdb_request_token');
 
@@ -37,9 +38,6 @@ class CallbackController
             'tmdb_account_object_id' => $accessToken->account_id,
         ]);
 
-        return Inertia::render('tmdb/auth-result', [
-            'success' => true,
-            'message' => 'Your TMDB account has been connected successfully.',
-        ]);
+        return to_route('profile.edit');
     }
 }

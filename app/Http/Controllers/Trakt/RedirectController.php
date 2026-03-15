@@ -9,12 +9,11 @@ use App\Services\TraktApi\TraktApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
-use Inertia\Response as InertiaResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class RedirectController
 {
-    public function __invoke(Request $request, TraktApi $traktApi): InertiaResponse|Response
+    public function __invoke(Request $request, TraktApi $traktApi): Response
     {
         /** @var User $user */
         $user = $request->user();
@@ -23,10 +22,7 @@ class RedirectController
             $resolvedToken = $traktApi->resolveUserAccessToken($user);
 
             if ($resolvedToken) {
-                return Inertia::render('trakt/auth-result', [
-                    'success' => true,
-                    'message' => 'Your Trakt account is already connected.',
-                ]);
+                return to_route('profile.edit');
             }
         }
 

@@ -8,12 +8,11 @@ use App\Services\TmdbApi\TmdbApi;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Inertia\Response as InertiaResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class RedirectController
 {
-    public function __invoke(Request $request, TmdbApi $tmdbApi): InertiaResponse|Response
+    public function __invoke(Request $request, TmdbApi $tmdbApi): Response
     {
         $user = $request->user();
 
@@ -21,10 +20,7 @@ class RedirectController
             try {
                 $tmdbApi->getAccountLists($user->tmdb_access_token, $user->tmdb_account_object_id);
 
-                return Inertia::render('tmdb/auth-result', [
-                    'success' => true,
-                    'message' => 'Your TMDB account is already connected.',
-                ]);
+                return to_route('profile.edit');
             } catch (RequestException) {
                 // Token is invalid/expired — fall through to re-authenticate
             }
