@@ -3,7 +3,6 @@ import { Link, router } from '@inertiajs/react';
 import { CheckCircle, LucideIcon, Unplug } from 'lucide-react';
 
 interface ConnectionCardProps {
-    service: string;
     label: string;
     description: string;
     icon: LucideIcon;
@@ -12,7 +11,7 @@ interface ConnectionCardProps {
     disconnectUrl: string;
 }
 
-export function ConnectionCard({ service, label, description, icon: Icon, connected, connectUrl, disconnectUrl }: ConnectionCardProps) {
+export function ConnectionCard({ label, description, icon: Icon, connected, connectUrl, disconnectUrl }: ConnectionCardProps) {
     function handleDisconnect() {
         router.delete(disconnectUrl, { preserveScroll: true });
     }

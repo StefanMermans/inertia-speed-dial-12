@@ -7,8 +7,8 @@ import { FormEventHandler } from 'react';
 import { ConnectionCard } from '@/components/connection-card';
 import DeleteUser from '@/components/delete-user';
 import HeadingSmall from '@/components/heading-small';
-import { PlexConnectionCard } from '@/components/plex-connection-card';
 import InputError from '@/components/input-error';
+import { PlexConnectionCard } from '@/components/plex-connection-card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -133,7 +133,6 @@ export default function Profile({ mustVerifyEmail, status, connections }: Profil
 
                     <div className="space-y-3">
                         <ConnectionCard
-                            service="tmdb"
                             label="TMDB"
                             description="Sync movies and TV shows to your TMDB lists"
                             icon={Film}
@@ -143,7 +142,6 @@ export default function Profile({ mustVerifyEmail, status, connections }: Profil
                         />
 
                         <ConnectionCard
-                            service="trakt"
                             label="Trakt"
                             description="Sync your watch history to Trakt"
                             icon={Tv}
