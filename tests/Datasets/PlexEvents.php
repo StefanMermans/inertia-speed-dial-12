@@ -23,3 +23,11 @@ dataset('plex-events', function (): Generator {
 dataset('plex-events.scrobble', function (): Generator {
     return loadPlexEvents('*_scrobble_*');
 });
+
+dataset('plex-events.scrobble.movie', function (): Generator {
+    return loadPlexEvents('movie_scrobble_*');
+});
+
+dataset('plex-events.scrobble.episode', function (): Generator {
+    return loadPlexEvents('episode_scrobble_*');
+});
