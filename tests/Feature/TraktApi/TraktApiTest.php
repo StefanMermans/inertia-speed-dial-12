@@ -149,7 +149,7 @@ it('revokes a token', function () {
 
 // ─── Error Handling ──────────────────────────────────────────────────────────
 
-it('throws on failed api requests', function () {
+it('throws on failed exchange code request', function () {
     Http::fake([
         'api.trakt.tv/oauth/token' => Http::response([
             'error' => 'invalid_grant',
@@ -158,4 +158,37 @@ it('throws on failed api requests', function () {
     ]);
 
     app(TraktApi::class)->exchangeCodeForToken('bad-code');
+})->throws(\Illuminate\Http\Client\RequestException::class);
+
+it('throws on failed refresh token request', function () {
+    Http::fake([
+        'api.trakt.tv/oauth/token' => Http::response([
+            'error' => 'invalid_grant',
+            'error_description' => 'The provided refresh token is invalid.',
+        ], 401),
+    ]);
+
+    app(TraktApi::class)->refreshToken('bad-refresh-token');
+})->throws(\Illuminate\Http\Client\RequestException::class);
+
+it('throws on failed add to history request', function () {
+    Http::fake([
+        'api.trakt.tv/sync/history' => Http::response([
+            'error' => 'unauthorized',
+        ], 401),
+    ]);
+
+    app(TraktApi::class)->addToHistory('invalid-token', [
+        'movies' => [
+            ['ids' => ['tmdb' => 550]],
+        ],
+    ]);
+})->throws(\Illuminate\Http\Client\RequestException::class);
+
+it('throws on failed revoke token request', function () {
+    Http::fake([
+        'api.trakt.tv/oauth/revoke' => Http::response([], 500),
+    ]);
+
+    app(TraktApi::class)->revokeToken('token-to-revoke');
 })->throws(\Illuminate\Http\Client\RequestException::class);
