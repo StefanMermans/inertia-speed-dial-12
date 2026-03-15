@@ -1,0 +1,446 @@
+{
+    "event": "media.play",
+    "user": true,
+    "owner": true,
+    "Account": {
+        "id": 63204474,
+        "thumb": "https://plex.tv/users/ea224c9df2051e82/avatar?c=1768643438",
+        "title": "StefanMermans"
+    },
+    "Server": {
+        "title": "ServerStefan",
+        "uuid": "1294172e00f074281a2deua9bb22a78128e19201"
+    },
+    "Player": {
+        "local": true,
+        "publicAddress": "128.77.115.215",
+        "title": "Stefans-MacBook-Pro.local",
+        "uuid": "adfa2jun21na2aj2hejsog0i"
+    },
+    "Metadata": {
+        "librarySectionType": "movie",
+        "ratingKey": "1534",
+        "key": "/library/metadata/1534",
+        "guid": "plex://movie/657ee30736510c5583cc4f13",
+        "slug": "chainsaw-man-the-movie-reze-arc-2025",
+        "studio": "MAPPA",
+        "type": "movie",
+        "title": "Chainsaw Man - The Movie: Reze Arc",
+        "librarySectionTitle": "Movies",
+        "librarySectionID": 1,
+        "librarySectionKey": "/library/sections/1",
+        "originalTitle": "劇場版 チェンソーマン レゼ篇",
+        "contentRating": "R",
+        "contentRatingAge": 16,
+        "summary": "A direct sequel to the first season of the series \"Chainsaw Man\", featuring Denji, a young man who co-exists with a chainsaw demon. Denji encounters a new romantic interest, but will his involvement place them both in danger?",
+        "rating": 9.6,
+        "audienceRating": 9.8,
+        "viewOffset": 493000,
+        "skipCount": 2,
+        "lastViewedAt": 1767641337,
+        "year": 2025,
+        "tagline": "EVERYBODY’S AFTER MY CHAINSAW HEART, WHAT ABOUT DENJI’S HEART?",
+        "thumb": "/library/metadata/1534/thumb/1768707409",
+        "art": "/library/metadata/1534/art/1768707409",
+        "duration": 6000000,
+        "originallyAvailableAt": "2025-09-19",
+        "addedAt": 1765314059,
+        "updatedAt": 1768707409,
+        "deletedAt": 1765380338,
+        "audienceRatingImage": "rottentomatoes://image.rating.upright",
+        "chapterSource": "media",
+        "primaryExtraKey": "/library/metadata/1535",
+        "ratingImage": "rottentomatoes://image.rating.ripe",
+        "Image": [
+            {
+                "alt": "Chainsaw Man - The Movie: Reze Arc",
+                "type": "coverPoster",
+                "url": "/library/metadata/1534/thumb/1768707409"
+            },
+            {
+                "alt": "Chainsaw Man - The Movie: Reze Arc",
+                "type": "background",
+                "url": "/library/metadata/1534/art/1768707409"
+            },
+            {
+                "alt": "Chainsaw Man - The Movie: Reze Arc",
+                "type": "clearLogo",
+                "url": "/library/metadata/1534/clearLogo/1768707409"
+            }
+        ],
+        "UltraBlurColors": {
+            "topLeft": "5c0201",
+            "topRight": "851111",
+            "bottomRight": "782223",
+            "bottomLeft": "b20204"
+        },
+        "Genre": [
+            {
+                "id": 14,
+                "filter": "genre=14",
+                "tag": "Animation",
+                "count": 8
+            },
+            {
+                "id": 425,
+                "filter": "genre=425",
+                "tag": "Action",
+                "count": 19
+            },
+            {
+                "id": 17,
+                "filter": "genre=17",
+                "tag": "Adventure",
+                "count": 21
+            },
+            {
+                "id": 23,
+                "filter": "genre=23",
+                "tag": "Comedy",
+                "count": 13
+            },
+            {
+                "id": 16,
+                "filter": "genre=16",
+                "tag": "Fantasy",
+                "count": 13
+            },
+            {
+                "id": 21,
+                "filter": "genre=21",
+                "tag": "Romance",
+                "count": 5
+            },
+            {
+                "id": 22,
+                "filter": "genre=22",
+                "tag": "Thriller",
+                "count": 15
+            },
+            {
+                "id": 15,
+                "filter": "genre=15",
+                "tag": "Anime",
+                "count": 4
+            }
+        ],
+        "Country": [
+            {
+                "id": 116,
+                "filter": "country=116",
+                "tag": "Japan",
+                "count": 7
+            }
+        ],
+        "Guid": [
+            {
+                "id": "imdb://tt30472557"
+            },
+            {
+                "id": "tmdb://1218925"
+            },
+            {
+                "id": "tvdb://352290"
+            }
+        ],
+        "Rating": [
+            {
+                "image": "imdb://image.rating",
+                "value": 8.4,
+                "type": "audience",
+                "count": 32
+            },
+            {
+                "image": "rottentomatoes://image.rating.ripe",
+                "value": 9.6,
+                "type": "critic",
+                "count": 27
+            },
+            {
+                "image": "rottentomatoes://image.rating.upright",
+                "value": 9.8,
+                "type": "audience",
+                "count": 28
+            },
+            {
+                "image": "themoviedb://image.rating",
+                "value": 8.3,
+                "type": "audience",
+                "count": 32
+            }
+        ],
+        "Director": [
+            {
+                "id": 7098,
+                "filter": "director=7098",
+                "tag": "Tatsuya Yoshihara",
+                "tagKey": "5d776d577a53e9001e757cd7",
+                "thumb": "https://metadata-static.plex.tv/4/people/4cb7a5a041a687db021942a6e532528f.jpg"
+            }
+        ],
+        "Writer": [
+            {
+                "id": 4187,
+                "filter": "writer=4187",
+                "tag": "Hiroshi Seko",
+                "tagKey": "5d9c08162df347001e3aa708",
+                "thumb": "https://metadata-static.plex.tv/b/people/bbc6cf1762fd24983e929bac943fbe98.jpg"
+            },
+            {
+                "id": 8709,
+                "filter": "writer=8709",
+                "tag": "Tatsuki Fujimoto",
+                "tagKey": "60dc26bd07ce5d002c9af6a8"
+            }
+        ],
+        "Role": [
+            {
+                "id": 7046,
+                "filter": "actor=7046",
+                "tag": "Kikunosuke Toya",
+                "tagKey": "62ef73218dbdbb247707758d",
+                "role": "Denji (voice)",
+                "thumb": "https://metadata-static.plex.tv/6/people/68bd7213f4f69a30e963cb2f4306cc57.jpg"
+            },
+            {
+                "id": 915,
+                "filter": "actor=915",
+                "tag": "Reina Ueda",
+                "tagKey": "5d776aa77a53e9001e70b783",
+                "role": "Reze (voice)",
+                "thumb": "https://metadata-static.plex.tv/6/people/6adea53623455e7ba867badb5b6ed586.jpg"
+            },
+            {
+                "id": 4429,
+                "filter": "actor=4429",
+                "tag": "Tomori Kusunoki",
+                "tagKey": "5f406a7d02101b0040fde077",
+                "role": "Makima (voice)",
+                "thumb": "https://metadata-static.plex.tv/0/people/0d3dbf0636f6194b9635077a2dd91478.jpg"
+            },
+            {
+                "id": 4084,
+                "filter": "actor=4084",
+                "tag": "Shogo Sakata",
+                "tagKey": "5d77707dfb0d55001f5f1916",
+                "role": "Aki (voice)",
+                "thumb": "https://metadata-static.plex.tv/0/people/098c8a9d8e313c73cc397bfc703a3b05.jpg"
+            },
+            {
+                "id": 4236,
+                "filter": "actor=4236",
+                "tag": "Maaya Uchida",
+                "tagKey": "5d776a4296b655001fde8a47",
+                "role": "Angel Devil (voice)",
+                "thumb": "https://metadata-static.plex.tv/5/people/5890866690eafcd36a1061b4a7b76dc0.jpg"
+            },
+            {
+                "id": 3518,
+                "filter": "actor=3518",
+                "tag": "Natsuki Hanae",
+                "tagKey": "5d776aa79ab5440021501ac8",
+                "role": "Beam (voice)",
+                "thumb": "https://metadata-static.plex.tv/1/people/1389be21fb6aa62e8cd0bef6f3bc460d.jpg"
+            },
+            {
+                "id": 7047,
+                "filter": "actor=7047",
+                "tag": "Karin Takahashi",
+                "tagKey": "5f40411a03883a0040b71379",
+                "role": "Kobeni (voice)",
+                "thumb": "https://metadata-static.plex.tv/5/people/5d8c26e4f1795e5d8caca793de34e510.jpg"
+            },
+            {
+                "id": 3971,
+                "filter": "actor=3971",
+                "tag": "Fairouz Ai",
+                "tagKey": "5f3fc6ad58b26e00425c172f",
+                "role": "Power (voice)",
+                "thumb": "https://metadata-static.plex.tv/a/people/a772e2962d89a3fbf78860452a3fb039.jpg"
+            },
+            {
+                "id": 1732,
+                "filter": "actor=1732",
+                "tag": "Yuuya Uchida",
+                "tagKey": "5d9c086808fddd001f299775",
+                "role": "The Violence Fiend (voice)",
+                "thumb": "https://metadata-static.plex.tv/7/people/7907982ed9d26f62379d00f4e5676c88.jpg"
+            },
+            {
+                "id": 3950,
+                "filter": "actor=3950",
+                "tag": "Shiori Izawa",
+                "tagKey": "5d776c70594b2b001e6f3c21",
+                "count": 3,
+                "role": "Pochita (voice)",
+                "thumb": "https://metadata-static.plex.tv/5/people/5d1bc88410fffb1a9729df3418090300.jpg"
+            },
+            {
+                "id": 58,
+                "filter": "actor=58",
+                "tag": "Kenjiro Tsuda",
+                "tagKey": "5d77688261141d001fb1c448",
+                "role": "Kishibe (voice)",
+                "thumb": "https://metadata-static.plex.tv/0/people/0f439acf506f36c37c20a40e9953a578.jpg"
+            },
+            {
+                "id": 4486,
+                "filter": "actor=4486",
+                "tag": "Marina Inoue",
+                "tagKey": "5d7768505af944001f1fef6d",
+                "role": "Child Denji (voice)",
+                "thumb": "https://metadata-static.plex.tv/3/people/39da023709804eba9d613645027aa178.jpg"
+            },
+            {
+                "id": 8710,
+                "filter": "actor=8710",
+                "tag": "Hidenori Takahashi",
+                "tagKey": "5d7768b7ad5437001f74e081",
+                "role": "Vice Captain (voice)",
+                "thumb": "https://metadata-static.plex.tv/people/5d7768b7ad5437001f74e081.jpg"
+            },
+            {
+                "id": 311,
+                "filter": "actor=311",
+                "tag": "Kenji Akabane",
+                "tagKey": "5d77696e47dd6e001f6c5647",
+                "role": "Nomo (voice)",
+                "thumb": "https://metadata-static.plex.tv/2/people/254f4e1a5df9f46646baacac3d29e4c6.jpg"
+            },
+            {
+                "id": 49,
+                "filter": "actor=49",
+                "tag": "Kenji Nomura",
+                "tagKey": "5d776827961905001eb91447",
+                "role": "Mysterious Man (voice)",
+                "thumb": "https://metadata-static.plex.tv/d/people/db3099b60f615aa1f48939003b0831a8.jpg"
+            },
+            {
+                "id": 4214,
+                "filter": "actor=4214",
+                "tag": "Eri Kitamura",
+                "tagKey": "5d77684de870fd001f19dc4c",
+                "role": "Typhoon Devil (voice)",
+                "thumb": "https://image.tmdb.org/t/p/original/9WWqr734lWfs6YOQikkBBs7Rgo4.jpg"
+            },
+            {
+                "id": 8972,
+                "filter": "actor=8972",
+                "tag": "Kenichi Ono",
+                "tagKey": "5d77687f7e5fa10020bf0a23",
+                "role": "Owner of Crossroads (voice)",
+                "thumb": "https://metadata-static.plex.tv/0/people/0100984f8d8a5c111d5e6a128f67853d.jpg"
+            },
+            {
+                "id": 334,
+                "filter": "actor=334",
+                "tag": "Yuhko Kaida",
+                "tagKey": "5d7768418a7581001f12ef94",
+                "role": "Fox Devil (voice)",
+                "thumb": "https://metadata-static.plex.tv/7/people/75a7d7e8d968e8722435f53fd45b7324.jpg"
+            },
+            {
+                "id": 356,
+                "filter": "actor=356",
+                "tag": "Kento Shiraishi",
+                "tagKey": "5f3fc4effea1a1003f9692c9",
+                "role": "Kato (voice)",
+                "thumb": "https://metadata-static.plex.tv/0/people/0f4993a0b807020f193a26e035b5900f.jpg"
+            },
+            {
+                "id": 8973,
+                "filter": "actor=8973",
+                "tag": "Taro Kiuchi",
+                "tagKey": "5d776c75ad5437001f7be9ce",
+                "role": "Tanabe (voice)",
+                "thumb": "https://metadata-static.plex.tv/people/5d776c75ad5437001f7be9ce.jpg"
+            },
+            {
+                "id": 8974,
+                "filter": "actor=8974",
+                "tag": "Akihiro Mine",
+                "tagKey": "5f406d571ae71000410e9c85",
+                "role": "Masaki Ando (voice)",
+                "thumb": "https://metadata-static.plex.tv/9/people/9a47edfa756694c91c4128d52f38fb9a.jpg"
+            },
+            {
+                "id": 8975,
+                "filter": "actor=8975",
+                "tag": "Misano Sakai",
+                "tagKey": "600ef7881f30fe002df5b5c2",
+                "role": "(voice)",
+                "thumb": "https://image.tmdb.org/t/p/original/7Uhp1kL5eB1NrAswvK82YBTMGUE.jpg"
+            },
+            {
+                "id": 8976,
+                "filter": "actor=8976",
+                "tag": "Hikari Aomi",
+                "tagKey": "6938f9896a9abbf5c6d5b188",
+                "role": "(voice)",
+                "thumb": "https://image.tmdb.org/t/p/original/gipPfIa3pZ9n4fERT0gHHgEeNso.jpg"
+            },
+            {
+                "id": 87,
+                "filter": "actor=87",
+                "tag": "Hayato Kimura",
+                "tagKey": "5f4057bb1ae71000410c83c6",
+                "role": "(voice)",
+                "thumb": "https://metadata-static.plex.tv/b/people/b8db1c7c8738c6761beb736eb43300a0.jpg"
+            },
+            {
+                "id": 8977,
+                "filter": "actor=8977",
+                "tag": "Takeo Motoi",
+                "tagKey": "654de98d3b98bb75771e19ff",
+                "role": "(voice)",
+                "thumb": "https://metadata-static.plex.tv/2/people/20d189bc03645b5ae88707cf456b3c82.jpg"
+            },
+            {
+                "id": 3891,
+                "filter": "actor=3891",
+                "tag": "Ryo Nishitani",
+                "tagKey": "5f3e32ca0fe0f10042727f65",
+                "count": 2,
+                "role": "(voice)",
+                "thumb": "https://metadata-static.plex.tv/6/people/627908826fbf4f8cf81e086339597389.jpg"
+            },
+            {
+                "id": 4480,
+                "filter": "actor=4480",
+                "tag": "Takahiro Sumi",
+                "tagKey": "5f40672a02101b0040fd8bf5",
+                "role": "(voice)",
+                "thumb": "https://metadata-static.plex.tv/d/people/d9ece283ecec38ca4c09a97f5c3cd349.jpg"
+            },
+            {
+                "id": 8978,
+                "filter": "actor=8978",
+                "tag": "Chihiro Ikki",
+                "tagKey": "5d776ada594b2b001e6c7d9b",
+                "role": "(voice)",
+                "thumb": "https://metadata-static.plex.tv/a/people/a6058920dece746e3b093708298a048c.jpg"
+            }
+        ],
+        "Producer": [
+            {
+                "id": 8711,
+                "filter": "producer=8711",
+                "tag": "Yusuke Nakai",
+                "tagKey": "6515394d2449eaa8c860247e"
+            }
+        ],
+        "CommonSenseMedia": [
+            {
+                "id": 6283,
+                "oneLiner": "Exciting but very violent follow-up to manga-based series.",
+                "AgeRating": [
+                    {
+                        "type": "official",
+                        "rating": 4,
+                        "age": 16
+                    }
+                ]
+            }
+        ]
+    }
+}

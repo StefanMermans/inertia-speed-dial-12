@@ -35,4 +35,16 @@ return [
         ],
     ],
 
+    'tmdb' => [
+        'api_key' => env('TMDB_API_KEY'),
+        'api_read_access_token' => env('TMDB_API_READ_ACCESS_TOKEN'),
+        'base_url' => 'https://api.themoviedb.org',
+    ],
+
+    'trakt' => [
+        'client_id' => env('TRAKT_CLIENT_ID'),
+        'client_secret' => env('TRAKT_CLIENT_SECRET'),
+        'base_url' => 'https://api.trakt.tv',
+    ],
+
 ];

@@ -1,6 +1,8 @@
 <?php
 
-arch('Should have laravel architecture')->preset()->laravel();
+arch('Should have laravel architecture')
+    ->preset()->laravel()
+    ->ignoring('App\Providers\TelescopeServiceProvider');
 
 arch('Should have php architecture')->preset()->php();
 

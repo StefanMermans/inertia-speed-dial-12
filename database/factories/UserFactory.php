@@ -31,6 +31,12 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'plex_account_id' => null,
+            'tmdb_access_token' => null,
+            'tmdb_account_object_id' => null,
+            'trakt_access_token' => null,
+            'trakt_refresh_token' => null,
+            'trakt_token_expires_at' => null,
         ];
     }
 
