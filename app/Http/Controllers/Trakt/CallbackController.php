@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Trakt;
 
 use App\Services\TraktApi\TraktApi;
 use Illuminate\Http\Client\RequestException;
@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class TraktAuthCallbackController extends Controller
+class CallbackController
 {
     public function __invoke(Request $request, TraktApi $traktApi): Response
     {

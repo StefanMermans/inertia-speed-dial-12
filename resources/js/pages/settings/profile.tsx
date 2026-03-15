@@ -137,8 +137,8 @@ export default function Profile({ mustVerifyEmail, status, connections }: Profil
                             description="Sync movies and TV shows to your TMDB lists"
                             icon={Film}
                             connected={connections.tmdb}
-                            connectUrl="/tmdb/auth"
-                            disconnectUrl="/settings/connections/tmdb"
+                            connectUrl={route('tmdb.redirect')}
+                            disconnectUrl={route('tmdb.disconnect')}
                         />
 
                         <ConnectionCard
@@ -146,8 +146,8 @@ export default function Profile({ mustVerifyEmail, status, connections }: Profil
                             description="Sync your watch history to Trakt"
                             icon={Tv}
                             connected={connections.trakt}
-                            connectUrl="/trakt/auth"
-                            disconnectUrl="/settings/connections/trakt"
+                            connectUrl={route('trakt.redirect')}
+                            disconnectUrl={route('trakt.disconnect')}
                         />
 
                         <PlexConnectionCard plexAccountId={connections.plex_account_id} />

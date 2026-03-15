@@ -5,16 +5,14 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Settings\UpdatePlexAccountRequest;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class UpdatePlexAccountController extends Controller
 {
-    public function __invoke(Request $request): RedirectResponse
+    public function __invoke(UpdatePlexAccountRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'plex_account_id' => ['nullable', 'integer'],
-        ]);
+        $validated = $request->validated();
 
         $request->user()->update([
             'plex_account_id' => $validated['plex_account_id'] !== '' ? $validated['plex_account_id'] : null,

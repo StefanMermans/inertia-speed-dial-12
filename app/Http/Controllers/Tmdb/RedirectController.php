@@ -2,17 +2,18 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Tmdb;
 
 use App\Services\TmdbApi\TmdbApi;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response as InertiaResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class TmdbAuthController extends Controller
+class RedirectController
 {
-    public function __invoke(Request $request, TmdbApi $tmdbApi): \Inertia\Response|Response
+    public function __invoke(Request $request, TmdbApi $tmdbApi): InertiaResponse|Response
     {
         $user = $request->user();
 

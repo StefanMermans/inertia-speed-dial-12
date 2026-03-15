@@ -8,6 +8,7 @@ use App\Data\PlexEvent\PlexEventData;
 use App\Data\PlexEvent\PlexEventRequestData;
 use App\Events\PlexScrobbleEvent;
 use App\Exceptions\InvalidPlexEventException;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
@@ -15,7 +16,7 @@ use Illuminate\Validation\ValidationException;
 
 class PlexEventController extends Controller
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         if (($plexEvent = $this->parsePlexEvent($request)) === null) {
             return $this->respond();
@@ -23,7 +24,12 @@ class PlexEventController extends Controller
 
         if ($plexEvent->isScrobble()) {
             Log::debug('Scrobble event');
-            event(new PlexScrobbleEvent($plexEvent));
+
+            $user = User::query()
+                ->where('plex_account_id', $plexEvent->Account->id)
+                ->first();
+
+            event(new PlexScrobbleEvent($plexEvent, $user));
         }
 
         return $this->respond();

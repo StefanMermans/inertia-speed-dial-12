@@ -2,13 +2,14 @@
 
 namespace Tests\Feature\TraktApi;
 
-use App\Http\Controllers\TraktAuthCallbackController;
-use App\Http\Controllers\TraktAuthController;
+use App\Http\Controllers\Trakt\CallbackController;
+use App\Http\Controllers\Trakt\DisconnectController;
+use App\Http\Controllers\Trakt\RedirectController;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Inertia\Testing\AssertableInertia;
 
-covers(TraktAuthController::class, TraktAuthCallbackController::class);
+covers(RedirectController::class, CallbackController::class, DisconnectController::class);
 
 beforeEach(function () {
     Http::preventStrayRequests();
@@ -200,5 +201,58 @@ it('renders failure page when trakt rejects the code', function () {
 
 it('requires authentication for callback', function () {
     $this->get(route('trakt.callback', ['code' => 'some-code', 'state' => 'some-state']))
+        ->assertRedirect(route('login'));
+});
+
+// ─── Disconnect ─────────────────────────────────────────────────────────────
+
+it('revokes trakt token and clears columns when disconnecting', function () {
+    Http::fake([
+        '*/oauth/revoke' => Http::response([], 200),
+    ]);
+
+    $user = User::factory()->create([
+        'trakt_access_token' => fake()->sha256(),
+        'trakt_refresh_token' => fake()->sha256(),
+        'trakt_token_expires_at' => now()->addDay(),
+    ]);
+
+    $this->actingAs($user)
+        ->delete(route('trakt.disconnect'))
+        ->assertRedirect(route('profile.edit'));
+
+    Http::assertSent(fn ($request) => str_contains($request->url(), '/oauth/revoke'));
+
+    $user->refresh();
+
+    expect($user->getRawOriginal('trakt_access_token'))->toBeNull()
+        ->and($user->getRawOriginal('trakt_refresh_token'))->toBeNull()
+        ->and($user->trakt_token_expires_at)->toBeNull();
+});
+
+it('clears trakt columns even when token revocation fails', function () {
+    Http::fake([
+        '*/oauth/revoke' => Http::response([], 500),
+    ]);
+
+    $user = User::factory()->create([
+        'trakt_access_token' => fake()->sha256(),
+        'trakt_refresh_token' => fake()->sha256(),
+        'trakt_token_expires_at' => now()->addDay(),
+    ]);
+
+    $this->actingAs($user)
+        ->delete(route('trakt.disconnect'))
+        ->assertRedirect(route('profile.edit'));
+
+    $user->refresh();
+
+    expect($user->getRawOriginal('trakt_access_token'))->toBeNull()
+        ->and($user->getRawOriginal('trakt_refresh_token'))->toBeNull()
+        ->and($user->trakt_token_expires_at)->toBeNull();
+});
+
+it('requires authentication for disconnect', function () {
+    $this->delete(route('trakt.disconnect'))
         ->assertRedirect(route('login'));
 });

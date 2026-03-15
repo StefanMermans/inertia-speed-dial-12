@@ -18,8 +18,8 @@ class TmdbApi
 
     public function __construct()
     {
-        $this->baseUrl = config('services.tmdb.base_url');
-        $this->apiReadAccessToken = config('services.tmdb.api_read_access_token');
+        $this->baseUrl = (string) config('services.tmdb.base_url');
+        $this->apiReadAccessToken = (string) config('services.tmdb.api_read_access_token');
     }
 
     public function createRequestToken(string $redirectTo): TmdbRequestTokenData

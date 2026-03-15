@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Tmdb;
 
 use App\Services\TmdbApi\TmdbApi;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class TmdbAuthCallbackController extends Controller
+class CallbackController
 {
     public function __invoke(Request $request, TmdbApi $tmdbApi): Response
     {
@@ -24,7 +25,7 @@ class TmdbAuthCallbackController extends Controller
 
         try {
             $accessToken = $tmdbApi->createAccessToken($requestToken);
-        } catch (\Illuminate\Http\Client\RequestException $e) {
+        } catch (RequestException) {
             return Inertia::render('tmdb/auth-result', [
                 'success' => false,
                 'message' => 'Authentication failed: TMDB rejected the request token. Please try again.',

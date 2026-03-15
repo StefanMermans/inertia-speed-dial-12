@@ -29,9 +29,9 @@ function parseFixture(string $name): PlexEventData
         ->payload;
 }
 
-function dispatchScrobble(PlexEventData $plexEvent): void
+function dispatchScrobble(PlexEventData $plexEvent, ?User $user): void
 {
-    event(new PlexScrobbleEvent($plexEvent));
+    event(new PlexScrobbleEvent($plexEvent, $user));
 }
 
 function fakeTraktSyncResponse(): void
@@ -58,14 +58,14 @@ describe('SyncWatchToTrakt listener', function () {
         $plexEvent = parseFixture('movie_scrobble_event');
         $metadata = $plexEvent->Metadata;
 
-        User::factory()->create([
+        $user = User::factory()->create([
             'plex_account_id' => $plexEvent->Account->id,
             'trakt_access_token' => 'valid-token',
             'trakt_refresh_token' => 'refresh-token',
             'trakt_token_expires_at' => now()->addDays(30),
         ]);
 
-        dispatchScrobble($plexEvent);
+        dispatchScrobble($plexEvent, $user);
 
         $expectedWatchedAt = Carbon::createFromTimestamp($metadata->lastViewedAt)->toIso8601String();
 
@@ -87,16 +87,15 @@ describe('SyncWatchToTrakt listener', function () {
         ]);
 
         $plexEvent = parseFixture('episode_scrobble_event');
-        $metadata = $plexEvent->Metadata;
 
-        User::factory()->create([
+        $user = User::factory()->create([
             'plex_account_id' => $plexEvent->Account->id,
             'trakt_access_token' => 'valid-token',
             'trakt_refresh_token' => 'refresh-token',
             'trakt_token_expires_at' => now()->addDays(30),
         ]);
 
-        dispatchScrobble($plexEvent);
+        dispatchScrobble($plexEvent, $user);
 
         Http::assertSent(function ($request) {
             return $request->url() === 'https://api.trakt.tv/sync/history'
@@ -112,14 +111,14 @@ describe('SyncWatchToTrakt listener', function () {
         $plexEvent = parseFixture('movie_scrobble_event');
         $metadata = $plexEvent->Metadata;
 
-        User::factory()->create([
+        $user = User::factory()->create([
             'plex_account_id' => $plexEvent->Account->id,
             'trakt_access_token' => 'valid-token',
             'trakt_refresh_token' => 'refresh-token',
             'trakt_token_expires_at' => now()->addDays(30),
         ]);
 
-        dispatchScrobble($plexEvent);
+        dispatchScrobble($plexEvent, $user);
 
         // Derive expected IDs from the fixture's Guid array
         $expectedIds = [];
@@ -150,14 +149,14 @@ describe('SyncWatchToTrakt listener', function () {
 
         expect($metadata->lastViewedAt)->not->toBeInstanceOf(Optional::class);
 
-        User::factory()->create([
+        $user = User::factory()->create([
             'plex_account_id' => $plexEvent->Account->id,
             'trakt_access_token' => 'valid-token',
             'trakt_refresh_token' => 'refresh-token',
             'trakt_token_expires_at' => now()->addDays(30),
         ]);
 
-        dispatchScrobble($plexEvent);
+        dispatchScrobble($plexEvent, $user);
 
         $expectedWatchedAt = Carbon::createFromTimestamp($metadata->lastViewedAt)->toIso8601String();
 
@@ -188,7 +187,7 @@ describe('SyncWatchToTrakt listener', function () {
             'trakt_token_expires_at' => now()->subDay(),
         ]);
 
-        dispatchScrobble(parseFixture('movie_scrobble_event'));
+        dispatchScrobble(parseFixture('movie_scrobble_event'), $user);
 
         $user->refresh();
         expect($user->trakt_access_token)->not->toBeNull()
@@ -198,18 +197,18 @@ describe('SyncWatchToTrakt listener', function () {
     });
 
     it('skips sync when user has no trakt connection', function () {
-        User::factory()->create([
+        $user = User::factory()->create([
             'plex_account_id' => 63204474,
             'trakt_access_token' => null,
         ]);
 
-        dispatchScrobble(parseFixture('movie_scrobble_event'));
+        dispatchScrobble(parseFixture('movie_scrobble_event'), $user);
 
         Http::assertNothingSent();
     });
 
-    it('skips sync when plex account does not match any user', function () {
-        dispatchScrobble(parseFixture('movie_scrobble_event'));
+    it('skips sync when user is null', function () {
+        dispatchScrobble(parseFixture('movie_scrobble_event'), null);
 
         Http::assertNothingSent();
     });
@@ -223,13 +222,13 @@ describe('SyncWatchToTrakt listener', function () {
             ->once()
             ->withArgs(fn ($message) => $message === 'Failed to sync watch to Trakt');
 
-        User::factory()->create([
+        $user = User::factory()->create([
             'plex_account_id' => 63204474,
             'trakt_access_token' => 'valid-token',
             'trakt_refresh_token' => 'refresh-token',
             'trakt_token_expires_at' => now()->addDays(30),
         ]);
 
-        dispatchScrobble(parseFixture('movie_scrobble_event'));
+        dispatchScrobble(parseFixture('movie_scrobble_event'), $user);
     });
 });

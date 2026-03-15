@@ -1,11 +1,46 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\User;
 
 it('renders the profile settings page', function () {
     $this->actingAs(User::factory()->create())
         ->get('/settings/profile')
         ->assertOk();
+});
+
+it('passes connections data to the profile page', function () {
+    $user = User::factory()->create([
+        'tmdb_access_token' => 'tmdb-token',
+        'trakt_access_token' => 'trakt-token',
+        'plex_account_id' => fake()->randomNumber(),
+    ]);
+
+    $this->actingAs($user)
+        ->get('/settings/profile')
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page
+            ->component('settings/profile')
+            ->has('connections')
+            ->where('connections.tmdb', true)
+            ->where('connections.trakt', true)
+            ->where('connections.plex_account_id', $user->plex_account_id)
+        );
+});
+
+it('shows disconnected state when no services are connected', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->get('/settings/profile')
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page
+            ->component('settings/profile')
+            ->where('connections.tmdb', false)
+            ->where('connections.trakt', false)
+            ->where('connections.plex_account_id', null)
+        );
 });
 
 it('updates profile name and email', function () {

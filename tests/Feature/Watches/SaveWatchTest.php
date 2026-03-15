@@ -32,13 +32,13 @@ function parseFixture(string $name): PlexEventData
         ->payload;
 }
 
-function dispatchScrobble(PlexEventData $plexEvent): void
+function dispatchScrobble(PlexEventData $plexEvent, ?User $user): void
 {
-    event(new PlexScrobbleEvent($plexEvent));
+    event(new PlexScrobbleEvent($plexEvent, $user));
 }
 
 beforeEach(function () {
-    User::factory()->create([
+    $this->user = User::factory()->create([
         'plex_account_id' => 63204474,
     ]);
 });
@@ -48,10 +48,10 @@ describe('SaveWatch listener', function () {
         $plexEvent = parseFixture('movie_scrobble_event');
         $metadata = $plexEvent->Metadata;
 
-        dispatchScrobble($plexEvent);
+        dispatchScrobble($plexEvent, $this->user);
 
-        assertDatabaseCount('watches', 1);
-        assertDatabaseHas('watches', [
+        assertDatabaseCount(Watch::class, 1);
+        assertDatabaseHas(Watch::class, [
             'type' => 'movie',
             'title' => $metadata->title,
             'year' => $metadata->year,
@@ -66,16 +66,16 @@ describe('SaveWatch listener', function () {
         $plexEvent = parseFixture('episode_scrobble_event');
         $metadata = $plexEvent->Metadata;
 
-        dispatchScrobble($plexEvent);
+        dispatchScrobble($plexEvent, $this->user);
 
-        assertDatabaseCount('series', 1);
-        assertDatabaseCount('watches', 1);
+        assertDatabaseCount(Series::class, 1);
+        assertDatabaseCount(Watch::class, 1);
 
         $series = Series::first();
         expect($series->title)->toBe($metadata->grandparentTitle)
             ->and($series->plex_rating_key)->toBe($metadata->grandparentRatingKey);
 
-        assertDatabaseHas('watches', [
+        assertDatabaseHas(Watch::class, [
             'type' => 'episode',
             'title' => $metadata->title,
             'year' => $metadata->year,
@@ -90,40 +90,37 @@ describe('SaveWatch listener', function () {
         $episode1 = parseFixture('episode_scrobble_event');
         $episode2 = parseFixture('episode_scrobble_event_2');
 
-        dispatchScrobble($episode1);
-        dispatchScrobble($episode2);
+        dispatchScrobble($episode1, $this->user);
+        dispatchScrobble($episode2, $this->user);
 
         // Different shows (different grandparentRatingKey), so 2 series
-        assertDatabaseCount('series', 2);
-        assertDatabaseCount('watches', 2);
+        assertDatabaseCount(Series::class, 2);
+        assertDatabaseCount(Watch::class, 2);
     });
 
     it('is idempotent for duplicate scrobbles', function () {
         $plexEvent = parseFixture('movie_scrobble_event');
 
-        dispatchScrobble($plexEvent);
-        dispatchScrobble($plexEvent);
+        dispatchScrobble($plexEvent, $this->user);
+        dispatchScrobble($plexEvent, $this->user);
 
-        assertDatabaseCount('watches', 1);
+        assertDatabaseCount(Watch::class, 1);
     });
 
-    it('does not create a watch when plex_account_id does not match any user', function () {
-        User::query()->where('plex_account_id', 63204474)->delete();
+    it('does not create a watch when user is null', function () {
+        dispatchScrobble(parseFixture('movie_scrobble_event'), null);
 
-        dispatchScrobble(parseFixture('movie_scrobble_event'));
-
-        assertDatabaseCount('watches', 0);
+        assertDatabaseCount(Watch::class, 0);
     });
 
     it('parses external IDs from Guid array into the watch', function () {
         $plexEvent = parseFixture('movie_scrobble_event');
 
-        dispatchScrobble($plexEvent);
+        dispatchScrobble($plexEvent, $this->user);
 
         $watch = Watch::first();
         $guids = $plexEvent->Metadata->Guid;
 
-        // Verify the Guid data was correctly parsed and stored
         expect($guids)->not->toBeInstanceOf(Optional::class)
             ->and($watch->imdb_id)->not->toBeNull()
             ->and($watch->tmdb_id)->not->toBeNull()
@@ -134,7 +131,7 @@ describe('SaveWatch listener', function () {
         $plexEvent = parseFixture('movie_scrobble_event');
         $metadata = $plexEvent->Metadata;
 
-        dispatchScrobble($plexEvent);
+        dispatchScrobble($plexEvent, $this->user);
 
         $watch = Watch::first();
         $expectedWatchedAt = Carbon::createFromTimestamp($metadata->lastViewedAt);

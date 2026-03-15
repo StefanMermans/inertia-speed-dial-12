@@ -6,7 +6,9 @@ namespace App\Services\TraktApi;
 
 use App\Data\Trakt\TraktSyncHistoryData;
 use App\Data\Trakt\TraktTokenData;
+use App\Models\User;
 use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 
 class TraktApi
@@ -19,9 +21,9 @@ class TraktApi
 
     public function __construct()
     {
-        $this->clientId = config('services.trakt.client_id');
-        $this->clientSecret = config('services.trakt.client_secret');
-        $this->baseUrl = config('services.trakt.base_url');
+        $this->clientId = (string) config('services.trakt.client_id');
+        $this->clientSecret = (string) config('services.trakt.client_secret');
+        $this->baseUrl = (string) config('services.trakt.base_url');
     }
 
     public function getAuthorizeUrl(string $state): string
@@ -64,6 +66,27 @@ class TraktApi
         $response->throw();
 
         return TraktTokenData::from($response->json());
+    }
+
+    public function resolveUserAccessToken(User $user): ?string
+    {
+        if (! $user->trakt_token_expires_at?->isPast()) {
+            return $user->trakt_access_token;
+        }
+
+        try {
+            $tokenData = $this->refreshToken($user->trakt_refresh_token);
+        } catch (RequestException) {
+            return null;
+        }
+
+        $user->update([
+            'trakt_access_token' => $tokenData->access_token,
+            'trakt_refresh_token' => $tokenData->refresh_token,
+            'trakt_token_expires_at' => now()->addSeconds($tokenData->expires_in),
+        ]);
+
+        return $tokenData->access_token;
     }
 
     /**

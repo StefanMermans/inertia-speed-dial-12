@@ -2,13 +2,14 @@
 
 namespace Tests\Feature\TmdbApi;
 
-use App\Http\Controllers\TmdbAuthCallbackController;
-use App\Http\Controllers\TmdbAuthController;
+use App\Http\Controllers\Tmdb\CallbackController;
+use App\Http\Controllers\Tmdb\DisconnectController;
+use App\Http\Controllers\Tmdb\RedirectController;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Inertia\Testing\AssertableInertia;
 
-covers(TmdbAuthController::class, TmdbAuthCallbackController::class);
+covers(RedirectController::class, CallbackController::class, DisconnectController::class);
 
 beforeEach(function () {
     config()->set('services.tmdb.base_url', 'https://api.themoviedb.org');
@@ -182,5 +183,28 @@ it('renders failure page when tmdb rejects the request token', function () {
 
 it('requires authentication for callback', function () {
     $this->get(route('tmdb.callback', ['request_token' => 'some-token']))
+        ->assertRedirect(route('login'));
+});
+
+// ─── Disconnect ─────────────────────────────────────────────────────────────
+
+it('clears tmdb tokens when disconnecting', function () {
+    $user = User::factory()->create([
+        'tmdb_access_token' => fake()->sha256(),
+        'tmdb_account_object_id' => fake()->uuid(),
+    ]);
+
+    $this->actingAs($user)
+        ->delete(route('tmdb.disconnect'))
+        ->assertRedirect(route('profile.edit'));
+
+    $user->refresh();
+
+    expect($user->getRawOriginal('tmdb_access_token'))->toBeNull()
+        ->and($user->tmdb_account_object_id)->toBeNull();
+});
+
+it('requires authentication for disconnect', function () {
+    $this->delete(route('tmdb.disconnect'))
         ->assertRedirect(route('login'));
 });
