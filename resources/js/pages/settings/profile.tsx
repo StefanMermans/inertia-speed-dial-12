@@ -177,10 +177,7 @@ export default function Profile({ mustVerifyEmail, status, connections, connecti
                 <div className="space-y-6">
                     <HeadingSmall title="Connected services" description="Connect your accounts to enable syncing and tracking" />
 
-                    <Deferred
-                        data="connectionVerification"
-                        fallback={<ServiceConnectionCards connections={connections} />}
-                    >
+                    <Deferred data="connectionVerification" fallback={<ServiceConnectionCards connections={connections} />}>
                         <ServiceConnectionCards connections={connections} connectionVerification={connectionVerification} />
                     </Deferred>
                 </div>
