@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import { Site as SiteType } from '@/Pages/speed-dial';
+import { Site as SiteType } from '@/pages/speed-dial';
 import { CSSProperties, useMemo } from 'react';
 
 type Props = {
