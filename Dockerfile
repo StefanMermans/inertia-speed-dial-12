@@ -50,8 +50,7 @@ RUN composer install --no-interaction --prefer-dist --no-dev --optimize-autoload
 
 # Laravel setup
 RUN php artisan storage:link \
-    && php artisan ziggy:generate \
-    && php artisan optimize
+    && php artisan ziggy:generate
 
 # Install Node packages and build
 RUN npm install \
