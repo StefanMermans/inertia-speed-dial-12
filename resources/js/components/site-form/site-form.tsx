@@ -3,7 +3,7 @@ import ColorPicker from '@/components/controls/colorPicker';
 import Input from '@/components/controls/input';
 import { Site as SiteComponent } from '@/components/speed-dial/site';
 import { cn } from '@/lib/utils';
-import { type Site } from '@/pages/speed-dial';
+import { type Site } from '@/Pages/speed-dial';
 import { router, useForm } from '@inertiajs/react';
 import axios from 'axios';
 import { ComponentProps, FormEvent, FormEventHandler, useMemo } from 'react';
