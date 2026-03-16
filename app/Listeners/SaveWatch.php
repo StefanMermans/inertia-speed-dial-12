@@ -20,7 +20,7 @@ class SaveWatch
     {
         $metadata = $event->plexEvent->Metadata;
         $watchType = $this->resolveWatchType($metadata);
-        $series = $this->resolveSeries($metadata, $watchType);
+        $series = $this->updateOrCreateSeries($metadata, $watchType);
 
         $this->createWatch($event->user, $metadata, $watchType, $series);
     }
@@ -30,7 +30,7 @@ class SaveWatch
         return $metadata->type === 'episode' ? WatchType::Episode : WatchType::Movie;
     }
 
-    private function resolveSeries(PlexMetadataData $metadata, WatchType $watchType): ?Series
+    private function updateOrCreateSeries(PlexMetadataData $metadata, WatchType $watchType): ?Series
     {
         if ($watchType !== WatchType::Episode || $metadata->grandparentRatingKey instanceof Optional) {
             return null;

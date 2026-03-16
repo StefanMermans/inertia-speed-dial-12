@@ -6,7 +6,6 @@ namespace App\Listeners;
 
 use App\Data\PlexEvent\PlexMetadataData;
 use App\Events\PlexScrobbleEvent;
-use App\Models\User;
 use App\Services\TraktApi\TraktApi;
 use App\Support\ExternalIds;
 use App\Support\PlexTimestamp;
@@ -21,7 +20,7 @@ class SyncWatchToTrakt
 
     public function handle(PlexScrobbleEvent $event): void
     {
-        if (! $this->hasValidTraktConnection($event->user)) {
+        if (! $event->user->hasTraktConnection()) {
             return;
         }
 
@@ -36,11 +35,6 @@ class SyncWatchToTrakt
         $payload = $this->buildPayload($event->plexEvent->Metadata);
 
         $this->syncToTrakt($token, $payload);
-    }
-
-    private function hasValidTraktConnection(User $user): bool
-    {
-        return (bool) $user->getRawOriginal('trakt_access_token');
     }
 
     /**

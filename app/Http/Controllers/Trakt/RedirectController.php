@@ -18,12 +18,8 @@ class RedirectController
         /** @var User $user */
         $user = $request->user();
 
-        if ($user->getRawOriginal('trakt_access_token')) {
-            $resolvedToken = $traktApi->resolveUserAccessToken($user);
-
-            if ($resolvedToken) {
-                return to_route('profile.edit');
-            }
+        if ($user->verifyTraktConnection()) {
+            return to_route('profile.edit');
         }
 
         $state = Str::random(40);

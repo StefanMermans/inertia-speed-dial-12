@@ -17,9 +17,7 @@ class DisconnectController
     {
         /** @var User $user */
         $user = $request->user();
-        $rawToken = $user->getRawOriginal('trakt_access_token');
-
-        if ($rawToken) {
+        if ($user->hasTraktConnection()) {
             try {
                 $traktApi->revokeToken($user->trakt_access_token);
             } catch (RequestException) {
