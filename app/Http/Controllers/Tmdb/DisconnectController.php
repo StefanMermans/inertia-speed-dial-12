@@ -11,10 +11,10 @@ class DisconnectController
 {
     public function __invoke(Request $request): RedirectResponse
     {
-        $request->user()->update([
+        $request->user()->forceFill([
             'tmdb_access_token' => null,
             'tmdb_account_object_id' => null,
-        ]);
+        ])->save();
 
         return to_route('profile.edit');
     }

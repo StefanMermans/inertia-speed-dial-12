@@ -25,12 +25,6 @@ final class User extends Authenticatable
         'name',
         'email',
         'password',
-        'tmdb_access_token',
-        'tmdb_account_object_id',
-        'plex_account_id',
-        'trakt_access_token',
-        'trakt_refresh_token',
-        'trakt_token_expires_at',
     ];
 
     /**

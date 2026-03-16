@@ -80,11 +80,11 @@ class TraktApi
             return null;
         }
 
-        $user->update([
+        $user->forceFill([
             'trakt_access_token' => $tokenData->access_token,
             'trakt_refresh_token' => $tokenData->refresh_token,
             'trakt_token_expires_at' => now()->addSeconds($tokenData->expires_in),
-        ]);
+        ])->save();
 
         return $tokenData->access_token;
     }

@@ -27,11 +27,11 @@ class DisconnectController
             }
         }
 
-        $user->update([
+        $user->forceFill([
             'trakt_access_token' => null,
             'trakt_refresh_token' => null,
             'trakt_token_expires_at' => null,
-        ]);
+        ])->save();
 
         return to_route('profile.edit');
     }

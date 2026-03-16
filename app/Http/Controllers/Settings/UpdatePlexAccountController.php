@@ -14,9 +14,9 @@ class UpdatePlexAccountController extends Controller
     {
         $validated = $request->validated();
 
-        $request->user()->update([
+        $request->user()->forceFill([
             'plex_account_id' => $validated['plex_account_id'] !== '' ? $validated['plex_account_id'] : null,
-        ]);
+        ])->save();
 
         return to_route('profile.edit');
     }

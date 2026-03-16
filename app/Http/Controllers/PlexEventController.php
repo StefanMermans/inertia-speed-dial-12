@@ -18,7 +18,10 @@ class PlexEventController
 {
     public function __invoke(Request $request): Response
     {
-        if ($request->query('token') !== config('services.plex.webhook_token')) {
+        $configuredToken = config('services.plex.webhook_token');
+        $requestToken = $request->query('token');
+
+        if (! $configuredToken || ! is_string($requestToken) || ! hash_equals($configuredToken, $requestToken)) {
             abort(401);
         }
 

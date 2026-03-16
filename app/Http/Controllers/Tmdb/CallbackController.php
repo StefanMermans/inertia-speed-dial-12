@@ -33,10 +33,10 @@ class CallbackController
             ]);
         }
 
-        $request->user()->update([
+        $request->user()->forceFill([
             'tmdb_access_token' => $accessToken->access_token,
             'tmdb_account_object_id' => $accessToken->account_id,
-        ]);
+        ])->save();
 
         return to_route('profile.edit');
     }
