@@ -4,6 +4,9 @@ import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
+import React from 'react';
+
+export type SidbarNavItemName = 'profile' | 'password' | 'appearance';
 
 const sidebarNavItems: NavItem[] = [
     {
@@ -23,9 +26,12 @@ const sidebarNavItems: NavItem[] = [
     },
 ];
 
-export default function SettingsLayout({ children }: { children: React.ReactNode }) {
-    const currentPath = window.location.pathname;
+type Props = Readonly<{
+    children: React.ReactNode;
+    selectedNavItem: SidbarNavItemName;
+}>;
 
+export default function SettingsLayout({ children, selectedNavItem }: Props) {
     return (
         <div className="px-4 py-6">
             <Heading title="Settings" description="Manage your profile and account settings" />
@@ -40,7 +46,7 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
                                 variant="ghost"
                                 asChild
                                 className={cn('w-full justify-start', {
-                                    'bg-muted': currentPath === item.url,
+                                    'bg-muted': selectedNavItem === item.url,
                                 })}
                             >
                                 <Link href={item.url} prefetch>

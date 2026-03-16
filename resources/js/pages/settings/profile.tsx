@@ -98,7 +98,7 @@ export default function Profile({ mustVerifyEmail, status, connections, connecti
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Profile settings" />
 
-            <SettingsLayout>
+            <SettingsLayout selectedNavItem={'profile'}>
                 <div className="space-y-6">
                     <HeadingSmall title="Profile information" description="Update your name and email address" />
 

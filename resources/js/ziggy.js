@@ -1,5 +1,5 @@
 const Ziggy = {
-    url: 'https:\/\/iniertia-speed-dial-12.test',
+    url: 'https:\/\/inertia-speed-dial-12.test',
     port: null,
     defaults: {},
     routes: {

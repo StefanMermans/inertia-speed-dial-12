@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Models\Site;
 use Illuminate\Database\Seeder;
 
 class SiteSeeder extends Seeder
@@ -90,9 +89,10 @@ class SiteSeeder extends Seeder
             ],
         ];
 
-        foreach ($data as $site) {
-            Site::create($site);
-        }
+        //        foreach ($data as $site) {
+        //            $iconPath = $site['icon_path'];
+        //
+        //        }
 
     }
 }
