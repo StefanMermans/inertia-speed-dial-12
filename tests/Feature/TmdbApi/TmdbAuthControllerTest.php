@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\TmdbApi;
 
 use App\Http\Controllers\Tmdb\CallbackController;

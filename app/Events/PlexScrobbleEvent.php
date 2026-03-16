@@ -14,6 +14,6 @@ class PlexScrobbleEvent
 
     public function __construct(
         public readonly PlexEventData $plexEvent,
-        public readonly ?User $user = null,
+        public readonly User $user,
     ) {}
 }

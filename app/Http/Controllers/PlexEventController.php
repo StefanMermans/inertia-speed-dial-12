@@ -14,10 +14,14 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
-class PlexEventController extends Controller
+class PlexEventController
 {
     public function __invoke(Request $request): Response
     {
+        if ($request->query('token') !== config('services.plex.webhook_token')) {
+            abort(401);
+        }
+
         if (($plexEvent = $this->parsePlexEvent($request)) === null) {
             return $this->respond();
         }
@@ -29,7 +33,9 @@ class PlexEventController extends Controller
                 ->where('plex_account_id', $plexEvent->Account->id)
                 ->first();
 
-            event(new PlexScrobbleEvent($plexEvent, $user));
+            if ($user) {
+                event(new PlexScrobbleEvent($plexEvent, $user));
+            }
         }
 
         return $this->respond();

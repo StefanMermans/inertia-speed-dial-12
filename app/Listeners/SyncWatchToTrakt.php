@@ -9,10 +9,9 @@ use App\Events\PlexScrobbleEvent;
 use App\Models\User;
 use App\Services\TraktApi\TraktApi;
 use App\Support\ExternalIds;
-use Carbon\Carbon;
+use App\Support\PlexTimestamp;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Log;
-use Spatie\LaravelData\Optional;
 
 class SyncWatchToTrakt
 {
@@ -22,16 +21,14 @@ class SyncWatchToTrakt
 
     public function handle(PlexScrobbleEvent $event): void
     {
-        $user = $event->user;
-
-        if (! $user || ! $this->hasValidTraktConnection($user)) {
+        if (! $this->hasValidTraktConnection($event->user)) {
             return;
         }
 
-        $token = $this->traktApi->resolveUserAccessToken($user);
+        $token = $this->traktApi->resolveUserAccessToken($event->user);
 
         if (! $token) {
-            Log::warning('Failed to resolve Trakt access token', ['user_id' => $user->id]);
+            Log::warning('Failed to resolve Trakt access token', ['user_id' => $event->user->id]);
 
             return;
         }
@@ -52,7 +49,7 @@ class SyncWatchToTrakt
     private function buildPayload(PlexMetadataData $metadata): array
     {
         $ids = ExternalIds::fromPlexGuids($metadata->Guid)->toTraktArray();
-        $watchedAt = $this->resolveWatchedAt($metadata);
+        $watchedAt = PlexTimestamp::resolveWatchedAt($metadata->lastViewedAt)->toIso8601String();
 
         if ($metadata->type === 'episode') {
             return [
@@ -73,15 +70,6 @@ class SyncWatchToTrakt
                 ],
             ],
         ];
-    }
-
-    private function resolveWatchedAt(PlexMetadataData $metadata): string
-    {
-        $watchedAt = $metadata->lastViewedAt instanceof Optional
-            ? now()
-            : Carbon::createFromTimestamp($metadata->lastViewedAt);
-
-        return $watchedAt->toIso8601String();
     }
 
     /**

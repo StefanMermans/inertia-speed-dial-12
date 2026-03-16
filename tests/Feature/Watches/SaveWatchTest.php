@@ -7,7 +7,6 @@ namespace Tests\Feature\Watches\SaveWatchTest;
 use App\Data\PlexEvent\PlexEventData;
 use App\Data\PlexEvent\PlexEventRequestData;
 use App\Events\PlexScrobbleEvent;
-use App\Listeners\SaveWatch;
 use App\Models\Series;
 use App\Models\User;
 use App\Models\Watch;
@@ -17,7 +16,7 @@ use Spatie\LaravelData\Optional;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
 
-covers(SaveWatch::class);
+covers(\App\Listeners\SaveWatch::class);
 
 function parseFixture(string $name): PlexEventData
 {
@@ -32,7 +31,7 @@ function parseFixture(string $name): PlexEventData
         ->payload;
 }
 
-function dispatchScrobble(PlexEventData $plexEvent, ?User $user): void
+function dispatchScrobble(PlexEventData $plexEvent, User $user): void
 {
     event(new PlexScrobbleEvent($plexEvent, $user));
 }
@@ -105,12 +104,6 @@ describe('SaveWatch listener', function () {
         dispatchScrobble($plexEvent, $this->user);
 
         assertDatabaseCount(Watch::class, 1);
-    });
-
-    it('does not create a watch when user is null', function () {
-        dispatchScrobble(parseFixture('movie_scrobble_event'), null);
-
-        assertDatabaseCount(Watch::class, 0);
     });
 
     it('parses external IDs from Guid array into the watch', function () {

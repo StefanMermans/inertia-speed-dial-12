@@ -11,24 +11,18 @@ use App\Models\Series;
 use App\Models\User;
 use App\Models\Watch;
 use App\Support\ExternalIds;
-use Carbon\Carbon;
+use App\Support\PlexTimestamp;
 use Spatie\LaravelData\Optional;
 
 class SaveWatch
 {
     public function handle(PlexScrobbleEvent $event): void
     {
-        $user = $event->user;
-
-        if (! $user) {
-            return;
-        }
-
         $metadata = $event->plexEvent->Metadata;
         $watchType = $this->resolveWatchType($metadata);
         $series = $this->resolveSeries($metadata, $watchType);
 
-        $this->createWatch($user, $metadata, $watchType, $series);
+        $this->createWatch($event->user, $metadata, $watchType, $series);
     }
 
     private function resolveWatchType(PlexMetadataData $metadata): WatchType
@@ -54,9 +48,7 @@ class SaveWatch
 
     private function createWatch(User $user, PlexMetadataData $metadata, WatchType $watchType, ?Series $series): void
     {
-        $watchedAt = $metadata->lastViewedAt instanceof Optional
-            ? now()
-            : Carbon::createFromTimestamp($metadata->lastViewedAt);
+        $watchedAt = PlexTimestamp::resolveWatchedAt($metadata->lastViewedAt);
 
         Watch::firstOrCreate(
             [

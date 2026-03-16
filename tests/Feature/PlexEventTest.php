@@ -7,6 +7,7 @@ namespace Tests\Feature\PlexEventTest;
 use App\Events\PlexScrobbleEvent;
 use App\Exceptions\InvalidPlexEventException;
 use App\Http\Controllers\PlexEventController;
+use App\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Exceptions;
@@ -14,13 +15,13 @@ use Illuminate\Validation\ValidationException;
 
 covers(PlexEventController::class);
 
-function buildNonsenseArray(): array
+function buildNonsenseArray(int $depth = 0): array
 {
     $keys = array_fill(0, fake()->numberBetween(1, 3), '');
 
-    return Arr::mapWithKeys($keys, function () {
-        if (fake()->boolean()) {
-            $value = buildNonsenseArray();
+    return Arr::mapWithKeys($keys, function () use ($depth) {
+        if ($depth < 3 && fake()->boolean()) {
+            $value = buildNonsenseArray($depth + 1);
         } else {
             $value = fake()->word();
         }
@@ -31,17 +32,38 @@ function buildNonsenseArray(): array
     });
 }
 
+function plexEventUrl(): string
+{
+    return route('api.plex-event', ['token' => config('services.plex.webhook_token')]);
+}
+
+beforeEach(function () {
+    config()->set('services.plex.webhook_token', 'test-webhook-token');
+});
+
 describe('Plex event endpoint', function () {
+    it('rejects requests without a valid token', function () {
+        $this
+            ->postJson(route('api.plex-event'))
+            ->assertUnauthorized();
+    });
+
+    it('rejects requests with an invalid token', function () {
+        $this
+            ->postJson(route('api.plex-event', ['token' => 'wrong-token']))
+            ->assertUnauthorized();
+    });
+
     it('handles plex events without error', function (array $plexEvent) {
         $this
-            ->postJson(route('api.plex-event'), $plexEvent)
+            ->postJson(plexEventUrl(), $plexEvent)
             ->assertSuccessful();
     })
         ->with('plex-events');
 
     it('handles nonsense events without error', function () {
         $this
-            ->postJson(route('api.plex-event'), ['payload' => json_encode(buildNonsenseArray())])
+            ->postJson(plexEventUrl(), ['payload' => json_encode(buildNonsenseArray())])
             ->assertSuccessful();
     });
 
@@ -49,7 +71,7 @@ describe('Plex event endpoint', function () {
         Exceptions::fake();
 
         $this
-            ->postJson(route('api.plex-event'), ['payload' => json_encode(buildNonsenseArray())])
+            ->postJson(plexEventUrl(), ['payload' => json_encode(buildNonsenseArray())])
             ->assertSuccessful();
 
         Exceptions::assertReported(InvalidPlexEventException::class);
@@ -60,7 +82,7 @@ describe('Plex event endpoint', function () {
 
     it('returns no content for json', function () {
         $this
-            ->postJson(route('api.plex-event'), ['payload' => json_encode(buildNonsenseArray())])
+            ->postJson(plexEventUrl(), ['payload' => json_encode(buildNonsenseArray())])
             ->assertNoContent();
     });
 
@@ -71,12 +93,25 @@ describe('Plex event endpoint', function () {
         );
     });
 
-    it('dispatches scrobble event on plex scrobble', function (array $plexEvent) {
+    it('does not dispatch scrobble event when user is not found', function (array $plexEvent) {
         Event::fake();
 
-        $this->postJson(route('api.plex-event'), $plexEvent);
+        $this->postJson(plexEventUrl(), $plexEvent);
 
-        Event::assertDispatched(PlexScrobbleEvent::class);
+        Event::assertNotDispatched(PlexScrobbleEvent::class);
+    })
+        ->with('plex-events.scrobble');
+
+    it('dispatches scrobble event with matching user', function (array $plexEvent) {
+        Event::fake();
+
+        User::factory()->create(['plex_account_id' => 63204474]);
+
+        $this->postJson(plexEventUrl(), $plexEvent);
+
+        Event::assertDispatched(PlexScrobbleEvent::class, function (PlexScrobbleEvent $event) {
+            return $event->user->plex_account_id === 63204474;
+        });
     })
         ->with('plex-events.scrobble');
 });

@@ -29,7 +29,7 @@ function parseFixture(string $name): PlexEventData
         ->payload;
 }
 
-function dispatchScrobble(PlexEventData $plexEvent, ?User $user): void
+function dispatchScrobble(PlexEventData $plexEvent, User $user): void
 {
     event(new PlexScrobbleEvent($plexEvent, $user));
 }
@@ -203,12 +203,6 @@ describe('SyncWatchToTrakt listener', function () {
         ]);
 
         dispatchScrobble(parseFixture('movie_scrobble_event'), $user);
-
-        Http::assertNothingSent();
-    });
-
-    it('skips sync when user is null', function () {
-        dispatchScrobble(parseFixture('movie_scrobble_event'), null);
 
         Http::assertNothingSent();
     });
