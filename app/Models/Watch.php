@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\WatchType;
+use App\Observers\SyncWatchToTrakt;
 use Database\Factories\WatchFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+#[ObservedBy(SyncWatchToTrakt::class)]
 final class Watch extends Model
 {
     /** @use HasFactory<WatchFactory> */

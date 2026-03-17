@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Support\PlexUrlGenerator;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 
-class PlexFixtureTest extends Command
+class PlexFixtureTestCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -32,9 +34,10 @@ class PlexFixtureTest extends Command
         }
     }
 
-    protected function sendFixture(string $filename): void {
+    protected function sendFixture(string $filename): void
+    {
 
-        $this->info("Sending: ". basename($filename));
+        $this->info('Sending: '.basename($filename));
         $this->info(PlexUrlGenerator::generate());
         Http::asJson()
             ->acceptJson()
