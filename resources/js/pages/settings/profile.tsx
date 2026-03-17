@@ -1,11 +1,14 @@
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Transition } from '@headlessui/react';
-import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { Deferred, Head, Link, useForm, usePage } from '@inertiajs/react';
+import { Film, Tv } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
+import { ConnectionCard, type ConnectionStatus } from '@/components/connection-card';
 import DeleteUser from '@/components/delete-user';
 import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
+import { PlexConnectionCard } from '@/components/plex-connection-card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -19,7 +22,63 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
+interface ProfileProps {
+    mustVerifyEmail: boolean;
+    status?: string;
+    connections: {
+        tmdb_has_token: boolean;
+        trakt_has_token: boolean;
+        plex_account_id: number | null;
+    };
+    connectionVerification?: {
+        tmdb: boolean;
+        trakt: boolean;
+    };
+}
+
+function resolveConnectionStatus(hasToken: boolean, verified?: boolean): ConnectionStatus {
+    if (!hasToken) return 'disconnected';
+    if (verified === undefined) return 'verifying';
+    if (verified) return 'connected';
+    return 'error';
+}
+
+function ServiceConnectionCards({
+    connections,
+    connectionVerification,
+}: {
+    connections: ProfileProps['connections'];
+    connectionVerification?: ProfileProps['connectionVerification'];
+}) {
+    const tmdbStatus = resolveConnectionStatus(connections.tmdb_has_token, connectionVerification?.tmdb);
+    const traktStatus = resolveConnectionStatus(connections.trakt_has_token, connectionVerification?.trakt);
+
+    return (
+        <div className="space-y-3">
+            <ConnectionCard
+                label="TMDB"
+                description="Sync movies and TV shows to your TMDB lists"
+                icon={Film}
+                status={tmdbStatus}
+                connectUrl={route('tmdb.redirect')}
+                disconnectUrl={route('tmdb.disconnect')}
+            />
+
+            <ConnectionCard
+                label="Trakt"
+                description="Sync your watch history to Trakt"
+                icon={Tv}
+                status={traktStatus}
+                connectUrl={route('trakt.redirect')}
+                disconnectUrl={route('trakt.disconnect')}
+            />
+
+            <PlexConnectionCard plexAccountId={connections.plex_account_id} />
+        </div>
+    );
+}
+
+export default function Profile({ mustVerifyEmail, status, connections, connectionVerification }: ProfileProps) {
     const { auth } = usePage<SharedData>().props;
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
@@ -39,7 +98,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Profile settings" />
 
-            <SettingsLayout>
+            <SettingsLayout selectedNavItem={'profile'}>
                 <div className="space-y-6">
                     <HeadingSmall title="Profile information" description="Update your name and email address" />
 
@@ -113,6 +172,14 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                             </Transition>
                         </div>
                     </form>
+                </div>
+
+                <div className="space-y-6">
+                    <HeadingSmall title="Connected services" description="Connect your accounts to enable syncing and tracking" />
+
+                    <Deferred data="connectionVerification" fallback={<ServiceConnectionCards connections={connections} />}>
+                        <ServiceConnectionCards connections={connections} connectionVerification={connectionVerification} />
+                    </Deferred>
                 </div>
 
                 <DeleteUser />

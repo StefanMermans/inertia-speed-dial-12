@@ -1,0 +1,546 @@
+{
+    "event": "media.scrobble",
+    "user": true,
+    "owner": true,
+    "Account": {
+        "id": 63204474,
+        "thumb": "https://plex.tv/users/ea224c9df2051e82/avatar?c=1768643438",
+        "title": "StefanMermans"
+    },
+    "Server": {
+        "title": "ServerStefan",
+        "uuid": "1294172e00f074281a2deua9bb22a78128e19201"
+    },
+    "Player": {
+        "local": true,
+        "publicAddress": "128.77.115.215",
+        "title": "Stefans-MacBook-Pro.local",
+        "uuid": "adfa2jun21na2aj2hejsog0i"
+    },
+    "Metadata": {
+        "librarySectionType": "show",
+        "ratingKey": "463",
+        "key": "/library/metadata/463",
+        "parentRatingKey": "462",
+        "grandparentRatingKey": "461",
+        "guid": "plex://episode/6730f2fbe672c8f91cb47ffc",
+        "parentGuid": "plex://season/632b4f857444016e2c3f6454",
+        "grandparentGuid": "plex://show/5d9c09123c3f87001f35b9ca",
+        "grandparentSlug": "andor",
+        "type": "episode",
+        "title": "One Year Later",
+        "grandparentKey": "/library/metadata/461",
+        "parentKey": "/library/metadata/462",
+        "librarySectionTitle": "TV Shows",
+        "librarySectionID": 2,
+        "librarySectionKey": "/library/sections/2",
+        "grandparentTitle": "Andor",
+        "parentTitle": "Season 2",
+        "contentRating": "TV-14",
+        "summary": "An undercover mission. A sanctuary threatened. A Chandrilan wedding. A chilling Imperial plan.",
+        "index": 1,
+        "parentIndex": 2,
+        "audienceRating": 7.8,
+        "viewCount": 2,
+        "lastViewedAt": 1768735862,
+        "year": 2025,
+        "thumb": "/library/metadata/463/thumb/1756913366",
+        "art": "/library/metadata/461/art/1766547383",
+        "parentThumb": "/library/metadata/462/thumb/1753253152",
+        "grandparentThumb": "/library/metadata/461/thumb/1766547383",
+        "grandparentArt": "/library/metadata/461/art/1766547383",
+        "grandparentTheme": "/library/metadata/461/theme/1766547383",
+        "duration": 3240000,
+        "originallyAvailableAt": "2025-04-22",
+        "addedAt": 1753253132,
+        "updatedAt": 1756913366,
+        "audienceRatingImage": "themoviedb://image.rating",
+        "chapterSource": "media",
+        "Image": [
+            {
+                "alt": "One Year Later",
+                "type": "coverPoster",
+                "url": "/library/metadata/461/thumb/1766547383"
+            },
+            {
+                "alt": "One Year Later",
+                "type": "snapshot",
+                "url": "/library/metadata/463/thumb/1756913366"
+            },
+            {
+                "alt": "One Year Later",
+                "type": "background",
+                "url": "/library/metadata/461/art/1766547383"
+            },
+            {
+                "alt": "One Year Later",
+                "type": "clearLogo",
+                "url": "/library/metadata/461/clearLogo/1766547383"
+            }
+        ],
+        "UltraBlurColors": {
+            "topLeft": "10323f",
+            "topRight": "2c6679",
+            "bottomRight": "2c6679",
+            "bottomLeft": "1d586b"
+        },
+        "Guid": [
+            {
+                "id": "imdb://tt20258964"
+            },
+            {
+                "id": "tmdb://5743095"
+            },
+            {
+                "id": "tvdb://10793754"
+            }
+        ],
+        "Rating": [
+            {
+                "image": "imdb://image.rating",
+                "value": 7.8,
+                "type": "audience"
+            },
+            {
+                "image": "themoviedb://image.rating",
+                "value": 7.8,
+                "type": "audience"
+            }
+        ],
+        "Director": [
+            {
+                "id": 3118,
+                "filter": "director=3118",
+                "tag": "Ariel Kleiman",
+                "tagKey": "5d776a757a53e9001e705c57",
+                "thumb": "https://metadata-static.plex.tv/e/people/efa22e294d78a18fa8b66b81b98103a1.jpg"
+            }
+        ],
+        "Writer": [
+            {
+                "id": 3119,
+                "filter": "writer=3119",
+                "tag": "Tony Gilroy",
+                "tagKey": "5d77682a7e9a3c0020c6b34e",
+                "thumb": "https://metadata-static.plex.tv/b/people/b239765811e7f5e9453a9391367699a3.jpg"
+            }
+        ],
+        "Role": [
+            {
+                "id": 2930,
+                "filter": "actor=2930",
+                "tag": "Diego Luna",
+                "tagKey": "5d776827eb5d26001f1dd881",
+                "role": "Cassian Andor",
+                "thumb": "https://metadata-static.plex.tv/6/people/66bd73d89012949e1307ed14df42b5e6.jpg"
+            },
+            {
+                "id": 2935,
+                "filter": "actor=2935",
+                "tag": "Muhannad Bhaier",
+                "tagKey": "5de4ac72d84a6c001e79460a",
+                "role": "Wilmon Paak",
+                "thumb": "https://metadata-static.plex.tv/9/people/946d4240217ae97b87d4e2baa8fbe631.jpg"
+            },
+            {
+                "id": 2950,
+                "filter": "actor=2950",
+                "tag": "Ben Miles",
+                "tagKey": "5d776828151a60001f24ae6d",
+                "role": "Tay Kolma",
+                "thumb": "https://metadata-static.plex.tv/4/people/47e6d3b3b79f9b96fed6c23c29eba2b0.jpg"
+            },
+            {
+                "id": 2951,
+                "filter": "actor=2951",
+                "tag": "Richard Dillane",
+                "tagKey": "5d7768267e9a3c0020c6aa4a",
+                "role": "Davo Sculdun",
+                "thumb": "https://metadata-static.plex.tv/c/people/c8e6f3502b3543920aaee9cad98b2e15.jpg"
+            },
+            {
+                "id": 2932,
+                "filter": "actor=2932",
+                "tag": "Adria Arjona",
+                "tagKey": "5d776ad57a53e9001e7110d7",
+                "role": "Bix Caleen",
+                "thumb": "https://metadata-static.plex.tv/9/people/95f61fbda770542c2046dd11d1b913c7.jpg"
+            },
+            {
+                "id": 1304,
+                "filter": "actor=1304",
+                "tag": "Stellan Skarsgård",
+                "tagKey": "5d7768255af944001f1f63e5",
+                "role": "Luthen Rael",
+                "thumb": "https://metadata-static.plex.tv/f/people/f230641826fbfec64eac78ff97949587.jpg"
+            },
+            {
+                "id": 2933,
+                "filter": "actor=2933",
+                "tag": "Genevieve O'Reilly",
+                "tagKey": "5d776828a091de001f2e6447",
+                "role": "Mon Mothma",
+                "thumb": "https://metadata-static.plex.tv/8/people/825e3387afad48e0396c549f550ef3cf.jpg"
+            },
+            {
+                "id": 2931,
+                "filter": "actor=2931",
+                "tag": "Denise Gough",
+                "tagKey": "5d7768467e9a3c0020c6fe2d",
+                "role": "Dedra Meero",
+                "thumb": "https://metadata-static.plex.tv/1/people/134ff401c365529cb422909a8b03e506.jpg"
+            },
+            {
+                "id": 2399,
+                "filter": "actor=2399",
+                "tag": "Faye Marsay",
+                "tagKey": "5d776a53ad5437001f779fbb",
+                "role": "Vel Sartha",
+                "thumb": "https://metadata-static.plex.tv/1/people/17f076a650d3c65046a2960c915b0dfb.jpg"
+            },
+            {
+                "id": 2934,
+                "filter": "actor=2934",
+                "tag": "Anton Lesser",
+                "tagKey": "5d77682a961905001eb9200e",
+                "role": "Lio Partagaz",
+                "thumb": "https://metadata-static.plex.tv/b/people/b6d95c1cc0dca190b824e7720f69b33e.jpg"
+            },
+            {
+                "id": 2937,
+                "filter": "actor=2937",
+                "tag": "Elizabeth Dulau",
+                "tagKey": "5f3fcd8dcae2c60042e83087",
+                "role": "Kleya Marki",
+                "thumb": "https://metadata-static.plex.tv/f/people/f184b52171b96b2c731363faa7a5a34c.jpg"
+            },
+            {
+                "id": 2941,
+                "filter": "actor=2941",
+                "tag": "Alastair Mackenzie",
+                "tagKey": "62fb7cbc0310264573dc660f",
+                "role": "Perrin Fertha",
+                "thumb": "https://metadata-static.plex.tv/f/people/f9e37d90e875f616c4f55e333bdaf301.jpg"
+            },
+            {
+                "id": 2944,
+                "filter": "actor=2944",
+                "tag": "Joplin Sibtain",
+                "tagKey": "5d77691e23d5a3001f4f5e3f",
+                "role": "Brasso",
+                "thumb": "https://metadata-static.plex.tv/c/people/c6492d162f5dce65e0fa9e7bd2208dc8.jpg"
+            },
+            {
+                "id": 2940,
+                "filter": "actor=2940",
+                "tag": "Dave Chapman",
+                "tagKey": "5d7769a9594b2b001e6a6c2c",
+                "role": "B2EMO (voice)",
+                "thumb": "https://metadata-static.plex.tv/a/people/a1885960ab06e5a101757ebba5739715.jpg"
+            },
+            {
+                "id": 2946,
+                "filter": "actor=2946",
+                "tag": "Bronte Carmichael",
+                "tagKey": "5d776c32f617c9002017ec18",
+                "role": "Leida",
+                "thumb": "https://metadata-static.plex.tv/7/people/723d58a4425b62af7d8e7ad3a49c707c.jpg"
+            },
+            {
+                "id": 2345,
+                "filter": "actor=2345",
+                "tag": "Joshua James",
+                "tagKey": "5d7769fd594b2b001e6afefd",
+                "role": "Doctor Gorst",
+                "thumb": "https://metadata-static.plex.tv/6/people/6b4920526d137ac355bde04e75e110b4.jpg"
+            },
+            {
+                "id": 2970,
+                "filter": "actor=2970",
+                "tag": "Teresa Gotto",
+                "tagKey": "637743e8400b5a9d8f04f3bf",
+                "role": "Chandrilan Girl"
+            },
+            {
+                "id": 2972,
+                "filter": "actor=2972",
+                "tag": "Finley Glasgow",
+                "tagKey": "616a88a06414b4f76c4b77b6",
+                "role": "Stekan Sculdun",
+                "thumb": "https://metadata-static.plex.tv/8/people/87a3e1c3601feab2322effb96a692c21.jpg"
+            },
+            {
+                "id": 2953,
+                "filter": "actor=2953",
+                "tag": "Rosalind Halstead",
+                "tagKey": "5d7768342ec6b5001f6bbb64",
+                "role": "Runai Sculdun",
+                "thumb": "https://metadata-static.plex.tv/6/people/60890954132d51208d36724c450182fc.jpg"
+            },
+            {
+                "id": 3120,
+                "filter": "actor=3120",
+                "tag": "Rachelle Diedericks",
+                "tagKey": "63d50eaaf96ddb820f2652a8",
+                "role": "Niya",
+                "thumb": "https://metadata-static.plex.tv/6/people/69a2f9a89bbc414c719912ebdc096dab.jpg"
+            },
+            {
+                "id": 3121,
+                "filter": "actor=3121",
+                "tag": "Chanel Waddock",
+                "tagKey": "62b6c295a277cd45e4cefd68",
+                "role": "Niya's Co-Worker",
+                "thumb": "https://metadata-static.plex.tv/4/people/496ee971a4fc3a51ad2cf759e8b62f1f.jpg"
+            },
+            {
+                "id": 2973,
+                "filter": "actor=2973",
+                "tag": "Claire Brown",
+                "tagKey": "6323d274ce37dd2faa713b2a",
+                "role": "Talia",
+                "thumb": "https://metadata-static.plex.tv/e/people/ee1a03966b35c838863919f1177fd9af.jpg"
+            },
+            {
+                "id": 3004,
+                "filter": "actor=3004",
+                "tag": "Brooke Holmewood",
+                "tagKey": "680a4a6fee9dbc0abf6bd5a0",
+                "role": "Peermaid #1",
+                "thumb": "https://metadata-static.plex.tv/8/people/8ab7f9aa9d5de54ac312afb26db87079.jpg"
+            },
+            {
+                "id": 3005,
+                "filter": "actor=3005",
+                "tag": "Nuala Peberdy",
+                "tagKey": "5f3fd3f61ae7100041fe608e",
+                "role": "Peermaid #2",
+                "thumb": "https://metadata-static.plex.tv/5/people/51ea2ab0085967156dc61d45d1e01cf0.jpg"
+            },
+            {
+                "id": 3006,
+                "filter": "actor=3006",
+                "tag": "Jonathan Coy",
+                "tagKey": "5d7768348718ba001e31428d",
+                "role": "Uncle Sordo",
+                "thumb": "https://metadata-static.plex.tv/b/people/b2176aac7343a89f88d1e0d7e59cc895.jpg"
+            },
+            {
+                "id": 3007,
+                "filter": "actor=3007",
+                "tag": "Suzanne Bertish",
+                "tagKey": "5d7768378a7581001f12dab3",
+                "role": "Aunt Squidna",
+                "thumb": "https://metadata-static.plex.tv/4/people/4363f4b75bfd005c0f33c0e3018e18e0.jpg"
+            },
+            {
+                "id": 2952,
+                "filter": "actor=2952",
+                "tag": "Pierro Niel-Mee",
+                "tagKey": "5d776c3c7a53e9001e73d98b",
+                "role": "Erskin Semaj",
+                "thumb": "https://metadata-static.plex.tv/5/people/587635cd8cc38f826ed593958c1474ce.jpg"
+            },
+            {
+                "id": 3008,
+                "filter": "actor=3008",
+                "tag": "Laura Marcus",
+                "tagKey": "616bda08c8d9d158c0fbe5d5",
+                "role": "Beela",
+                "thumb": "https://metadata-static.plex.tv/3/people/33bd0099f65e266c92a8f4d09cb99874.jpg"
+            },
+            {
+                "id": 3048,
+                "filter": "actor=3048",
+                "tag": "Sonny Poon Tip",
+                "tagKey": "60bcf271fc2ad5002c83b204",
+                "role": "Flek",
+                "thumb": "https://metadata-static.plex.tv/7/people/7ce4e7f67d4fb832b4afe9fa1486ef9d.jpg"
+            },
+            {
+                "id": 1328,
+                "filter": "actor=1328",
+                "tag": "Gloria Obianyo",
+                "tagKey": "5d776c0bfb0d55001f57aff1",
+                "role": "Snee",
+                "thumb": "https://metadata-static.plex.tv/people/5d776c0bfb0d55001f57aff1.jpg"
+            },
+            {
+                "id": 3049,
+                "filter": "actor=3049",
+                "tag": "Chicho Tche",
+                "tagKey": "5f3fc2535a76a80042cd374a",
+                "role": "Snur",
+                "thumb": "https://image.tmdb.org/t/p/original/qtuczUTxVJGnBuKGU68J8w5SSl.jpg"
+            },
+            {
+                "id": 3122,
+                "filter": "actor=3122",
+                "tag": "Dylan Corbett-Bader",
+                "tagKey": "5f3fd72986422500427c7480",
+                "role": "Crab",
+                "thumb": "https://image.tmdb.org/t/p/original/e1poimMYJMDPScTXV6bTNOCyrRA.jpg"
+            },
+            {
+                "id": 3123,
+                "filter": "actor=3123",
+                "tag": "Fred Haig",
+                "tagKey": "5df2d0c2b9d7cb001d218b2d",
+                "role": "Shambo",
+                "thumb": "https://metadata-static.plex.tv/e/people/e0a05844c06a038ad7f67e07aa22b674.jpg"
+            },
+            {
+                "id": 3124,
+                "filter": "actor=3124",
+                "tag": "Tom Durant-Pritchard",
+                "tagKey": "5d776bcefb0d55001f57360c",
+                "role": "Osar",
+                "thumb": "https://metadata-static.plex.tv/2/people/23959fec94c735b1665758e107afb71f.jpg"
+            },
+            {
+                "id": 3009,
+                "filter": "actor=3009",
+                "tag": "Jos Slovick",
+                "tagKey": "5d7768ca0ea56a001e2aa4b9",
+                "role": "Lieutenant Moy",
+                "thumb": "https://metadata-static.plex.tv/people/5d7768ca0ea56a001e2aa4b9.jpg"
+            },
+            {
+                "id": 3125,
+                "filter": "actor=3125",
+                "tag": "Tom Bonington",
+                "tagKey": "5d77686a8718ba001e31b6c8",
+                "role": "Engineer Officer",
+                "thumb": "https://metadata-static.plex.tv/people/5d77686a8718ba001e31b6c8.jpg"
+            },
+            {
+                "id": 3126,
+                "filter": "actor=3126",
+                "tag": "Matthew Pidgeon",
+                "tagKey": "5d77685733f255001e853494",
+                "role": "Science Officer",
+                "thumb": "https://metadata-static.plex.tv/people/5d77685733f255001e853494.jpg"
+            },
+            {
+                "id": 3127,
+                "filter": "actor=3127",
+                "tag": "David Westhead",
+                "tagKey": "5d776838103a2d001f5685bd",
+                "role": "Admiral Daysar",
+                "thumb": "https://metadata-static.plex.tv/3/people/3d9688ea31f02c43318a8445234fd9a1.jpg"
+            },
+            {
+                "id": 3050,
+                "filter": "actor=3050",
+                "tag": "Samiah Khan",
+                "tagKey": "65b7942008b7a2c26286a37a",
+                "role": "Tick",
+                "thumb": "https://metadata-static.plex.tv/e/people/e6f1266982c37ace25a5cb856bd323a3.jpg"
+            },
+            {
+                "id": 2507,
+                "filter": "actor=2507",
+                "tag": "Jack Bandeira",
+                "tagKey": "5d776f09ad5437001f808d0c",
+                "role": "Rowd",
+                "thumb": "https://metadata-static.plex.tv/e/people/e61681592f16162b9f724d8b00909198.jpg"
+            },
+            {
+                "id": 3051,
+                "filter": "actor=3051",
+                "tag": "David Olaniregun",
+                "tagKey": "66055cb080e19182e3765685",
+                "role": "Bayso",
+                "thumb": "https://metadata-static.plex.tv/3/people/3743baa4572e075f34d4416ef8b2cf00.jpg"
+            },
+            {
+                "id": 3052,
+                "filter": "actor=3052",
+                "tag": "Dylan Brady",
+                "tagKey": "60dded67bc76bc002ce0bc55",
+                "role": "Neek",
+                "thumb": "https://metadata-static.plex.tv/1/people/10bf718d4a014fd93eb6f3c5791d7101.jpg"
+            },
+            {
+                "id": 3053,
+                "filter": "actor=3053",
+                "tag": "Dylan Blore",
+                "tagKey": "62504d68a67261d278d438d6",
+                "role": "Nazy",
+                "thumb": "https://metadata-static.plex.tv/e/people/ef23472de1eea2b62992a2fdf160bf2f.jpg"
+            },
+            {
+                "id": 3054,
+                "filter": "actor=3054",
+                "tag": "Philip Hill-Pearson",
+                "tagKey": "5d7768a3decfcd001f2eeaa5",
+                "role": "Plug",
+                "thumb": "https://metadata-static.plex.tv/b/people/b1ae556af5b40d47fb2df716ed4fc0de.jpg"
+            },
+            {
+                "id": 3128,
+                "filter": "actor=3128",
+                "tag": "Eva Jane Willis",
+                "tagKey": "5d776e82fb0d55001f5c4124",
+                "role": "Rika",
+                "thumb": "https://metadata-static.plex.tv/6/people/6933c2444f2dcfc4baf8bffe7f2911c1.jpg"
+            },
+            {
+                "id": 3055,
+                "filter": "actor=3055",
+                "tag": "Akie Kotabe",
+                "tagKey": "5d776874eb5d26001f1ec1ac",
+                "role": "Musk",
+                "thumb": "https://metadata-static.plex.tv/0/people/07c2c346542d205b368b3b85f8aa8146.jpg"
+            },
+            {
+                "id": 3010,
+                "filter": "actor=3010",
+                "tag": "Robin Sebastian",
+                "tagKey": "5d776976f617c900201600a7",
+                "role": "Father"
+            },
+            {
+                "id": 3011,
+                "filter": "actor=3011",
+                "tag": "Harry Delano",
+                "tagKey": "6576c3fbb426dbf4187e09a1",
+                "role": "Son",
+                "thumb": "https://metadata-static.plex.tv/e/people/e49b0905685ecd172edd34e166245f49.jpg"
+            },
+            {
+                "id": 3063,
+                "filter": "actor=3063",
+                "tag": "Sam Gilroy",
+                "tagKey": "5d776836151a60001f24de7a",
+                "role": "Gerdis",
+                "thumb": "https://metadata-static.plex.tv/c/people/c3f58745809b66edd8d1289403fef446.jpg"
+            },
+            {
+                "id": 3064,
+                "filter": "actor=3064",
+                "tag": "Benjamin Norris",
+                "tagKey": "5d776d2bfb0d55001f59914a",
+                "role": "Bardi",
+                "thumb": "https://metadata-static.plex.tv/people/5d776d2bfb0d55001f59914a.jpg"
+            },
+            {
+                "id": 2974,
+                "filter": "actor=2974",
+                "tag": "Ben Mendelsohn",
+                "tagKey": "5d77682a7e9a3c0020c6b188",
+                "role": "Orson Krennic",
+                "thumb": "https://metadata-static.plex.tv/f/people/fc2ca19c23b7551e3c0052c8f3408f01.jpg"
+            }
+        ],
+        "Producer": [
+            {
+                "id": 3129,
+                "filter": "producer=3129",
+                "tag": "David Meanti",
+                "tagKey": "5f3fc423fea1a1003f967d1c",
+                "thumb": "https://image.tmdb.org/t/p/original/i8r3lgOTUqyfnmzrrd4k42rvkG9.jpg"
+            }
+        ]
+    }
+}

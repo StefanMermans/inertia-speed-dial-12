@@ -1,0 +1,353 @@
+{
+    "event": "media.resume",
+    "user": true,
+    "owner": true,
+    "Account": {
+        "id": 63204474,
+        "thumb": "https://plex.tv/users/ea224c9df2051e82/avatar?c=1768643438",
+        "title": "StefanMermans"
+    },
+    "Server": {
+        "title": "ServerStefan",
+        "uuid": "1294172e00f074281a2deua9bb22a78128e19201"
+    },
+    "Player": {
+        "local": true,
+        "publicAddress": "128.77.115.215",
+        "title": "Stefans-MacBook-Pro.local",
+        "uuid": "adfa2jun21na2aj2hejsog0i"
+    },
+    "Metadata": {
+        "librarySectionType": "show",
+        "ratingKey": "393",
+        "key": "/library/metadata/393",
+        "parentRatingKey": "382",
+        "grandparentRatingKey": "381",
+        "guid": "plex://episode/659971ba4ea61897884dd67b",
+        "parentGuid": "plex://season/620e55d52748ec74389370ca",
+        "grandparentGuid": "plex://show/5f57bdaf782ab300435487d0",
+        "grandparentSlug": "3-body-problem",
+        "type": "episode",
+        "title": "Wallfacer",
+        "grandparentKey": "/library/metadata/381",
+        "parentKey": "/library/metadata/382",
+        "librarySectionTitle": "TV Shows",
+        "librarySectionID": 2,
+        "librarySectionKey": "/library/sections/2",
+        "grandparentTitle": "3 Body Problem",
+        "parentTitle": "Season 1",
+        "contentRating": "TV-MA",
+        "summary": "A high-level operation upends Saul's life. With emotions and expectations high, the probe launches into space as humanity enters a daunting new era.",
+        "index": 8,
+        "parentIndex": 1,
+        "audienceRating": 6.9,
+        "viewOffset": 452000,
+        "viewCount": 1,
+        "lastViewedAt": 1768735558,
+        "year": 2024,
+        "thumb": "/library/metadata/393/thumb/1767409659",
+        "art": "/library/metadata/382/art/1759543860",
+        "parentThumb": "/library/metadata/382/thumb/1759543860",
+        "grandparentThumb": "/library/metadata/381/thumb/1767070826",
+        "grandparentArt": "/library/metadata/381/art/1767070826",
+        "grandparentTheme": "/library/metadata/381/theme/1767070826",
+        "duration": 3420000,
+        "originallyAvailableAt": "2024-03-21",
+        "addedAt": 1748507501,
+        "updatedAt": 1767409659,
+        "audienceRatingImage": "themoviedb://image.rating",
+        "chapterSource": "media",
+        "Image": [
+            {
+                "alt": "Wallfacer",
+                "type": "coverPoster",
+                "url": "/library/metadata/381/thumb/1767070826"
+            },
+            {
+                "alt": "Wallfacer",
+                "type": "snapshot",
+                "url": "/library/metadata/393/thumb/1767409659"
+            },
+            {
+                "alt": "Wallfacer",
+                "type": "background",
+                "url": "/library/metadata/382/art/1759543860"
+            },
+            {
+                "alt": "Wallfacer",
+                "type": "clearLogo",
+                "url": "/library/metadata/381/clearLogo/1767070826"
+            }
+        ],
+        "UltraBlurColors": {
+            "topLeft": "121616",
+            "topRight": "191e1e",
+            "bottomRight": "222c2c",
+            "bottomLeft": "132613"
+        },
+        "Guid": [
+            {
+                "id": "imdb://tt18347118"
+            },
+            {
+                "id": "tmdb://5051968"
+            },
+            {
+                "id": "tvdb://9931624"
+            }
+        ],
+        "Rating": [
+            {
+                "image": "imdb://image.rating",
+                "value": 7.3,
+                "type": "audience"
+            },
+            {
+                "image": "themoviedb://image.rating",
+                "value": 6.9,
+                "type": "audience"
+            }
+        ],
+        "Director": [
+            {
+                "id": 2169,
+                "filter": "director=2169",
+                "tag": "Jeremy Podeswa",
+                "tagKey": "5d7768442e80df001ebe00da",
+                "thumb": "https://metadata-static.plex.tv/6/people/62aab8b1712a58f1a73c9e19f13ad301.jpg"
+            }
+        ],
+        "Writer": [
+            {
+                "id": 2142,
+                "filter": "writer=2142",
+                "tag": "David Benioff",
+                "tagKey": "5d7768276f4521001ea990dd",
+                "thumb": "https://metadata-static.plex.tv/4/people/4666eb4d7c5699426c1168c560e48534.jpg"
+            },
+            {
+                "id": 2143,
+                "filter": "writer=2143",
+                "tag": "D. B. Weiss",
+                "tagKey": "5d776ad59ab544002150423a",
+                "thumb": "https://metadata-static.plex.tv/f/people/fe96629ca7e8b39e4f4453d13531add3.jpg"
+            }
+        ],
+        "Role": [
+            {
+                "id": 2033,
+                "filter": "actor=2033",
+                "tag": "Jovan Adepo",
+                "tagKey": "5d776c17594b2b001e6ead37",
+                "role": "Saul Durand",
+                "thumb": "https://metadata-static.plex.tv/c/people/cd90661cf4b6fec1e16cfe322c7f0c37.jpg"
+            },
+            {
+                "id": 2034,
+                "filter": "actor=2034",
+                "tag": "Rosalind Chao",
+                "tagKey": "5d7768337e9a3c0020c6c4ca",
+                "role": "Ye Wenjie",
+                "thumb": "https://metadata-static.plex.tv/2/people/2f3bd3828f2664a77318922e690c2956.jpg"
+            },
+            {
+                "id": 2035,
+                "filter": "actor=2035",
+                "tag": "Liam Cunningham",
+                "tagKey": "5d7768293c3c2a001fbcba06",
+                "role": "Thomas Wade",
+                "thumb": "https://metadata-static.plex.tv/7/people/7fe9958333970e40cecd99a1b44c237f.jpg"
+            },
+            {
+                "id": 2036,
+                "filter": "actor=2036",
+                "tag": "Eiza González",
+                "tagKey": "5d776ab47a53e9001e70d434",
+                "role": "Auggie Salazar",
+                "thumb": "https://metadata-static.plex.tv/f/people/ff58531f42ea35b2851c1a10a7ae8a51.jpg"
+            },
+            {
+                "id": 2037,
+                "filter": "actor=2037",
+                "tag": "Jess Hong",
+                "tagKey": "5f3fc94802101b0040ecc4ea",
+                "role": "Jin Cheng",
+                "thumb": "https://metadata-static.plex.tv/8/people/865e5f09bdc5b11212b8ad30ebccd84f.jpg"
+            },
+            {
+                "id": 2038,
+                "filter": "actor=2038",
+                "tag": "Marlo Kelly",
+                "tagKey": "5d776c7d96b655001fe327ee",
+                "role": "Tatiana Haas",
+                "thumb": "https://metadata-static.plex.tv/1/people/11304e2e2335b46daaba59af7c1f28d2.jpg"
+            },
+            {
+                "id": 2039,
+                "filter": "actor=2039",
+                "tag": "Alex Sharp",
+                "tagKey": "5d776882ebdf2200209c0fa7",
+                "role": "Will Downing",
+                "thumb": "https://metadata-static.plex.tv/a/people/a50a9635b01eed8eba9e95354deb8688.jpg"
+            },
+            {
+                "id": 2040,
+                "filter": "actor=2040",
+                "tag": "Sea Shimooka",
+                "tagKey": "5e166b59275947003dc76950",
+                "role": "Sophon",
+                "thumb": "https://metadata-static.plex.tv/5/people/5ec889778b4185499f007ee80d97d1c5.jpg"
+            },
+            {
+                "id": 2041,
+                "filter": "actor=2041",
+                "tag": "Saamer Usmani",
+                "tagKey": "5e7b1b1bba1cbe003f352911",
+                "role": "Raj Varma",
+                "thumb": "https://metadata-static.plex.tv/5/people/5feeceae2fe7cadd34f6778fae165cf3.jpg"
+            },
+            {
+                "id": 2042,
+                "filter": "actor=2042",
+                "tag": "Benedict Wong",
+                "tagKey": "5d7768296f4521001ea99a08",
+                "role": "Detective Clarence 'Da' Shi",
+                "thumb": "https://metadata-static.plex.tv/7/people/7091ffce5f776a29fd4a6ec0cad0ea42.jpg"
+            },
+            {
+                "id": 2060,
+                "filter": "actor=2060",
+                "tag": "CCH Pounder",
+                "tagKey": "5d776828151a60001f24ae5b",
+                "role": "Secretary General Lilian Joseph",
+                "thumb": "https://metadata-static.plex.tv/6/people/6aa6cf0602fc480d8f9eca749d74c469.jpg"
+            },
+            {
+                "id": 2049,
+                "filter": "actor=2049",
+                "tag": "Hélène Viviès",
+                "tagKey": "5ec417110d2c2c0040bd4e06",
+                "role": "Lecompte",
+                "thumb": "https://metadata-static.plex.tv/a/people/a7fe7e310ef7966542a1f6b844cfae7d.jpg"
+            },
+            {
+                "id": 2050,
+                "filter": "actor=2050",
+                "tag": "Stephen Rahman Hughes",
+                "tagKey": "5d77683b880197001ec94c73",
+                "role": "Anwar Suleiman",
+                "thumb": "https://metadata-static.plex.tv/3/people/3fce2ded34e3f33ed50e56ae2e68a9f8.jpg"
+            },
+            {
+                "id": 2051,
+                "filter": "actor=2051",
+                "tag": "Bea Svistunenko",
+                "tagKey": "66002ac1019c2532aeecea92",
+                "role": "Laeticia",
+                "thumb": "https://metadata-static.plex.tv/3/people/32dcc1386a918b99370252bc53a5e4c7.jpg"
+            },
+            {
+                "id": 2052,
+                "filter": "actor=2052",
+                "tag": "Bilal Hasna",
+                "tagKey": "5f3fceb504a865004097dddd",
+                "role": "Edgar",
+                "thumb": "https://metadata-static.plex.tv/2/people/22ba0b0527fde4f000ae36f9f3d72f25.jpg"
+            },
+            {
+                "id": 1202,
+                "filter": "actor=1202",
+                "tag": "Josh Brener",
+                "tagKey": "5d77696947dd6e001f6c517a",
+                "role": "Kent",
+                "thumb": "https://metadata-static.plex.tv/e/people/eab3c4b2955239b9bd7b020ccea72739.jpg"
+            },
+            {
+                "id": 2122,
+                "filter": "actor=2122",
+                "tag": "Adam Silver",
+                "tagKey": "5d776855e6d55c0020410f53",
+                "role": "Assassin",
+                "thumb": "https://metadata-static.plex.tv/3/people/3f38c88e05c019c893aa34738b962020.jpg"
+            },
+            {
+                "id": 2123,
+                "filter": "actor=2123",
+                "tag": "Lily Newmark",
+                "tagKey": "5d776bbcfb0d55001f571335",
+                "role": "Nora",
+                "thumb": "https://metadata-static.plex.tv/8/people/8fb96e156259ce0c0e498dd2a2949824.jpg"
+            },
+            {
+                "id": 2124,
+                "filter": "actor=2124",
+                "tag": "Jose Palma",
+                "tagKey": "5d777049f617c9002019ce3c",
+                "role": "Roberto",
+                "thumb": "https://metadata-static.plex.tv/9/people/93705eab3dfc75733b5fbce9084d88ab.jpg"
+            },
+            {
+                "id": 2125,
+                "filter": "actor=2125",
+                "tag": "Bobak Ferdowsi",
+                "tagKey": "5d776ca0ad5437001f7c402c",
+                "role": "Mission Director",
+                "thumb": "https://metadata-static.plex.tv/b/people/ba0c7142e26561a36367af16691edcc2.jpg"
+            },
+            {
+                "id": 2126,
+                "filter": "actor=2126",
+                "tag": "Richard James-Neale",
+                "tagKey": "5f400df0ce2564003f8c02f9",
+                "role": "Soldier",
+                "thumb": "https://metadata-static.plex.tv/1/people/1f47ffa2ecbaf9fd525cee063a47379e.jpg"
+            },
+            {
+                "id": 2127,
+                "filter": "actor=2127",
+                "tag": "Clem Cheung",
+                "tagKey": "5d7768264de0ee001fcc853d",
+                "role": "General Hou Bolin",
+                "thumb": "https://metadata-static.plex.tv/4/people/4b2cd3df47fc6d9e2bab1ff7c16a3f24.jpg"
+            },
+            {
+                "id": 2128,
+                "filter": "actor=2128",
+                "tag": "Salem Murphy",
+                "tagKey": "5d776b21594b2b001e6d03a2",
+                "role": "Leyla Ariç",
+                "thumb": "https://metadata-static.plex.tv/people/5d776b21594b2b001e6d03a2.jpg"
+            },
+            {
+                "id": 2129,
+                "filter": "actor=2129",
+                "tag": "Jake Tapper",
+                "tagKey": "5d776a17ad5437001f771b22",
+                "role": "Jake Tapper",
+                "thumb": "https://metadata-static.plex.tv/3/people/35dcc72f6ac27119c66dd90660b8f391.jpg"
+            },
+            {
+                "id": 2130,
+                "filter": "actor=2130",
+                "tag": "Abby Phillip",
+                "tagKey": "5f262b7ef94d66004163b150",
+                "role": "Abby Phillip"
+            }
+        ],
+        "Producer": [
+            {
+                "id": 2145,
+                "filter": "producer=2145",
+                "tag": "Steve Kullback",
+                "tagKey": "5e163a58cd0850003b763482"
+            },
+            {
+                "id": 2146,
+                "filter": "producer=2146",
+                "tag": "Hameed Shaukat",
+                "tagKey": "5ec408abff5983003f529fbe",
+                "thumb": "https://metadata-static.plex.tv/e/people/eddec1df0be89f32461ab8e295fc4a2b.jpg"
+            }
+        ]
+    }
+}

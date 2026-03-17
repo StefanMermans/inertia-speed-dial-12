@@ -20,9 +20,20 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
+        $user = $request->user();
+
         return Inertia::render('settings/profile', [
-            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+            'mustVerifyEmail' => $user instanceof MustVerifyEmail,
             'status' => $request->session()->get('status'),
+            'connections' => [
+                'tmdb_has_token' => $user->hasTmdbConnection(),
+                'trakt_has_token' => $user->hasTraktConnection(),
+                'plex_account_id' => $user->plex_account_id,
+            ],
+            'connectionVerification' => Inertia::defer(fn (): array => [
+                'tmdb' => $user->verifyTmdbConnection(),
+                'trakt' => $user->verifyTraktConnection(),
+            ]),
         ]);
     }
 

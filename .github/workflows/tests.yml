@@ -32,7 +32,7 @@ jobs:
           npm ci
       - name: Composer lint check
         run: composer run lint:check
-  
+
   composer-test:
     name: Composer test
     runs-on: ubuntu-latest
@@ -66,7 +66,7 @@ jobs:
       - uses: actions/checkout@v6
       - name: Install Dependencies
         run: npm ci
-      - name: npm format:check
+      - name: npm run format:check
         run: npm run format:check
 
   npm-lint-check:
@@ -76,12 +76,12 @@ jobs:
       - uses: actions/checkout@v6
       - name: Install Dependencies
         run: npm ci
-      - name: npm format:check
-        run: npm run format:check
+      - name: npm run lint:check
+        run: npm run lint:check
 
   deploy:
     name: Trigger deployment
-    needs: 
+    needs:
       - composer-lint
       - composer-test
       - npm-format-check
