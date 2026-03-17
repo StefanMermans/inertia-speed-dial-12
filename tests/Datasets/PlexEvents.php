@@ -30,3 +30,7 @@ dataset('plex-events.scrobble.movie', function (): Generator {
 dataset('plex-events.scrobble.episode', function (): Generator {
     return loadPlexEvents('episode_scrobble_*');
 });
+
+dataset('plex-events.admin', function (): Generator {
+    return loadPlexEvents('admin_*');
+});

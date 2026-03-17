@@ -1,0 +1,14 @@
+{
+    "event": "admin.database.backup",
+    "user": true,
+    "owner": true,
+    "Account": {
+        "id": 63204474,
+        "thumb": "https://plex.tv/users/ea224c9df2051e82/avatar?c=1773612308",
+        "title": "StefanMermans"
+    },
+    "Server": {
+        "title": "ServerStefan",
+        "uuid": "8144439e00f0464b52a9ecbb225b4d04771150e9"
+    }
+}

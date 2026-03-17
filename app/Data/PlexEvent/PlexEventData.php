@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Data\PlexEvent;
 
 use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Optional;
 
 class PlexEventData extends Data
 {
@@ -13,9 +14,9 @@ class PlexEventData extends Data
         public readonly bool $user,
         public readonly bool $owner,
         public readonly PlexAccountData $Account,
-        public readonly PlexServerData $Server,
-        public readonly PlexPlayerData $Player,
-        public readonly PlexMetadataData $Metadata,
+        public readonly Optional|PlexServerData $Server,
+        public readonly Optional|PlexPlayerData $Player,
+        public readonly Optional|PlexMetadataData $Metadata,
     ) {}
 
     public function isScrobble(): bool

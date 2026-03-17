@@ -54,3 +54,14 @@ it('is scrobble when event is media.scrobble', function (array $plexEvent) {
         $dto->payload->isScrobble()
     );
 })->with('plex-events');
+
+it('parses admin event without Player and Metadata', function (array $plexEvent) {
+    $decoded = ['payload' => json_decode($plexEvent['payload'], true)];
+    $dto = PlexEventRequestData::from($decoded);
+
+    expect($dto->payload->event)->toBe('admin.database.backup')
+        ->and($dto->payload->Player)->toBeInstanceOf(\Spatie\LaravelData\Optional::class)
+        ->and($dto->payload->Metadata)->toBeInstanceOf(\Spatie\LaravelData\Optional::class)
+        ->and($dto->payload->Server)->toBeInstanceOf(PlexServerData::class)
+        ->and($dto->payload->isScrobble())->toBeFalse();
+})->with('plex-events.admin');
