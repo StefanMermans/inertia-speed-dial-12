@@ -32,7 +32,7 @@ jobs:
           npm ci
       - name: Composer lint check
         run: composer run lint:check
-  
+
   composer-test:
     name: Composer test
     runs-on: ubuntu-latest
@@ -54,6 +54,8 @@ jobs:
         run: cp .env.example .env
       - name: Generate Application Key
         run: php artisan key:generate
+      - name: vite
+        run: npm run dev
       - name: Build Assets
         run: npm run build
       - name: Composer test
@@ -81,7 +83,7 @@ jobs:
 
   deploy:
     name: Trigger deployment
-    needs: 
+    needs:
       - composer-lint
       - composer-test
       - npm-format-check
