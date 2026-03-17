@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Exceptions\PlexTokenNotConfiguredException;
+use App\Support\PlexUrlGenerator;
 use Illuminate\Console\Command;
 
 class PlexUrlCommand extends Command
@@ -27,20 +29,15 @@ class PlexUrlCommand extends Command
      */
     public function handle(): int
     {
-        $token = config('services.plex.webhook_token');
+        try {
+            $url = PlexUrlGenerator::generate();
+            $this->info("Plex url:\n$url");
 
-        if ($token === '' || $token === null) {
+            return self::SUCCESS;
+        } catch (PlexTokenNotConfiguredException) {
             $this->error('Plex Token is not configured');
 
             return self::FAILURE;
         }
-
-        $url = route('api.plex-event', [
-            'token' => $token,
-        ]);
-
-        $this->info("Plex url:\n$url");
-
-        return self::SUCCESS;
     }
 }

@@ -6,12 +6,11 @@ namespace Tests\Feature\PlexWebhookIntegrationTest;
 
 use App\Http\Controllers\PlexEventController;
 use App\Listeners\SaveWatch;
-use App\Listeners\SyncWatchToTrakt;
 use App\Models\User;
 use App\Models\Watch;
 use Illuminate\Support\Facades\Http;
 
-covers(PlexEventController::class, SaveWatch::class, SyncWatchToTrakt::class);
+covers(PlexEventController::class, SaveWatch::class);
 
 beforeEach(function () {
     config()->set('services.plex.webhook_token', 'test-webhook-token');

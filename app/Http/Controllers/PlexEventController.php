@@ -11,7 +11,6 @@ use App\Exceptions\InvalidPlexEventException;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 class PlexEventController
@@ -30,8 +29,6 @@ class PlexEventController
         }
 
         if ($plexEvent->isScrobble()) {
-            Log::debug('Scrobble event');
-
             $user = User::query()
                 ->where('plex_account_id', $plexEvent->Account->id)
                 ->first();
