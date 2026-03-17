@@ -40,3 +40,8 @@ expect()->extend('toBeOne', function () {
 | global functions to help you to reduce the number of lines of code in your test files.
 |
 */
+
+function fixtureAccountId(string $fixtureJson): int
+{
+    return json_decode($fixtureJson, true)['Account']['id'];
+}

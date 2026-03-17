@@ -4,40 +4,50 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Exceptions\PlexTokenNotConfiguredException;
-use App\Support\PlexUrlGenerator;
+use App\Console\Commands\Concerns\ResolvesUser;
 use Illuminate\Console\Command;
 
 class PlexUrlCommand extends Command
 {
+    use ResolvesUser;
+
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'plex:url';
+    protected $signature = 'plex:url {user : The user email or ID}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Display the Plex webhook URL for a user';
 
     /**
      * Execute the console command.
      */
     public function handle(): int
     {
-        try {
-            $url = PlexUrlGenerator::generate();
-            $this->info("Plex url:\n$url");
+        $user = $this->resolveUser();
 
-            return self::SUCCESS;
-        } catch (PlexTokenNotConfiguredException) {
-            $this->error('Plex Token is not configured');
+        if (! $user) {
+            $this->error('User not found.');
 
             return self::FAILURE;
         }
+
+        $url = $user->plexWebhookUrl();
+
+        if (! $url) {
+            $this->error('User does not have a Plex connection configured.');
+
+            return self::FAILURE;
+        }
+
+        $this->info("Plex url:\n$url");
+
+        return self::SUCCESS;
     }
 }
