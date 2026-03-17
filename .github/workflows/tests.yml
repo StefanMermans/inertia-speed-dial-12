@@ -54,8 +54,6 @@ jobs:
         run: cp .env.example .env
       - name: Generate Application Key
         run: php artisan key:generate
-      - name: vite
-        run: LARAVEL_BYPASS_ENV_CHECK=1 npm run dev &
       - name: Build Assets
         run: npm run build
       - name: Composer test
