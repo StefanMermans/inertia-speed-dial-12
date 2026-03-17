@@ -10,7 +10,6 @@ use App\Events\PlexScrobbleEvent;
 use App\Models\Series;
 use App\Models\User;
 use App\Models\Watch;
-use App\Support\ExternalIds;
 use App\Support\PlexTimestamp;
 use Spatie\LaravelData\Optional;
 
@@ -63,7 +62,9 @@ class SaveWatch
                 'series_id' => $series?->id,
                 'season_number' => $metadata->parentIndex instanceof Optional ? null : $metadata->parentIndex,
                 'episode_number' => $metadata->index instanceof Optional ? null : $metadata->index,
-                ...ExternalIds::fromPlexGuids($metadata->Guid)->toDatabaseArray(),
+                'tmdb_id' => $metadata->tmdbId(),
+                'imdb_id' => $metadata->imdbId(),
+                'tvdb_id' => $metadata->tvdbId(),
             ],
         );
     }

@@ -6,59 +6,82 @@ namespace Tests\Unit\PlexMetadataExternalIdsTest;
 
 use App\Data\PlexEvent\PlexEventRequestData;
 use App\Data\PlexEvent\PlexMetadataData;
+use Illuminate\Support\Str;
 
 covers(PlexMetadataData::class);
 
-function metadataFromFixture(string $name): PlexMetadataData
+function metadataFromPlexEvent(array $plexEvent): PlexMetadataData
 {
-    $json = json_decode(
-        file_get_contents(dirname(__DIR__)."/fixtures/plex/$name.json"),
-        true,
-    );
+    $decoded = ['payload' => json_decode($plexEvent['payload'], true)];
 
     return PlexEventRequestData::factory()
         ->alwaysValidate()
-        ->from(['payload' => $json])
+        ->from($decoded)
         ->payload
         ->Metadata;
 }
 
+function extractRawGuid(array $plexEvent, string $prefix): ?string
+{
+    $decoded = json_decode($plexEvent['payload'], true);
+    $guids = $decoded['Metadata']['Guid'] ?? [];
+
+    foreach ($guids as $guid) {
+        if (Str::startsWith($guid['id'], $prefix)) {
+            return Str::substr($guid['id'], Str::length($prefix));
+        }
+    }
+
+    return null;
+}
+
 describe('Guid data', function () {
-    it('parses Guid array from movie fixture', function () {
-        $metadata = metadataFromFixture('movie_scrobble_event');
+    it('parses all Guid entries from fixture', function (array $plexEvent) {
+        $metadata = metadataFromPlexEvent($plexEvent);
+        $rawGuids = json_decode($plexEvent['payload'], true)['Metadata']['Guid'];
 
         expect($metadata->Guid)->toBeArray()
-            ->and($metadata->Guid)->toHaveCount(3);
+            ->and($metadata->Guid)->toHaveCount(count($rawGuids));
 
-        $guidIds = array_map(fn ($g) => $g->id, $metadata->Guid);
-        expect($guidIds)->toContain('imdb://tt30472557')
-            ->and($guidIds)->toContain('tmdb://1218925')
-            ->and($guidIds)->toContain('tvdb://352290');
-    });
+        $parsedIds = array_map(fn ($g) => $g->id, $metadata->Guid);
+        foreach ($rawGuids as $rawGuid) {
+            expect($parsedIds)->toContain($rawGuid['id']);
+        }
+    })->with('plex-events.scrobble');
+});
 
-    it('parses Guid array from episode fixture', function () {
-        $metadata = metadataFromFixture('episode_scrobble_event');
+describe('tmdbId', function () {
+    it('extracts tmdb id from fixture', function (array $plexEvent) {
+        $metadata = metadataFromPlexEvent($plexEvent);
+        $expected = extractRawGuid($plexEvent, 'tmdb://');
 
-        expect($metadata->Guid)->toBeArray()
-            ->and($metadata->Guid)->toHaveCount(3);
+        expect($metadata->tmdbId())->toBe($expected !== null ? (int) $expected : null);
+    })->with('plex-events.scrobble');
+});
 
-        $guidIds = array_map(fn ($g) => $g->id, $metadata->Guid);
-        expect($guidIds)->toContain('imdb://tt18347118')
-            ->and($guidIds)->toContain('tmdb://5051968')
-            ->and($guidIds)->toContain('tvdb://9931624');
-    });
+describe('imdbId', function () {
+    it('extracts imdb id from fixture', function (array $plexEvent) {
+        $metadata = metadataFromPlexEvent($plexEvent);
+        $expected = extractRawGuid($plexEvent, 'imdb://');
+
+        expect($metadata->imdbId())->toBe($expected);
+    })->with('plex-events.scrobble');
+});
+
+describe('tvdbId', function () {
+    it('extracts tvdb id from fixture', function (array $plexEvent) {
+        $metadata = metadataFromPlexEvent($plexEvent);
+        $expected = extractRawGuid($plexEvent, 'tvdb://');
+
+        expect($metadata->tvdbId())->toBe($expected !== null ? (int) $expected : null);
+    })->with('plex-events.scrobble');
 });
 
 describe('type field', function () {
-    it('has movie type for movie fixture', function () {
-        $metadata = metadataFromFixture('movie_scrobble_event');
+    it('has correct type for fixture', function (array $plexEvent) {
+        $metadata = metadataFromPlexEvent($plexEvent);
+        $expectedType = json_decode($plexEvent['payload'], true)['Metadata']['type'];
 
-        expect($metadata->type)->toBe('movie');
-    });
-
-    it('has episode type for episode fixture', function () {
-        $metadata = metadataFromFixture('episode_scrobble_event');
-
-        expect($metadata->type)->toBe('episode');
-    });
+        expect($metadata->type)->toBe($expectedType);
+    })->with('plex-events.scrobble');
 });

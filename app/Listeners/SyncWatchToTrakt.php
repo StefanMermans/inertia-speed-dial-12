@@ -7,7 +7,6 @@ namespace App\Listeners;
 use App\Data\PlexEvent\PlexMetadataData;
 use App\Events\PlexScrobbleEvent;
 use App\Services\TraktApi\TraktApi;
-use App\Support\ExternalIds;
 use App\Support\PlexTimestamp;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Log;
@@ -42,7 +41,7 @@ class SyncWatchToTrakt
      */
     private function buildPayload(PlexMetadataData $metadata): array
     {
-        $ids = ExternalIds::fromPlexGuids($metadata->Guid)->toTraktArray();
+        $ids = $this->buildIds($metadata);
         $watchedAt = PlexTimestamp::resolveWatchedAt($metadata->lastViewedAt)->toIso8601String();
 
         if ($metadata->type === 'episode') {
@@ -63,6 +62,15 @@ class SyncWatchToTrakt
                     'watched_at' => $watchedAt,
                 ],
             ],
+        ];
+    }
+
+    protected function buildIds(PlexMetadataData $metadata): array
+    {
+        return [
+            'tmdb' => $metadata->tmdbId(),
+            'imdb' => $metadata->imdbId(),
+            'tvdb' => $metadata->tvdbId(),
         ];
     }
 

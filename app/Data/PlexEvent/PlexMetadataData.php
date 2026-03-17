@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Data\PlexEvent;
 
+use Illuminate\Support\Str;
 use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Optional;
@@ -121,4 +122,38 @@ class PlexMetadataData extends Data
         #[DataCollectionOf(PlexCommonSenseMediaData::class)]
         public readonly array|Optional $CommonSenseMedia,
     ) {}
+
+    public function tmdbId(): ?int
+    {
+        if ($id = $this->extractGuid('tmdb://')) {
+            return (int) $id;
+        }
+
+        return null;
+    }
+
+    public function imdbId(): ?string
+    {
+        return $this->extractGuid('imdb://');
+    }
+
+    public function tvdbId(): ?int
+    {
+        if ($id = $this->extractGuid('tvdb://')) {
+            return (int) $id;
+        }
+
+        return null;
+    }
+
+    protected function extractGuid(string $prefix): ?string
+    {
+        foreach ($this->Guid as $guid) {
+            if (Str::startsWith($guid->id, $prefix)) {
+                return Str::substr($guid->id, Str::length($prefix));
+            }
+        }
+
+        return null;
+    }
 }
