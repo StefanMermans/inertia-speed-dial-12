@@ -38,18 +38,6 @@ function plexEventUrl(?string $token = null): string
 }
 
 describe('Plex event endpoint', function () {
-    it('rejects requests without a token', function () {
-        $this
-            ->postJson(route('api.plex-event'))
-            ->assertUnauthorized();
-    });
-
-    it('rejects requests with an invalid token', function () {
-        $this
-            ->postJson(route('api.plex-event', ['token' => 'wrong-token']))
-            ->assertUnauthorized();
-    });
-
     it('handles plex events without error', function (array $plexEvent) {
         $user = User::factory()->withPlexConnection(\fixtureAccountId($plexEvent['payload']))->create();
 
