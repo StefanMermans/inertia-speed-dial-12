@@ -11,33 +11,30 @@ use App\Exceptions\InvalidPlexEventException;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class PlexEventController
 {
     public function __invoke(Request $request): Response
     {
-        $requestToken = $request->query('token');
-
-        if (! is_string($requestToken) || $requestToken === '') {
-            abort(401);
-        }
-
-        $user = User::query()->where('plex_token', $requestToken)->first();
-
-        if (! $user) {
-            abort(401);
-        }
+        /** @var User $user */
+        $user = Auth::user();
 
         if (($plexEvent = $this->parsePlexEvent($request)) === null) {
             return $this->respond();
         }
 
-        if ($plexEvent->isScrobble() && $plexEvent->Account->id === $user->plex_account_id) {
+        if ($plexEvent->isScrobble() && $this->plexEventIsOwnedByUser($plexEvent, $user)) {
             event(new PlexScrobbleEvent($plexEvent, $user));
         }
 
         return $this->respond();
+    }
+
+    private function plexEventIsOwnedByUser(PlexEventData $plexEvent, User $user): bool
+    {
+        return $plexEvent->Account->id === $user->plex_account_id;
     }
 
     private function parsePlexEvent(Request $request): ?PlexEventData
