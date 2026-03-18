@@ -13,10 +13,19 @@ class UpdatePlexAccountController extends Controller
     public function __invoke(UpdatePlexAccountRequest $request): RedirectResponse
     {
         $validated = $request->validated();
+        $user = $request->user();
 
-        $request->user()->forceFill([
-            'plex_account_id' => $validated['plex_account_id'] !== '' ? $validated['plex_account_id'] : null,
-        ])->save();
+        $plexAccountId = $validated['plex_account_id'] !== '' ? $validated['plex_account_id'] : null;
+
+        if ($plexAccountId === null) {
+            $user->clearPlexConnection();
+        } else {
+            $user->forceFill(['plex_account_id' => $plexAccountId])->save();
+
+            if (! $user->plex_token) {
+                $user->generatePlexToken();
+            }
+        }
 
         return to_route('profile.edit');
     }

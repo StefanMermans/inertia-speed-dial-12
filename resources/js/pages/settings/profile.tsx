@@ -29,6 +29,7 @@ interface ProfileProps {
         tmdb_has_token: boolean;
         trakt_has_token: boolean;
         plex_account_id: number | null;
+        plex_webhook_url: string | null;
     };
     connectionVerification?: {
         tmdb: boolean;
@@ -73,7 +74,7 @@ function ServiceConnectionCards({
                 disconnectUrl={route('trakt.disconnect')}
             />
 
-            <PlexConnectionCard plexAccountId={connections.plex_account_id} />
+            <PlexConnectionCard plexAccountId={connections.plex_account_id} plexWebhookUrl={connections.plex_webhook_url} />
         </div>
     );
 }

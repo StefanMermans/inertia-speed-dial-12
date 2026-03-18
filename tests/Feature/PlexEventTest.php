@@ -32,17 +32,13 @@ function buildNonsenseArray(int $depth = 0): array
     });
 }
 
-function plexEventUrl(): string
+function plexEventUrl(?string $token = null): string
 {
-    return route('api.plex-event', ['token' => config('services.plex.webhook_token')]);
+    return route('api.plex-event', $token ? ['token' => $token] : []);
 }
 
-beforeEach(function () {
-    config()->set('services.plex.webhook_token', 'test-webhook-token');
-});
-
 describe('Plex event endpoint', function () {
-    it('rejects requests without a valid token', function () {
+    it('rejects requests without a token', function () {
         $this
             ->postJson(route('api.plex-event'))
             ->assertUnauthorized();
@@ -55,23 +51,29 @@ describe('Plex event endpoint', function () {
     });
 
     it('handles plex events without error', function (array $plexEvent) {
+        $user = User::factory()->withPlexConnection(\fixtureAccountId($plexEvent['payload']))->create();
+
         $this
-            ->postJson(plexEventUrl(), $plexEvent)
+            ->postJson(plexEventUrl($user->plex_token), $plexEvent)
             ->assertSuccessful();
     })
         ->with('plex-events');
 
     it('handles nonsense events without error', function () {
+        $user = User::factory()->withPlexConnection()->create();
+
         $this
-            ->postJson(plexEventUrl(), ['payload' => json_encode(buildNonsenseArray())])
+            ->postJson(plexEventUrl($user->plex_token), ['payload' => json_encode(buildNonsenseArray())])
             ->assertSuccessful();
     });
 
     it('reports errors on invalid events', function () {
         Exceptions::fake();
 
+        $user = User::factory()->withPlexConnection()->create();
+
         $this
-            ->postJson(plexEventUrl(), ['payload' => json_encode(buildNonsenseArray())])
+            ->postJson(plexEventUrl($user->plex_token), ['payload' => json_encode(buildNonsenseArray())])
             ->assertSuccessful();
 
         Exceptions::assertReported(InvalidPlexEventException::class);
@@ -81,8 +83,10 @@ describe('Plex event endpoint', function () {
     });
 
     it('returns no content for json', function () {
+        $user = User::factory()->withPlexConnection()->create();
+
         $this
-            ->postJson(plexEventUrl(), ['payload' => json_encode(buildNonsenseArray())])
+            ->postJson(plexEventUrl($user->plex_token), ['payload' => json_encode(buildNonsenseArray())])
             ->assertNoContent();
     });
 
@@ -93,10 +97,23 @@ describe('Plex event endpoint', function () {
         );
     });
 
-    it('does not dispatch scrobble event when user is not found', function (array $plexEvent) {
+    it('does not dispatch scrobble event when token is invalid', function (array $plexEvent) {
         Event::fake();
 
-        $this->postJson(plexEventUrl(), $plexEvent);
+        $this->postJson(plexEventUrl('invalid-token'), $plexEvent)
+            ->assertUnauthorized();
+
+        Event::assertNotDispatched(PlexScrobbleEvent::class);
+    })
+        ->with('plex-events.scrobble');
+
+    it('does not dispatch scrobble event when account id does not match', function (array $plexEvent) {
+        Event::fake();
+
+        $user = User::factory()->withPlexConnection(99999999)->create();
+
+        $this->postJson(plexEventUrl($user->plex_token), $plexEvent)
+            ->assertSuccessful();
 
         Event::assertNotDispatched(PlexScrobbleEvent::class);
     })
@@ -105,12 +122,12 @@ describe('Plex event endpoint', function () {
     it('dispatches scrobble event with matching user', function (array $plexEvent) {
         Event::fake();
 
-        User::factory()->create(['plex_account_id' => 63204474]);
+        $user = User::factory()->withPlexConnection(\fixtureAccountId($plexEvent['payload']))->create();
 
-        $this->postJson(plexEventUrl(), $plexEvent);
+        $this->postJson(plexEventUrl($user->plex_token), $plexEvent);
 
-        Event::assertDispatched(PlexScrobbleEvent::class, function (PlexScrobbleEvent $event) {
-            return $event->user->plex_account_id === 63204474;
+        Event::assertDispatched(PlexScrobbleEvent::class, function (PlexScrobbleEvent $event) use ($user) {
+            return $event->user->id === $user->id;
         });
     })
         ->with('plex-events.scrobble');

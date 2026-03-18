@@ -17,10 +17,15 @@ class PlexEventController
 {
     public function __invoke(Request $request): Response
     {
-        $configuredToken = config('services.plex.webhook_token');
         $requestToken = $request->query('token');
 
-        if (! $configuredToken || ! is_string($requestToken) || ! hash_equals($configuredToken, $requestToken)) {
+        if (! is_string($requestToken) || $requestToken === '') {
+            abort(401);
+        }
+
+        $user = User::query()->where('plex_token', $requestToken)->first();
+
+        if (! $user) {
             abort(401);
         }
 
@@ -28,14 +33,8 @@ class PlexEventController
             return $this->respond();
         }
 
-        if ($plexEvent->isScrobble()) {
-            $user = User::query()
-                ->where('plex_account_id', $plexEvent->Account->id)
-                ->first();
-
-            if ($user) {
-                event(new PlexScrobbleEvent($plexEvent, $user));
-            }
+        if ($plexEvent->isScrobble() && $plexEvent->Account->id === $user->plex_account_id) {
+            event(new PlexScrobbleEvent($plexEvent, $user));
         }
 
         return $this->respond();

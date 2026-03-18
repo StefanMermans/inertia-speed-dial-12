@@ -29,6 +29,7 @@ class ProfileController extends Controller
                 'tmdb_has_token' => $user->hasTmdbConnection(),
                 'trakt_has_token' => $user->hasTraktConnection(),
                 'plex_account_id' => $user->plex_account_id,
+                'plex_webhook_url' => $user->plexWebhookUrl(),
             ],
             'connectionVerification' => Inertia::defer(fn (): array => [
                 'tmdb' => $user->verifyTmdbConnection(),

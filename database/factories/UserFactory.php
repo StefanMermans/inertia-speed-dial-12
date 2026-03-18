@@ -32,6 +32,7 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
             'plex_account_id' => null,
+            'plex_token' => null,
             'tmdb_access_token' => null,
             'tmdb_account_object_id' => null,
             'trakt_access_token' => null,
@@ -47,6 +48,17 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+
+    /**
+     * Indicate that the user has a Plex connection.
+     */
+    public function withPlexConnection(?int $accountId = null): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'plex_account_id' => $accountId ?? fake()->randomNumber(8),
+            'plex_token' => Str::random(64),
         ]);
     }
 }
