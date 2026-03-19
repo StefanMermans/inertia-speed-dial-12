@@ -9,11 +9,9 @@ use App\Exceptions\InvalidPlexEventException;
 use App\Exceptions\PlexEventFileMissedException;
 use App\Http\Controllers\PlexEventController;
 use App\Models\User;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Exceptions;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 covers(PlexEventController::class, PlexEventFileMissedException::class);
