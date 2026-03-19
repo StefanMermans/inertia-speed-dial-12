@@ -32,3 +32,12 @@ jobs:
           passphrase: ${{ secrets.SSH_PRIVATE_KEY_PASSPHRASE }}
           # Points exactly to the script you created for this specific app
           script: /home/deployer/scripts/deploy-inertia-speed-dial.sh
+
+      - name: Sentry release
+        uses: getsentry/action-release@v3
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          environment: production
