@@ -37,7 +37,6 @@ class LogPlexRequest
                 'ip' => $request->ip(),
                 'headers' => $headers,
                 'payload' => $request->input('payload'),
-                'body' => $request->except([...array_keys($request->allFiles()), 'token']),
                 'files' => $this->collectFileMetadata($request),
                 'response_status' => $response->getStatusCode(),
                 'duration_ms' => $durationMs,
