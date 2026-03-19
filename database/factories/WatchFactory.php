@@ -23,8 +23,14 @@ class WatchFactory extends Factory
             'title' => fake()->words(3, true),
             'year' => fake()->year(),
             'watched_at' => fake()->dateTimeBetween('-1 year'),
-            'plex_rating_key' => (string) fake()->unique()->randomNumber(5),
         ];
+    }
+
+    public function withPlexRatingKey(): static
+    {
+        return $this->state([
+            'plex_rating_key' => (string) fake()->unique()->randomNumber(5),
+        ]);
     }
 
     public function forMovie(): static
