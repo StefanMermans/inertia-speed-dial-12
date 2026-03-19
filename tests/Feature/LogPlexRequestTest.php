@@ -52,17 +52,6 @@ describe('Plex request logging', function () {
             ->and($log->url)->not->toContain($user->plex_token);
     });
 
-    it('excludes the token from the stored body', function () {
-        $user = User::factory()->withPlexConnection()->create();
-
-        $this->post(plexEventUrl($user->plex_token), [
-            'payload' => buildPayload(),
-        ])->assertSuccessful();
-
-        $log = PlexRequestLog::query()->first();
-        expect($log->body)->not->toHaveKey('token');
-    });
-
     it('stores request headers without cookies', function () {
         $user = User::factory()->withPlexConnection()->create();
 
@@ -85,21 +74,6 @@ describe('Plex request logging', function () {
 
         $log = PlexRequestLog::query()->first();
         expect($log->payload)->toBe($payload);
-    });
-
-    it('stores non-file form fields as body', function () {
-        $user = User::factory()->withPlexConnection()->create();
-        $payload = buildPayload();
-
-        $this->post(plexEventUrl($user->plex_token), [
-            'payload' => $payload,
-            'extra_field' => 'extra_value',
-        ])->assertSuccessful();
-
-        $log = PlexRequestLog::query()->first();
-        expect($log->body)->toBeArray()
-            ->and($log->body)->toHaveKey('payload')
-            ->and($log->body)->toHaveKey('extra_field');
     });
 
     it('stores null files when no files are uploaded', function () {

@@ -21,7 +21,6 @@ final class PlexRequestLog extends Model
         'ip',
         'headers',
         'payload',
-        'body',
         'files',
         'response_status',
         'duration_ms',
@@ -32,7 +31,6 @@ final class PlexRequestLog extends Model
     {
         return [
             'headers' => 'array',
-            'body' => 'array',
             'files' => 'array',
             'response_status' => 'integer',
             'duration_ms' => 'integer',

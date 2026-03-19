@@ -22,7 +22,6 @@ class PlexRequestLogFactory extends Factory
             'ip' => fake()->ipv4(),
             'headers' => ['content-type' => ['application/json']],
             'payload' => json_encode(['event' => fake()->word()]),
-            'body' => ['payload' => json_encode(['event' => fake()->word()])],
             'files' => null,
             'response_status' => 204,
             'duration_ms' => fake()->numberBetween(10, 500),
