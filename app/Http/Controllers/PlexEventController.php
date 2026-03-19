@@ -8,9 +8,11 @@ use App\Data\PlexEvent\PlexEventData;
 use App\Data\PlexEvent\PlexEventRequestData;
 use App\Events\PlexScrobbleEvent;
 use App\Exceptions\InvalidPlexEventException;
+use App\Exceptions\PlexEventFileMissedException;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
@@ -39,6 +41,8 @@ class PlexEventController
 
     private function parsePlexEvent(Request $request): ?PlexEventData
     {
+        $this->reportMissingFilesFromResponse($request);
+
         try {
             $payload = json_decode($request->string('payload')->toString(), true);
 
@@ -55,6 +59,32 @@ class PlexEventController
         }
 
         return null;
+    }
+
+    private function reportMissingFilesFromResponse(Request $request): void
+    {
+        $files = $request->allFiles();
+
+        if (count($files) === 0) {
+            return;
+        }
+
+        foreach ($files as $file) {
+            if (is_array($file)) {
+                foreach ($file as $item) {
+                    $this->reportMissingFile($item);
+                }
+            } else {
+                $this->reportMissingFile($file);
+            }
+        }
+    }
+
+    private function reportMissingFile(UploadedFile $file): void
+    {
+        $filepath = $file->store('missed-files', 'local');
+
+        report(new PlexEventFileMissedException($filepath));
     }
 
     private function respond(): Response

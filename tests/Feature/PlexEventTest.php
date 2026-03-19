@@ -6,14 +6,17 @@ namespace Tests\Feature\PlexEventTest;
 
 use App\Events\PlexScrobbleEvent;
 use App\Exceptions\InvalidPlexEventException;
+use App\Exceptions\PlexEventFileMissedException;
 use App\Http\Controllers\PlexEventController;
 use App\Models\User;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Exceptions;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
-covers(PlexEventController::class);
+covers(PlexEventController::class, PlexEventFileMissedException::class);
 
 function buildNonsenseArray(int $depth = 0): array
 {
@@ -119,4 +122,94 @@ describe('Plex event endpoint', function () {
         });
     })
         ->with('plex-events.scrobble');
+});
+
+describe('Missing file reporting', function () {
+    it('does not report a PlexEventFileMissedException when request has no files', function () {
+        Exceptions::fake();
+
+        $user = User::factory()->withPlexConnection()->create();
+
+        $this->post(plexEventUrl($user->plex_token), [
+            'payload' => json_encode(buildNonsenseArray()),
+        ])->assertSuccessful();
+
+        Exceptions::assertNotReported(PlexEventFileMissedException::class);
+    });
+
+    it('reports a PlexEventFileMissedException when request contains a file', function () {
+        Exceptions::fake();
+        Storage::fake('local');
+
+        $user = User::factory()->withPlexConnection()->create();
+
+        $this->post(plexEventUrl($user->plex_token), [
+            'payload' => json_encode(buildNonsenseArray()),
+            'thumb' => UploadedFile::fake()->image('thumb.jpg'),
+        ])->assertSuccessful();
+
+        Exceptions::assertReported(PlexEventFileMissedException::class);
+    });
+
+    it('stores the missing file to the local disk', function () {
+        Exceptions::fake();
+        Storage::fake('local');
+
+        $user = User::factory()->withPlexConnection()->create();
+
+        $this->post(plexEventUrl($user->plex_token), [
+            'payload' => json_encode(buildNonsenseArray()),
+            'thumb' => UploadedFile::fake()->image('thumb.jpg'),
+        ])->assertSuccessful();
+
+        expect(Storage::disk('local')->files('missed-files'))->toHaveCount(1);
+    });
+
+    it('stores each file when request contains multiple files', function () {
+        Exceptions::fake();
+        Storage::fake('local');
+
+        $user = User::factory()->withPlexConnection()->create();
+
+        $this->post(plexEventUrl($user->plex_token), [
+            'payload' => json_encode(buildNonsenseArray()),
+            'thumb' => UploadedFile::fake()->image('thumb.jpg'),
+            'art' => UploadedFile::fake()->image('art.jpg'),
+        ])->assertSuccessful();
+
+        expect(Storage::disk('local')->files('missed-files'))->toHaveCount(2);
+    });
+
+    it('handles an array of files under a single key', function () {
+        Exceptions::fake();
+        Storage::fake('local');
+
+        $user = User::factory()->withPlexConnection()->create();
+
+        $this->post(plexEventUrl($user->plex_token), [
+            'payload' => json_encode(buildNonsenseArray()),
+            'files' => [
+                UploadedFile::fake()->image('thumb1.jpg'),
+                UploadedFile::fake()->image('thumb2.jpg'),
+            ],
+        ])->assertSuccessful();
+
+        expect(Storage::disk('local')->files('missed-files'))->toHaveCount(2);
+    });
+
+    it('includes the filepath in the reported exception', function () {
+        Exceptions::fake();
+        Storage::fake('local');
+
+        $user = User::factory()->withPlexConnection()->create();
+
+        $this->post(plexEventUrl($user->plex_token), [
+            'payload' => json_encode(buildNonsenseArray()),
+            'thumb' => UploadedFile::fake()->image('thumb.jpg'),
+        ])->assertSuccessful();
+
+        Exceptions::assertReported(function (PlexEventFileMissedException $exception): bool {
+            return str_starts_with($exception->filepath, 'missed-files/');
+        });
+    });
 });
