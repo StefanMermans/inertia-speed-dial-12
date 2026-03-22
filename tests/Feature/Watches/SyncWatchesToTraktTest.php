@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Watches\SyncWatchToTraktTest;
+namespace Tests\Feature\Watches\SyncWatchesToTraktTest;
 
 use App\Data\PlexEvent\PlexEventData;
 use App\Data\PlexEvent\PlexEventRequestData;
 use App\Events\PlexScrobbleEvent;
+use App\Listeners\SyncWatchesToTrakt;
 use App\Models\User;
-use App\Observers\SyncWatchToTrakt;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Spatie\LaravelData\Optional;
 
-covers(SyncWatchToTrakt::class);
+covers(SyncWatchesToTrakt::class);
 
 function parseFixture(string $name): PlexEventData
 {
@@ -51,7 +51,7 @@ beforeEach(function () {
     config()->set('services.trakt.base_url', 'https://api.trakt.tv');
 });
 
-describe('SyncWatchToTrakt listener', function () {
+describe('SyncWatchesToTrakt listener', function () {
     it('syncs a movie scrobble to trakt', function () {
         fakeTraktSyncResponse();
 
@@ -214,7 +214,7 @@ describe('SyncWatchToTrakt listener', function () {
 
         Log::shouldReceive('warning')
             ->once()
-            ->withArgs(fn ($message) => $message === 'Failed to sync watch to Trakt');
+            ->withArgs(fn ($message) => $message === 'Failed to sync watches to Trakt');
 
         $user = User::factory()->create([
             'plex_account_id' => 63204474,

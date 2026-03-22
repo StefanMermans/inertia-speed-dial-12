@@ -7,16 +7,18 @@ namespace Tests\Feature\Watches\SaveWatchTest;
 use App\Data\PlexEvent\PlexEventData;
 use App\Data\PlexEvent\PlexEventRequestData;
 use App\Events\PlexScrobbleEvent;
+use App\Events\WatchesCreated;
 use App\Models\Series;
 use App\Models\User;
 use App\Models\Watch;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Event;
 use Spatie\LaravelData\Optional;
 
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
 
-covers(\App\Listeners\SaveWatch::class);
+covers(\App\Listeners\SavePlexWatch::class);
 
 function parseFixture(string $name): PlexEventData
 {
@@ -130,5 +132,28 @@ describe('SaveWatch listener', function () {
         $expectedWatchedAt = Carbon::createFromTimestamp($metadata->lastViewedAt);
 
         expect($watch->watched_at->timestamp)->toBe($expectedWatchedAt->timestamp);
+    });
+
+    it('dispatches WatchesCreated event after saving a watch', function () {
+        Event::fake([WatchesCreated::class]);
+
+        dispatchScrobble(parseFixture('movie_scrobble_event'), $this->user);
+
+        Event::assertDispatched(WatchesCreated::class, function (WatchesCreated $event) {
+            return count($event->watches) === 1
+                && $event->user->is($this->user);
+        });
+    });
+
+    it('does not dispatch WatchesCreated for duplicate scrobbles', function () {
+        $plexEvent = parseFixture('movie_scrobble_event');
+
+        dispatchScrobble($plexEvent, $this->user);
+
+        Event::fake([WatchesCreated::class]);
+
+        dispatchScrobble($plexEvent, $this->user);
+
+        Event::assertNotDispatched(WatchesCreated::class);
     });
 });

@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Tests\Feature\PlexWebhookIntegrationTest;
 
 use App\Http\Controllers\PlexEventController;
-use App\Listeners\SaveWatch;
+use App\Listeners\SavePlexWatch;
 use App\Models\User;
 use App\Models\Watch;
 use Illuminate\Support\Facades\Http;
 
-covers(PlexEventController::class, SaveWatch::class);
+covers(PlexEventController::class, SavePlexWatch::class);
 
 beforeEach(function () {
     config()->set('services.trakt.client_id', 'fake-client-id');

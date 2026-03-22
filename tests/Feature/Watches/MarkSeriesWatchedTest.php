@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Watches;
 
+use App\Events\WatchesCreated;
 use App\Http\Controllers\Watches\MarkSeriesWatchedController;
+use App\Listeners\SyncWatchesToTrakt;
 use App\Models\Series;
 use App\Models\User;
 use App\Models\Watch;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-covers(MarkSeriesWatchedController::class);
+covers(MarkSeriesWatchedController::class, SyncWatchesToTrakt::class);
 
 beforeEach(function () {
     Http::preventStrayRequests();
@@ -181,10 +184,54 @@ it('skips trakt sync when user has no trakt connection', function () {
     $this->assertDatabaseCount(Watch::class, 3);
 });
 
-it('does not trigger individual watch observers during bulk creation', function () {
+it('dispatches WatchesCreated event with all watches', function () {
+    Event::fake([WatchesCreated::class]);
+
+    $user = User::factory()->create();
+
+    $this->actingAs($user)->post('/watches/mark-series', validPayload());
+
+    Event::assertDispatched(WatchesCreated::class, function (WatchesCreated $event) use ($user) {
+        return count($event->watches) === 3
+            && $event->user->is($user);
+    });
+});
+
+it('does not dispatch WatchesCreated when all watches already exist', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)->post('/watches/mark-series', validPayload());
+
+    Event::fake([WatchesCreated::class]);
+
+    $this->actingAs($user)->post('/watches/mark-series', validPayload());
+
+    Event::assertNotDispatched(WatchesCreated::class);
+});
+
+it('dispatches WatchesCreated only for newly created watches', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)->post('/watches/mark-series', validPayload());
+
+    Event::fake([WatchesCreated::class]);
+
+    $payload = validPayload();
+    $payload['episodes'][] = ['tmdb_id' => 62101, 'title' => 'Grilled', 'season_number' => 2, 'episode_number' => 2];
+
+    $this->actingAs($user)->post('/watches/mark-series', $payload);
+
+    Event::assertDispatched(WatchesCreated::class, function (WatchesCreated $event) use ($user) {
+        return count($event->watches) === 1
+            && $event->watches[0]->tmdb_id === 62101
+            && $event->user->is($user);
+    });
+});
+
+it('only syncs newly created watches to trakt', function () {
     Http::fake([
         'api.trakt.tv/sync/history' => Http::response([
-            'added' => ['movies' => 0, 'episodes' => 3],
+            'added' => ['movies' => 0, 'episodes' => 1],
             'not_found' => ['movies' => [], 'shows' => [], 'seasons' => [], 'episodes' => []],
         ]),
     ]);
@@ -197,7 +244,23 @@ it('does not trigger individual watch observers during bulk creation', function 
 
     $this->actingAs($user)->post('/watches/mark-series', validPayload());
 
-    Http::assertSentCount(1);
+    Http::fake([
+        'api.trakt.tv/sync/history' => Http::response([
+            'added' => ['movies' => 0, 'episodes' => 1],
+            'not_found' => ['movies' => [], 'shows' => [], 'seasons' => [], 'episodes' => []],
+        ]),
+    ]);
+
+    $payload = validPayload();
+    $payload['episodes'][] = ['tmdb_id' => 62101, 'title' => 'Grilled', 'season_number' => 2, 'episode_number' => 2];
+
+    $this->actingAs($user)->post('/watches/mark-series', $payload);
+
+    Http::assertSent(function ($request) {
+        return $request->url() === 'https://api.trakt.tv/sync/history'
+            && count($request['episodes']) === 1
+            && $request['episodes'][0]['ids']['tmdb'] === 62101;
+    });
 });
 
 it('logs warning when trakt sync fails', function () {
@@ -207,7 +270,7 @@ it('logs warning when trakt sync fails', function () {
 
     Log::shouldReceive('warning')
         ->once()
-        ->withArgs(fn ($message) => $message === 'Failed to batch sync watches to Trakt');
+        ->withArgs(fn ($message) => $message === 'Failed to sync watches to Trakt');
 
     $user = User::factory()->create([
         'trakt_access_token' => 'valid-token',
