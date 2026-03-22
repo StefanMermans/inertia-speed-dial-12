@@ -7,6 +7,7 @@ namespace App\Listeners;
 use App\Data\PlexEvent\PlexMetadataData;
 use App\Enums\WatchType;
 use App\Events\PlexScrobbleEvent;
+use App\Events\WatchesCreated;
 use App\Models\Series;
 use App\Models\User;
 use App\Models\Watch;
@@ -14,7 +15,7 @@ use Carbon\CarbonInterface;
 use Illuminate\Support\Carbon;
 use Spatie\LaravelData\Optional;
 
-class SaveWatch
+class SavePlexWatch
 {
     public function handle(PlexScrobbleEvent $event): void
     {
@@ -22,7 +23,11 @@ class SaveWatch
         $watchType = $this->resolveWatchType($metadata);
         $series = $this->updateOrCreateSeries($metadata, $watchType);
 
-        $this->createWatch($event->user, $metadata, $watchType, $series);
+        $watch = $this->createWatch($event->user, $metadata, $watchType, $series);
+
+        if ($watch->wasRecentlyCreated) {
+            WatchesCreated::dispatch([$watch], $event->user);
+        }
     }
 
     private function resolveWatchType(PlexMetadataData $metadata): WatchType
@@ -46,9 +51,9 @@ class SaveWatch
         );
     }
 
-    private function createWatch(User $user, PlexMetadataData $metadata, WatchType $watchType, ?Series $series): void
+    private function createWatch(User $user, PlexMetadataData $metadata, WatchType $watchType, ?Series $series): Watch
     {
-        Watch::firstOrCreate(
+        return Watch::firstOrCreate(
             [
                 'user_id' => $user->id,
                 'plex_rating_key' => $metadata->ratingKey,

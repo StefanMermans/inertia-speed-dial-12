@@ -7,6 +7,9 @@ namespace App\Services\TmdbApi;
 use App\Data\Tmdb\TmdbAccessTokenData;
 use App\Data\Tmdb\TmdbListItemData;
 use App\Data\Tmdb\TmdbRequestTokenData;
+use App\Data\Tmdb\TmdbTvDetailsData;
+use App\Data\Tmdb\TmdbTvSearchResultsData;
+use App\Data\Tmdb\TmdbTvSeasonData;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 
@@ -107,6 +110,41 @@ class TmdbApi
         $response->throw();
 
         return $response->json();
+    }
+
+    public function searchTv(string $query, int $page = 1): TmdbTvSearchResultsData
+    {
+        $response = $this->appClient()
+            ->get('/3/search/tv', [
+                'query' => $query,
+                'page' => $page,
+            ]);
+
+        $response->throw();
+
+        return TmdbTvSearchResultsData::from($response->json());
+    }
+
+    public function getTvDetails(int $tvId): TmdbTvDetailsData
+    {
+        $response = $this->appClient()
+            ->get("/3/tv/{$tvId}", [
+                'append_to_response' => 'external_ids',
+            ]);
+
+        $response->throw();
+
+        return TmdbTvDetailsData::from($response->json());
+    }
+
+    public function getTvSeason(int $tvId, int $seasonNumber): TmdbTvSeasonData
+    {
+        $response = $this->appClient()
+            ->get("/3/tv/{$tvId}/season/{$seasonNumber}");
+
+        $response->throw();
+
+        return TmdbTvSeasonData::from($response->json());
     }
 
     /**
