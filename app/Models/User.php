@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Concerns\HasAnilistConnection;
 use App\Models\Concerns\HasPlexConnection;
 use App\Models\Concerns\HasTmdbConnection;
 use App\Models\Concerns\HasTraktConnection;
@@ -17,7 +18,7 @@ use Illuminate\Notifications\Notifiable;
 final class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, HasPlexConnection, HasTmdbConnection, HasTraktConnection, Notifiable;
+    use HasAnilistConnection, HasFactory, HasPlexConnection, HasTmdbConnection, HasTraktConnection, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -38,6 +39,7 @@ final class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'anilist_access_token',
         'plex_token',
         'tmdb_access_token',
         'trakt_access_token',
@@ -54,6 +56,8 @@ final class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'anilist_access_token' => 'encrypted',
+            'anilist_token_expires_at' => 'datetime',
             'tmdb_access_token' => 'encrypted',
             'trakt_access_token' => 'encrypted',
             'trakt_refresh_token' => 'encrypted',

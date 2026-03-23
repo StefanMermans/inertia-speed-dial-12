@@ -26,12 +26,14 @@ class ProfileController extends Controller
             'mustVerifyEmail' => $user instanceof MustVerifyEmail,
             'status' => $request->session()->get('status'),
             'connections' => [
+                'anilist_has_token' => $user->hasAnilistConnection(),
                 'tmdb_has_token' => $user->hasTmdbConnection(),
                 'trakt_has_token' => $user->hasTraktConnection(),
                 'plex_account_id' => $user->plex_account_id,
                 'plex_webhook_url' => $user->plexWebhookUrl(),
             ],
             'connectionVerification' => Inertia::defer(fn (): array => [
+                'anilist' => $user->verifyAnilistConnection(),
                 'tmdb' => $user->verifyTmdbConnection(),
                 'trakt' => $user->verifyTraktConnection(),
             ]),

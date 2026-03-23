@@ -22,6 +22,7 @@ final class Series extends Model
         'imdb_id',
         'tvdb_id',
         'poster_path',
+        'anilist_id',
     ];
 
     /** @return HasMany<Watch, $this> */

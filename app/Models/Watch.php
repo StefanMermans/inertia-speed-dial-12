@@ -29,6 +29,7 @@ final class Watch extends Model
         'sort_order',
         'watched_at',
         'plex_rating_key',
+        'anilist_id',
     ];
 
     protected function casts(): array

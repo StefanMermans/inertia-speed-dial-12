@@ -5,6 +5,12 @@ The project is served and php is installed using Laravel Herd
 
 After completing a task validate all code changes by running `composer run validate:fix`
 
+## Url generation
+- In frontend code, always use Ziggy's `route()` helper for URLs. Never hardcode URL paths.
+
+## Database
+- Never run `migrate:fresh` unless the user explicitly requests it. Migrate fresh
+
 ===
 
 <laravel-boost-guidelines>
