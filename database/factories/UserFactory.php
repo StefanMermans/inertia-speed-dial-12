@@ -31,6 +31,8 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'anilist_access_token' => null,
+            'anilist_token_expires_at' => null,
             'plex_account_id' => null,
             'plex_token' => null,
             'tmdb_access_token' => null,
@@ -48,6 +50,17 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+
+    /**
+     * Indicate that the user has an AniList connection.
+     */
+    public function withAnilistConnection(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'anilist_access_token' => fake()->sha256(),
+            'anilist_token_expires_at' => now()->addDays(365),
         ]);
     }
 

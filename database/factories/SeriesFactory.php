@@ -18,6 +18,7 @@ class SeriesFactory extends Factory
             'title' => fake()->words(3, true),
             'year' => fake()->year(),
             'plex_rating_key' => (string) fake()->unique()->randomNumber(5),
+            'anilist_id' => null,
         ];
     }
 

@@ -1,7 +1,7 @@
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Transition } from '@headlessui/react';
 import { Deferred, Head, Link, useForm, usePage } from '@inertiajs/react';
-import { Film, Tv } from 'lucide-react';
+import { Clapperboard, Film, Tv } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
 import { ConnectionCard, type ConnectionStatus } from '@/components/connection-card';
@@ -18,7 +18,7 @@ import SettingsLayout from '@/layouts/settings/layout';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Profile settings',
-        href: '/settings/profile',
+        href: route('profile.edit'),
     },
 ];
 
@@ -26,12 +26,14 @@ interface ProfileProps {
     mustVerifyEmail: boolean;
     status?: string;
     connections: {
+        anilist_has_token: boolean;
         tmdb_has_token: boolean;
         trakt_has_token: boolean;
         plex_account_id: number | null;
         plex_webhook_url: string | null;
     };
     connectionVerification?: {
+        anilist: boolean;
         tmdb: boolean;
         trakt: boolean;
     };
@@ -51,11 +53,21 @@ function ServiceConnectionCards({
     connections: ProfileProps['connections'];
     connectionVerification?: ProfileProps['connectionVerification'];
 }) {
+    const anilistStatus = resolveConnectionStatus(connections.anilist_has_token, connectionVerification?.anilist);
     const tmdbStatus = resolveConnectionStatus(connections.tmdb_has_token, connectionVerification?.tmdb);
     const traktStatus = resolveConnectionStatus(connections.trakt_has_token, connectionVerification?.trakt);
 
     return (
         <div className="space-y-3">
+            <ConnectionCard
+                label="AniList"
+                description="Sync your anime and manga lists to AniList"
+                icon={Clapperboard}
+                status={anilistStatus}
+                connectUrl={route('anilist.redirect')}
+                disconnectUrl={route('anilist.disconnect')}
+            />
+
             <ConnectionCard
                 label="TMDB"
                 description="Sync movies and TV shows to your TMDB lists"

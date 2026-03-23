@@ -35,6 +35,11 @@ return [
         ],
     ],
 
+    'anilist' => [
+        'client_id' => env('ANILIST_CLIENT_ID'),
+        'client_secret' => env('ANILIST_CLIENT_SECRET'),
+    ],
+
     'tmdb' => [
         'api_key' => env('TMDB_API_KEY'),
         'api_read_access_token' => env('TMDB_API_READ_ACCESS_TOKEN'),
