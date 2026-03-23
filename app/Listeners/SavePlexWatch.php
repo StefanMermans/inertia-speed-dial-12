@@ -56,17 +56,17 @@ class SavePlexWatch
         return Watch::firstOrCreate(
             [
                 'user_id' => $user->id,
-                'plex_rating_key' => $metadata->ratingKey,
-                'watched_at' => $this->resolveWatchedAt($metadata->lastViewedAt),
+                'tmdb_id' => $metadata->tmdbId(),
+                'type' => $watchType,
+                'season_number' => $metadata->parentIndex instanceof Optional ? null : $metadata->parentIndex,
+                'episode_number' => $metadata->index instanceof Optional ? null : $metadata->index,
             ],
             [
-                'type' => $watchType,
+                'plex_rating_key' => $metadata->ratingKey,
+                'watched_at' => $this->resolveWatchedAt($metadata->lastViewedAt),
                 'title' => $metadata->title,
                 'year' => $metadata->year,
                 'series_id' => $series?->id,
-                'season_number' => $metadata->parentIndex instanceof Optional ? null : $metadata->parentIndex,
-                'episode_number' => $metadata->index instanceof Optional ? null : $metadata->index,
-                'tmdb_id' => $metadata->tmdbId(),
                 'imdb_id' => $metadata->imdbId(),
                 'tvdb_id' => $metadata->tvdbId(),
             ],

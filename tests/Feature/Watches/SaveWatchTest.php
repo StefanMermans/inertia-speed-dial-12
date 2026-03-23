@@ -20,12 +20,16 @@ use function Pest\Laravel\assertDatabaseHas;
 
 covers(\App\Listeners\SavePlexWatch::class);
 
-function parseFixture(string $name): PlexEventData
+function parseFixture(string $name, array $metadataOverrides = []): PlexEventData
 {
     $json = json_decode(
         file_get_contents(dirname(__DIR__, 2)."/fixtures/plex/$name.json"),
         true,
     );
+
+    if ($metadataOverrides !== []) {
+        $json['Metadata'] = array_merge($json['Metadata'], $metadataOverrides);
+    }
 
     return PlexEventRequestData::factory()
         ->alwaysValidate()
@@ -104,6 +108,18 @@ describe('SaveWatch listener', function () {
 
         dispatchScrobble($plexEvent, $this->user);
         dispatchScrobble($plexEvent, $this->user);
+
+        assertDatabaseCount(Watch::class, 1);
+    });
+
+    it('is idempotent for duplicate scrobbles with different lastViewedAt', function () {
+        $firstScrobble = parseFixture('episode_scrobble_event');
+        $secondScrobble = parseFixture('episode_scrobble_event', [
+            'lastViewedAt' => $firstScrobble->Metadata->lastViewedAt + 5,
+        ]);
+
+        dispatchScrobble($firstScrobble, $this->user);
+        dispatchScrobble($secondScrobble, $this->user);
 
         assertDatabaseCount(Watch::class, 1);
     });

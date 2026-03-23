@@ -41,7 +41,15 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function fixtureAccountId(string $fixtureJson): int
+function fixtureAccountId(array|string $fixtureJson): int
 {
-    return json_decode($fixtureJson, true)['Account']['id'];
+    if (! is_array($fixtureJson)) {
+        $fixtureJson = json_decode($fixtureJson, true);
+    }
+
+    if (\Illuminate\Support\Arr::has($fixtureJson, 'payload')) {
+        $fixtureJson = json_decode($fixtureJson['payload'], true);
+    }
+
+    return $fixtureJson['Account']['id'];
 }
