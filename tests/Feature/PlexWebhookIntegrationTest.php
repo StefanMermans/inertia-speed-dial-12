@@ -40,7 +40,7 @@ describe('Full plex webhook integration', function () {
         ]);
 
         $this
-            ->postJson(route('api.plex-event', ['token' => $user->plex_token]), ['payload' => $fixture])
+            ->postJson($user->plexWebhookUrl(), ['payload' => $fixture])
             ->assertNoContent();
 
         $watch = Watch::first();
@@ -71,7 +71,7 @@ describe('Full plex webhook integration', function () {
         Http::assertNothingSent();
     });
 
-    it('only creates one watch and syncs to trakt once for duplicate scrobbles', function (array $plexEvent) {
+    it('only creates one watch for duplicate scrobbles with different timestamps', function (array $plexEvent) {
         Http::fake([
             'api.trakt.tv/sync/history' => Http::response([
                 'added' => ['movies' => 1, 'episodes' => 0],
@@ -82,7 +82,12 @@ describe('Full plex webhook integration', function () {
         $user = User::factory()->withPlexConnection(fixtureAccountId($plexEvent))->createOne();
 
         $this->postJson($user->plexWebhookUrl(), $plexEvent)->assertNoContent();
-        $this->postJson($user->plexWebhookUrl(), $plexEvent)->assertNoContent();
+
+        $secondPayload = json_decode($plexEvent['payload'], true);
+        $secondPayload['Metadata']['lastViewedAt'] = ($secondPayload['Metadata']['lastViewedAt'] ?? time()) + 5;
+        $secondPlexEvent = ['payload' => json_encode($secondPayload)];
+
+        $this->postJson($user->plexWebhookUrl(), $secondPlexEvent)->assertNoContent();
 
         expect(Watch::count())->toBe(1);
     })

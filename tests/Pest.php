@@ -48,7 +48,8 @@ function fixtureAccountId(array|string $fixtureJson): int
     }
 
     if (\Illuminate\Support\Arr::has($fixtureJson, 'payload')) {
-        $fixtureJson = json_decode($fixtureJson['payload'], true);
+        $payload = $fixtureJson['payload'];
+        $fixtureJson = is_array($payload) ? $payload : json_decode($payload, true);
     }
 
     return $fixtureJson['Account']['id'];
