@@ -10,6 +10,8 @@ use App\Models\User;
 use App\Models\Watch;
 use Illuminate\Support\Facades\Http;
 
+use function fixtureAccountId;
+
 covers(PlexEventController::class, SavePlexWatch::class);
 
 beforeEach(function () {
@@ -31,14 +33,14 @@ describe('Full plex webhook integration', function () {
 
         $fixture = file_get_contents(base_path('tests/fixtures/plex/movie_scrobble_event.json'));
 
-        $user = User::factory()->withPlexConnection(\fixtureAccountId($fixture))->create([
+        $user = User::factory()->withPlexConnection(fixtureAccountId($fixture))->create([
             'trakt_access_token' => 'valid-token',
             'trakt_refresh_token' => 'refresh-token',
             'trakt_token_expires_at' => now()->addDays(30),
         ]);
 
         $this
-            ->postJson(route('api.plex-event', ['token' => $user->plex_token]), ['payload' => $fixture])
+            ->postJson($user->plexWebhookUrl(), ['payload' => $fixture])
             ->assertNoContent();
 
         $watch = Watch::first();
@@ -57,17 +59,39 @@ describe('Full plex webhook integration', function () {
     it('creates a watch but skips trakt when user has no trakt connection', function () {
         $fixture = file_get_contents(base_path('tests/fixtures/plex/movie_scrobble_event.json'));
 
-        $user = User::factory()->withPlexConnection(\fixtureAccountId($fixture))->create([
+        $user = User::factory()->withPlexConnection(fixtureAccountId($fixture))->create([
             'trakt_access_token' => null,
         ]);
 
         $this
-            ->postJson(route('api.plex-event', ['token' => $user->plex_token]), ['payload' => $fixture])
+            ->postJson($user->plexWebhookUrl(), ['payload' => $fixture])
             ->assertNoContent();
 
         expect(Watch::count())->toBe(1);
         Http::assertNothingSent();
     });
+
+    it('only creates one watch for duplicate scrobbles with different timestamps', function (array $plexEvent) {
+        Http::fake([
+            'api.trakt.tv/sync/history' => Http::response([
+                'added' => ['movies' => 1, 'episodes' => 0],
+                'not_found' => ['movies' => [], 'shows' => [], 'seasons' => [], 'episodes' => []],
+            ]),
+        ]);
+
+        $user = User::factory()->withPlexConnection(fixtureAccountId($plexEvent))->createOne();
+
+        $this->postJson($user->plexWebhookUrl(), $plexEvent)->assertNoContent();
+
+        $secondPayload = json_decode($plexEvent['payload'], true);
+        $secondPayload['Metadata']['lastViewedAt'] = ($secondPayload['Metadata']['lastViewedAt'] ?? time()) + 5;
+        $secondPlexEvent = ['payload' => json_encode($secondPayload)];
+
+        $this->postJson($user->plexWebhookUrl(), $secondPlexEvent)->assertNoContent();
+
+        expect(Watch::count())->toBe(1);
+    })
+        ->with('plex-events.scrobble');
 
     it('does not create a watch when token is invalid', function () {
         $fixture = file_get_contents(base_path('tests/fixtures/plex/movie_scrobble_event.json'));
