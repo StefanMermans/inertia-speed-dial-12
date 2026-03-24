@@ -26,6 +26,12 @@ final class Series extends Model
         'mal_id',
     ];
 
+    /** @return HasMany<Season, $this> */
+    public function seasons(): HasMany
+    {
+        return $this->hasMany(Season::class);
+    }
+
     /** @return HasMany<Watch, $this> */
     public function watches(): HasMany
     {

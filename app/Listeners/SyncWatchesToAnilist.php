@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace App\Listeners;
 
 use App\Data\Anilist\AnilistSaveMediaListEntryVariables;
-use App\Data\Anilist\AnilistSearchResult;
 use App\Enums\WatchType;
 use App\Events\WatchesCreated;
 use App\Models\Watch;
 use App\Services\AnilistApi\AnilistApi;
+use App\Services\AnilistApi\AnimeSeasonResolver;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Log;
 
@@ -17,6 +18,7 @@ class SyncWatchesToAnilist
 {
     public function __construct(
         private readonly AnilistApi $anilistApi,
+        private readonly AnimeSeasonResolver $animeSeasonResolver,
     ) {}
 
     public function handle(WatchesCreated $event): void
@@ -35,19 +37,61 @@ class SyncWatchesToAnilist
             return;
         }
 
-        collect($event->watches)
-            ->each(fn (Watch $watch) => $this->resolveAndSyncWatch($token, $watch));
+        $watches = new EloquentCollection($event->watches);
+        $watches->loadMissing('series.seasons');
+        $watches->each(fn (Watch $watch) => $this->resolveAndSyncWatch($token, $watch));
     }
 
     private function resolveAndSyncWatch(string $token, Watch $watch): void
     {
-        $anilistId = $this->resolveAnilistId($watch, $token);
+        if ($watch->type === WatchType::Episode) {
+            $this->syncEpisodeWatch($token, $watch);
+        } else {
+            $this->syncMovieWatch($token, $watch);
+        }
+    }
+
+    private function syncEpisodeWatch(string $token, Watch $watch): void
+    {
+        $resolved = $this->animeSeasonResolver->resolve($watch, $token);
+
+        if (! $resolved) {
+            return;
+        }
+
+        $variables = new AnilistSaveMediaListEntryVariables(
+            mediaId: $resolved->anilistId,
+            status: 'CURRENT',
+            progress: $resolved->progress,
+        );
+
+        try {
+            $this->anilistApi->saveMediaListEntry($token, $variables);
+        } catch (RequestException $e) {
+            Log::warning('Failed to sync watch to AniList', [
+                'status' => $e->response->status(),
+                'anilist_id' => $resolved->anilistId,
+            ]);
+        }
+    }
+
+    private function syncMovieWatch(string $token, Watch $watch): void
+    {
+        $anilistId = $this->resolveMovieAnilistId($watch, $token);
 
         if (! $anilistId) {
             return;
         }
 
-        $variables = $this->buildVariables($watch, $anilistId);
+        $variables = new AnilistSaveMediaListEntryVariables(
+            mediaId: $anilistId,
+            status: 'COMPLETED',
+            completedAt: [
+                'year' => (int) $watch->watched_at->format('Y'),
+                'month' => (int) $watch->watched_at->format('n'),
+                'day' => (int) $watch->watched_at->format('j'),
+            ],
+        );
 
         try {
             $this->anilistApi->saveMediaListEntry($token, $variables);
@@ -59,59 +103,23 @@ class SyncWatchesToAnilist
         }
     }
 
-    private function buildVariables(Watch $watch, int $anilistId): AnilistSaveMediaListEntryVariables
-    {
-        $status = null;
-        $progress = null;
-        $completedAt = null;
-
-        if ($watch->type === WatchType::Movie) {
-            $status = 'COMPLETED';
-            $completedAt = [
-                'year' => (int) $watch->watched_at->format('Y'),
-                'month' => (int) $watch->watched_at->format('n'),
-                'day' => (int) $watch->watched_at->format('j'),
-            ];
-        }
-
-        if ($watch->type === WatchType::Episode) {
-            $status = 'CURRENT';
-            $progress = $watch->episode_number;
-        }
-
-        return new AnilistSaveMediaListEntryVariables(
-            mediaId: $anilistId,
-            status: $status,
-            progress: $progress,
-            completedAt: $completedAt,
-        );
-    }
-
-    private function resolveAnilistId(Watch $watch, string $token): ?int
+    private function resolveMovieAnilistId(Watch $watch, string $token): ?int
     {
         if ($watch->anilist_id) {
             return $watch->anilist_id;
         }
 
-        if ($watch->series?->anilist_id) {
-            return $watch->series->anilist_id;
-        }
-
-        return $this->searchAndCacheAnilistId($watch, $token);
+        return $this->searchAndCacheMovieAnilistId($watch, $token);
     }
 
-    private function searchAndCacheAnilistId(Watch $watch, string $token): ?int
+    private function searchAndCacheMovieAnilistId(Watch $watch, string $token): ?int
     {
-        $title = $watch->type === WatchType::Episode
-            ? $watch->series?->title
-            : $watch->title;
-
-        if (! $title) {
+        if (! $watch->title) {
             return null;
         }
 
         try {
-            $result = $this->anilistApi->searchAnime($title, $watch->type, $token);
+            $result = $this->anilistApi->searchAnime($watch->title, WatchType::Movie, $token);
         } catch (RequestException) {
             return null;
         }
@@ -120,19 +128,8 @@ class SyncWatchesToAnilist
             return null;
         }
 
-        $this->cacheSearchResult($watch, $result);
+        $watch->update(['anilist_id' => $result->id, 'mal_id' => $result->idMal]);
 
         return $result->id;
-    }
-
-    private function cacheSearchResult(Watch $watch, AnilistSearchResult $result): void
-    {
-        $data = ['anilist_id' => $result->id, 'mal_id' => $result->idMal];
-
-        if ($watch->type === WatchType::Episode && $watch->series) {
-            $watch->series->update($data);
-        } else {
-            $watch->update($data);
-        }
     }
 }
