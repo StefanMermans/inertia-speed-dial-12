@@ -6,6 +6,7 @@ namespace App\Services\AnilistApi;
 
 use App\Data\Anilist\AnilistSaveMediaListEntryData;
 use App\Data\Anilist\AnilistSaveMediaListEntryVariables;
+use App\Data\Anilist\AnilistSearchResult;
 use App\Data\Anilist\AnilistTokenData;
 use App\Enums\WatchType;
 use App\Models\User;
@@ -59,12 +60,13 @@ class AnilistApi
         return $user->anilist_access_token;
     }
 
-    public function searchAnime(string $title, WatchType $watchType, ?string $token = null): ?int
+    public function searchAnime(string $title, WatchType $watchType, ?string $token = null): ?AnilistSearchResult
     {
         $query = <<<'GRAPHQL'
             query ($search: String, $type: MediaType, $formatIn: [MediaFormat]) {
                 Media(search: $search, type: $type, format_in: $formatIn) {
                     id
+                    idMal
                 }
             }
             GRAPHQL;
@@ -88,7 +90,13 @@ class AnilistApi
 
         $response->throw();
 
-        return $response->json('data.Media.id');
+        $media = $response->json('data.Media');
+
+        if (! $media) {
+            return null;
+        }
+
+        return AnilistSearchResult::from($media);
     }
 
     public function saveMediaListEntry(string $token, AnilistSaveMediaListEntryVariables $variables): AnilistSaveMediaListEntryData

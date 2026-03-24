@@ -28,12 +28,12 @@ function fakeAnilistSaveResponse(int $id = 1, string $status = 'COMPLETED', ?int
     ]);
 }
 
-function fakeAnilistSearchAndSaveResponse(int $anilistId, string $status = 'COMPLETED', ?int $progress = null): void
+function fakeAnilistSearchAndSaveResponse(int $anilistId, ?int $malId = null, string $status = 'COMPLETED', ?int $progress = null): void
 {
     Http::fake([
         'graphql.anilist.co' => Http::sequence()
             ->push([
-                'data' => ['Media' => ['id' => $anilistId]],
+                'data' => ['Media' => ['id' => $anilistId, 'idMal' => $malId]],
             ])
             ->push([
                 'data' => [
@@ -203,7 +203,7 @@ describe('SyncWatchesToAnilist listener', function () {
 
 describe('AniList ID resolution via search', function () {
     it('searches anilist by title when movie has no anilist_id and caches it', function () {
-        fakeAnilistSearchAndSaveResponse(anilistId: 21519);
+        fakeAnilistSearchAndSaveResponse(anilistId: 21519, malId: 32281);
 
         $user = User::factory()->withAnilistConnection()->create();
 
@@ -218,11 +218,12 @@ describe('AniList ID resolution via search', function () {
         Http::assertSentCount(2);
 
         $watch->refresh();
-        expect($watch->anilist_id)->toBe(21519);
+        expect($watch->anilist_id)->toBe(21519)
+            ->and($watch->mal_id)->toBe(32281);
     });
 
     it('searches anilist by series title for episodes and caches on series', function () {
-        fakeAnilistSearchAndSaveResponse(anilistId: 20, status: 'CURRENT', progress: 3);
+        fakeAnilistSearchAndSaveResponse(anilistId: 20, malId: 20, status: 'CURRENT', progress: 3);
 
         $user = User::factory()->withAnilistConnection()->create();
 
@@ -242,7 +243,8 @@ describe('AniList ID resolution via search', function () {
         Http::assertSentCount(2);
 
         $series->refresh();
-        expect($series->anilist_id)->toBe(20);
+        expect($series->anilist_id)->toBe(20)
+            ->and($series->mal_id)->toBe(20);
     });
 
     it('skips sync when anilist search returns no result', function () {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Listeners;
 
 use App\Data\Anilist\AnilistSaveMediaListEntryVariables;
+use App\Data\Anilist\AnilistSearchResult;
 use App\Enums\WatchType;
 use App\Events\WatchesCreated;
 use App\Models\Watch;
@@ -110,21 +111,28 @@ class SyncWatchesToAnilist
         }
 
         try {
-            $anilistId = $this->anilistApi->searchAnime($title, $watch->type, $token);
+            $result = $this->anilistApi->searchAnime($title, $watch->type, $token);
         } catch (RequestException) {
             return null;
         }
 
-        if (! $anilistId) {
+        if (! $result) {
             return null;
         }
 
-        if ($watch->type === WatchType::Episode && $watch->series) {
-            $watch->series->update(['anilist_id' => $anilistId]);
-        } else {
-            $watch->update(['anilist_id' => $anilistId]);
-        }
+        $this->cacheSearchResult($watch, $result);
 
-        return $anilistId;
+        return $result->id;
+    }
+
+    private function cacheSearchResult(Watch $watch, AnilistSearchResult $result): void
+    {
+        $data = ['anilist_id' => $result->id, 'mal_id' => $result->idMal];
+
+        if ($watch->type === WatchType::Episode && $watch->series) {
+            $watch->series->update($data);
+        } else {
+            $watch->update($data);
+        }
     }
 }

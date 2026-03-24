@@ -60,13 +60,14 @@ it('exchanges an authorization code for a token', function () {
 it('searches for anime movie by title with movie format filter', function () {
     Http::fake([
         'graphql.anilist.co' => Http::response([
-            'data' => ['Media' => ['id' => 21519]],
+            'data' => ['Media' => ['id' => 21519, 'idMal' => 32281]],
         ]),
     ]);
 
     $result = app(AnilistApi::class)->searchAnime('Your Name', WatchType::Movie);
 
-    expect($result)->toBe(21519);
+    expect($result->id)->toBe(21519)
+        ->and($result->idMal)->toBe(32281);
 
     Http::assertSent(fn ($request) => $request->url() === 'https://graphql.anilist.co'
         && $request['variables']['search'] === 'Your Name'
@@ -79,13 +80,14 @@ it('searches for anime movie by title with movie format filter', function () {
 it('searches for anime episode by title with tv format filter', function () {
     Http::fake([
         'graphql.anilist.co' => Http::response([
-            'data' => ['Media' => ['id' => 20]],
+            'data' => ['Media' => ['id' => 20, 'idMal' => 20]],
         ]),
     ]);
 
     $result = app(AnilistApi::class)->searchAnime('Naruto', WatchType::Episode);
 
-    expect($result)->toBe(20);
+    expect($result->id)->toBe(20)
+        ->and($result->idMal)->toBe(20);
 
     Http::assertSent(fn ($request) => $request['variables']['formatIn'] === ['TV', 'TV_SHORT', 'SPECIAL', 'OVA', 'ONA']
     );
@@ -94,13 +96,13 @@ it('searches for anime episode by title with tv format filter', function () {
 it('uses authenticated client when token is provided', function () {
     Http::fake([
         'graphql.anilist.co' => Http::response([
-            'data' => ['Media' => ['id' => 21519]],
+            'data' => ['Media' => ['id' => 21519, 'idMal' => 32281]],
         ]),
     ]);
 
     $result = app(AnilistApi::class)->searchAnime('Your Name', WatchType::Movie, 'user-token');
 
-    expect($result)->toBe(21519);
+    expect($result->id)->toBe(21519);
 
     Http::assertSent(fn ($request) => $request->hasHeader('Authorization', 'Bearer user-token')
     );
