@@ -46,7 +46,17 @@ class AnimeSeasonResolver
             return null;
         }
 
-        return $this->resolveFromSeasons($watch, $seasons);
+        $resolved = $this->resolveFromSeasons($watch, $seasons);
+
+        if ($resolved) {
+            $season = $seasons->first(fn (Season $s) => $s->anilist_id === $resolved->anilistId);
+
+            if ($season && $watch->season_id !== $season->id) {
+                $watch->updateQuietly(['season_id' => $season->id]);
+            }
+        }
+
+        return $resolved;
     }
 
     /**

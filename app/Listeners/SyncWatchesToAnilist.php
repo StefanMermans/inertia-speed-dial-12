@@ -39,39 +39,39 @@ class SyncWatchesToAnilist
 
         $watches = new EloquentCollection($event->watches);
         $watches->loadMissing('series.seasons');
-        $watches->each(fn (Watch $watch) => $this->resolveAndSyncWatch($token, $watch));
+
+        [$episodes, $movies] = $watches->partition(fn (Watch $watch) => $watch->type === WatchType::Episode);
+
+        $this->syncEpisodeWatches($token, $episodes);
+        $movies->each(fn (Watch $watch) => $this->syncMovieWatch($token, $watch));
     }
 
-    private function resolveAndSyncWatch(string $token, Watch $watch): void
+    /**
+     * @param  EloquentCollection<int, Watch>  $episodes
+     */
+    private function syncEpisodeWatches(string $token, EloquentCollection $episodes): void
     {
-        if ($watch->type === WatchType::Episode) {
-            $this->syncEpisodeWatch($token, $watch);
-        } else {
-            $this->syncMovieWatch($token, $watch);
-        }
-    }
+        $resolved = $episodes
+            ->map(fn (Watch $watch) => $this->animeSeasonResolver->resolve($watch, $token))
+            ->filter();
 
-    private function syncEpisodeWatch(string $token, Watch $watch): void
-    {
-        $resolved = $this->animeSeasonResolver->resolve($watch, $token);
+        $grouped = $resolved->groupBy('anilistId');
 
-        if (! $resolved) {
-            return;
-        }
+        foreach ($grouped as $anilistId => $entries) {
+            $variables = new AnilistSaveMediaListEntryVariables(
+                mediaId: $anilistId,
+                status: 'CURRENT',
+                progress: $entries->max('progress'),
+            );
 
-        $variables = new AnilistSaveMediaListEntryVariables(
-            mediaId: $resolved->anilistId,
-            status: 'CURRENT',
-            progress: $resolved->progress,
-        );
-
-        try {
-            $this->anilistApi->saveMediaListEntry($token, $variables);
-        } catch (RequestException $e) {
-            Log::warning('Failed to sync watch to AniList', [
-                'status' => $e->response->status(),
-                'anilist_id' => $resolved->anilistId,
-            ]);
+            try {
+                $this->anilistApi->saveMediaListEntry($token, $variables);
+            } catch (RequestException $e) {
+                Log::warning('Failed to sync watch to AniList', [
+                    'status' => $e->response->status(),
+                    'anilist_id' => $anilistId,
+                ]);
+            }
         }
     }
 

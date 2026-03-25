@@ -24,6 +24,7 @@ final class Watch extends Model
         'imdb_id',
         'tvdb_id',
         'series_id',
+        'season_id',
         'season_number',
         'episode_number',
         'sort_order',
@@ -51,5 +52,11 @@ final class Watch extends Model
     public function series(): BelongsTo
     {
         return $this->belongsTo(Series::class);
+    }
+
+    /** @return BelongsTo<Season, $this> */
+    public function season(): BelongsTo
+    {
+        return $this->belongsTo(Season::class);
     }
 }

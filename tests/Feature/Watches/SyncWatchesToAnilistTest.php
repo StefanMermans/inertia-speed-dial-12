@@ -251,6 +251,41 @@ describe('episode sync with cached seasons', function () {
         });
     });
 
+    it('sets season_id on watch after resolving', function () {
+        fakeAnilistSaveResponse(status: 'CURRENT', progress: 3);
+
+        $user = User::factory()->withAnilistConnection()->create();
+
+        $series = Series::factory()->create();
+        $season1 = Season::factory()->create([
+            'series_id' => $series->id,
+            'season_number' => 1,
+            'anilist_id' => 100,
+            'episode_count' => 12,
+            'format' => 'TV',
+        ]);
+        $season2 = Season::factory()->create([
+            'series_id' => $series->id,
+            'season_number' => 2,
+            'anilist_id' => 200,
+            'episode_count' => 12,
+            'format' => 'TV',
+        ]);
+
+        $watch = Watch::factory()->forEpisode()->create([
+            'user_id' => $user->id,
+            'series_id' => $series->id,
+            'episode_number' => 15,
+        ]);
+
+        expect($watch->season_id)->toBeNull();
+
+        dispatchWatchesCreated([$watch], $user);
+
+        $watch->refresh();
+        expect($watch->season_id)->toBe($season2->id);
+    });
+
     it('maps absolute episode number to correct season', function () {
         fakeAnilistSaveResponse(status: 'CURRENT', progress: 3);
 
@@ -716,7 +751,161 @@ describe('general sync behavior', function () {
         dispatchWatchesCreated([$watch], $user);
     });
 
-    it('syncs multiple anime watches individually', function () {
+    it('batches multiple episodes of the same season into one API call', function () {
+        fakeAnilistSaveResponse(status: 'CURRENT', progress: 20);
+
+        $user = User::factory()->withAnilistConnection()->create();
+
+        $series = Series::factory()->create();
+        Season::factory()->create([
+            'series_id' => $series->id,
+            'season_number' => 1,
+            'anilist_id' => 100,
+            'episode_count' => 24,
+            'format' => 'TV',
+        ]);
+
+        $watches = collect([5, 10, 20])->map(
+            fn (int $ep) => Watch::factory()->forEpisode()->create([
+                'user_id' => $user->id,
+                'series_id' => $series->id,
+                'episode_number' => $ep,
+            ])
+        );
+
+        dispatchWatchesCreated($watches->all(), $user);
+
+        Http::assertSentCount(1);
+        Http::assertSent(fn ($request) => $request['variables']['mediaId'] === 100
+            && $request['variables']['progress'] === 20);
+    });
+
+    it('sends separate API calls for episodes resolving to different AniList seasons', function () {
+        fakeAnilistSaveResponse(status: 'CURRENT');
+
+        $user = User::factory()->withAnilistConnection()->create();
+
+        $series = Series::factory()->create();
+        Season::factory()->create([
+            'series_id' => $series->id,
+            'season_number' => 1,
+            'anilist_id' => 100,
+            'episode_count' => 12,
+            'format' => 'TV',
+        ]);
+        Season::factory()->create([
+            'series_id' => $series->id,
+            'season_number' => 2,
+            'anilist_id' => 200,
+            'episode_count' => 12,
+            'format' => 'TV',
+        ]);
+
+        $watches = collect([5, 12, 15, 20])->map(
+            fn (int $ep) => Watch::factory()->forEpisode()->create([
+                'user_id' => $user->id,
+                'series_id' => $series->id,
+                'episode_number' => $ep,
+            ])
+        );
+
+        dispatchWatchesCreated($watches->all(), $user);
+
+        Http::assertSentCount(2);
+
+        Http::assertSent(fn ($request) => $request['variables']['mediaId'] === 100
+            && $request['variables']['progress'] === 12);
+
+        Http::assertSent(fn ($request) => $request['variables']['mediaId'] === 200
+            && $request['variables']['progress'] === 8);
+    });
+
+    it('handles mix of episodes and movies in one batch', function () {
+        fakeAnilistSaveResponse();
+
+        $user = User::factory()->withAnilistConnection()->create();
+
+        $series = Series::factory()->create();
+        Season::factory()->create([
+            'series_id' => $series->id,
+            'season_number' => 1,
+            'anilist_id' => 100,
+            'episode_count' => 24,
+            'format' => 'TV',
+        ]);
+
+        $episode1 = Watch::factory()->forEpisode()->create([
+            'user_id' => $user->id,
+            'series_id' => $series->id,
+            'episode_number' => 5,
+        ]);
+
+        $episode2 = Watch::factory()->forEpisode()->create([
+            'user_id' => $user->id,
+            'series_id' => $series->id,
+            'episode_number' => 10,
+        ]);
+
+        $movie = Watch::factory()->forMovie()->create([
+            'user_id' => $user->id,
+            'anilist_id' => 21519,
+        ]);
+
+        dispatchWatchesCreated([$episode1, $episode2, $movie], $user);
+
+        Http::assertSentCount(2);
+    });
+
+    it('uses max progress when batch includes null and integer progress', function () {
+        fakeAnilistSaveResponse(status: 'CURRENT', progress: 5);
+
+        $user = User::factory()->withAnilistConnection()->create();
+
+        $series = Series::factory()->create();
+        Season::factory()->create([
+            'series_id' => $series->id,
+            'season_number' => 1,
+            'anilist_id' => 100,
+            'episode_count' => 24,
+            'format' => 'TV',
+        ]);
+
+        $watchWithNull = Watch::factory()->forEpisode()->create([
+            'user_id' => $user->id,
+            'series_id' => $series->id,
+            'episode_number' => null,
+        ]);
+
+        $watchWithProgress = Watch::factory()->forEpisode()->create([
+            'user_id' => $user->id,
+            'series_id' => $series->id,
+            'episode_number' => 5,
+        ]);
+
+        dispatchWatchesCreated([$watchWithNull, $watchWithProgress], $user);
+
+        Http::assertSentCount(1);
+        Http::assertSent(fn ($request) => $request['variables']['mediaId'] === 100
+            && $request['variables']['progress'] === 5);
+    });
+
+    it('skips sync when episode watch has no series', function () {
+        Http::fake();
+
+        $user = User::factory()->withAnilistConnection()->create();
+
+        $watch = Watch::factory()->forEpisode()->create([
+            'user_id' => $user->id,
+            'series_id' => null,
+            'anilist_id' => null,
+        ]);
+
+        dispatchWatchesCreated([$watch], $user);
+
+        Http::assertNothingSent();
+    });
+
+    it('syncs multiple movie watches individually', function () {
         fakeAnilistSaveResponse();
 
         $user = User::factory()->withAnilistConnection()->create();
@@ -734,22 +923,6 @@ describe('general sync behavior', function () {
         dispatchWatchesCreated([$watch1, $watch2], $user);
 
         Http::assertSentCount(2);
-    });
-
-    it('skips sync when episode watch has no series', function () {
-        Http::fake();
-
-        $user = User::factory()->withAnilistConnection()->create();
-
-        $watch = Watch::factory()->forEpisode()->create([
-            'user_id' => $user->id,
-            'series_id' => null,
-            'anilist_id' => null,
-        ]);
-
-        dispatchWatchesCreated([$watch], $user);
-
-        Http::assertNothingSent();
     });
 
     it('uses watch anilist_id directly when set on episode', function () {

@@ -8,6 +8,7 @@ use Database\Factories\SeasonFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 final class Season extends Model
 {
@@ -27,5 +28,11 @@ final class Season extends Model
     public function series(): BelongsTo
     {
         return $this->belongsTo(Series::class);
+    }
+
+    /** @return HasMany<Watch, $this> */
+    public function watches(): HasMany
+    {
+        return $this->hasMany(Watch::class);
     }
 }
