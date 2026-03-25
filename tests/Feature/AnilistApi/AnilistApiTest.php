@@ -60,13 +60,14 @@ it('exchanges an authorization code for a token', function () {
 it('searches for anime movie by title with movie format filter', function () {
     Http::fake([
         'graphql.anilist.co' => Http::response([
-            'data' => ['Media' => ['id' => 21519]],
+            'data' => ['Media' => ['id' => 21519, 'idMal' => 32281]],
         ]),
     ]);
 
     $result = app(AnilistApi::class)->searchAnime('Your Name', WatchType::Movie);
 
-    expect($result)->toBe(21519);
+    expect($result->id)->toBe(21519)
+        ->and($result->idMal)->toBe(32281);
 
     Http::assertSent(fn ($request) => $request->url() === 'https://graphql.anilist.co'
         && $request['variables']['search'] === 'Your Name'
@@ -79,13 +80,14 @@ it('searches for anime movie by title with movie format filter', function () {
 it('searches for anime episode by title with tv format filter', function () {
     Http::fake([
         'graphql.anilist.co' => Http::response([
-            'data' => ['Media' => ['id' => 20]],
+            'data' => ['Media' => ['id' => 20, 'idMal' => 20]],
         ]),
     ]);
 
     $result = app(AnilistApi::class)->searchAnime('Naruto', WatchType::Episode);
 
-    expect($result)->toBe(20);
+    expect($result->id)->toBe(20)
+        ->and($result->idMal)->toBe(20);
 
     Http::assertSent(fn ($request) => $request['variables']['formatIn'] === ['TV', 'TV_SHORT', 'SPECIAL', 'OVA', 'ONA']
     );
@@ -94,13 +96,13 @@ it('searches for anime episode by title with tv format filter', function () {
 it('uses authenticated client when token is provided', function () {
     Http::fake([
         'graphql.anilist.co' => Http::response([
-            'data' => ['Media' => ['id' => 21519]],
+            'data' => ['Media' => ['id' => 21519, 'idMal' => 32281]],
         ]),
     ]);
 
     $result = app(AnilistApi::class)->searchAnime('Your Name', WatchType::Movie, 'user-token');
 
-    expect($result)->toBe(21519);
+    expect($result->id)->toBe(21519);
 
     Http::assertSent(fn ($request) => $request->hasHeader('Authorization', 'Bearer user-token')
     );
@@ -255,3 +257,187 @@ it('returns null when user has no access token', function () {
 
     expect($result)->toBeNull();
 });
+
+// ─── GraphQL: searchAnimeWithSeasons ────────────────────────────────────────
+
+it('discovers all seasons by following sequel chain', function () {
+    Http::fake([
+        'graphql.anilist.co' => Http::sequence()
+            ->push([
+                'data' => [
+                    'Media' => [
+                        'id' => 171018,
+                        'idMal' => 57334,
+                        'episodes' => 12,
+                        'format' => 'TV',
+                        'relations' => ['edges' => [
+                            ['relationType' => 'SEQUEL', 'node' => ['id' => 185660, 'idMal' => 60543, 'episodes' => 12, 'format' => 'TV']],
+                        ]],
+                    ],
+                ],
+            ])
+            ->push([
+                'data' => [
+                    'Media' => [
+                        'id' => 185660,
+                        'idMal' => 60543,
+                        'episodes' => 12,
+                        'format' => 'TV',
+                        'relations' => ['edges' => [
+                            ['relationType' => 'PREQUEL', 'node' => ['id' => 171018, 'idMal' => 57334, 'episodes' => 12, 'format' => 'TV']],
+                        ]],
+                    ],
+                ],
+            ]),
+    ]);
+
+    $seasons = app(AnilistApi::class)->searchAnimeWithSeasons('DAN DA DAN');
+
+    expect($seasons)->toHaveCount(2);
+
+    $season1 = $seasons->get(1);
+    expect($season1->id)->toBe(171018)
+        ->and($season1->idMal)->toBe(57334)
+        ->and($season1->episodes)->toBe(12)
+        ->and($season1->format)->toBe('TV');
+
+    $season2 = $seasons->get(2);
+    expect($season2->id)->toBe(185660)
+        ->and($season2->idMal)->toBe(60543)
+        ->and($season2->episodes)->toBe(12);
+});
+
+it('walks backward via prequel to find first season', function () {
+    Http::fake([
+        'graphql.anilist.co' => Http::sequence()
+            // Initial search returns season 2
+            ->push([
+                'data' => [
+                    'Media' => [
+                        'id' => 185660,
+                        'idMal' => 60543,
+                        'episodes' => 12,
+                        'format' => 'TV',
+                        'relations' => ['edges' => [
+                            ['relationType' => 'PREQUEL', 'node' => ['id' => 171018, 'idMal' => 57334, 'episodes' => 12, 'format' => 'TV']],
+                        ]],
+                    ],
+                ],
+            ])
+            // Fetch season 1 (prequel walk)
+            ->push([
+                'data' => [
+                    'Media' => [
+                        'id' => 171018,
+                        'idMal' => 57334,
+                        'episodes' => 12,
+                        'format' => 'TV',
+                        'relations' => ['edges' => [
+                            ['relationType' => 'SEQUEL', 'node' => ['id' => 185660, 'idMal' => 60543, 'episodes' => 12, 'format' => 'TV']],
+                        ]],
+                    ],
+                ],
+            ])
+            // Fetch season 2 (forward walk)
+            ->push([
+                'data' => [
+                    'Media' => [
+                        'id' => 185660,
+                        'idMal' => 60543,
+                        'episodes' => 12,
+                        'format' => 'TV',
+                        'relations' => ['edges' => [
+                            ['relationType' => 'PREQUEL', 'node' => ['id' => 171018, 'idMal' => 57334, 'episodes' => 12, 'format' => 'TV']],
+                        ]],
+                    ],
+                ],
+            ]),
+    ]);
+
+    $seasons = app(AnilistApi::class)->searchAnimeWithSeasons('DAN DA DAN Season 2');
+
+    expect($seasons)->toHaveCount(2);
+    expect($seasons->get(1)->id)->toBe(171018);
+    expect($seasons->get(2)->id)->toBe(185660);
+});
+
+it('returns empty collection when search finds no anime', function () {
+    Http::fake([
+        'graphql.anilist.co' => Http::response([
+            'data' => ['Media' => null],
+        ]),
+    ]);
+
+    $seasons = app(AnilistApi::class)->searchAnimeWithSeasons('Non-Existent');
+
+    expect($seasons)->toBeEmpty();
+});
+
+it('returns single season when anime has no sequels', function () {
+    Http::fake([
+        'graphql.anilist.co' => Http::response([
+            'data' => [
+                'Media' => [
+                    'id' => 21519,
+                    'idMal' => 32281,
+                    'episodes' => 1,
+                    'format' => 'MOVIE',
+                    'relations' => ['edges' => []],
+                ],
+            ],
+        ]),
+    ]);
+
+    $seasons = app(AnilistApi::class)->searchAnimeWithSeasons('Your Name');
+
+    expect($seasons)->toHaveCount(1);
+    expect($seasons->get(1)->id)->toBe(21519);
+});
+
+// ─── GraphQL: fetchAnimeSeasons ─────────────────────────────────────────────
+
+it('fetches all seasons from an anilist id', function () {
+    Http::fake([
+        'graphql.anilist.co' => Http::sequence()
+            ->push([
+                'data' => [
+                    'Media' => [
+                        'id' => 171018,
+                        'idMal' => 57334,
+                        'episodes' => 12,
+                        'format' => 'TV',
+                        'relations' => ['edges' => [
+                            ['relationType' => 'SEQUEL', 'node' => ['id' => 185660, 'idMal' => 60543, 'episodes' => 12, 'format' => 'TV']],
+                        ]],
+                    ],
+                ],
+            ])
+            ->push([
+                'data' => [
+                    'Media' => [
+                        'id' => 185660,
+                        'idMal' => 60543,
+                        'episodes' => 12,
+                        'format' => 'TV',
+                        'relations' => ['edges' => [
+                            ['relationType' => 'PREQUEL', 'node' => ['id' => 171018]],
+                        ]],
+                    ],
+                ],
+            ]),
+    ]);
+
+    $seasons = app(AnilistApi::class)->fetchAnimeSeasons(171018);
+
+    expect($seasons)->toHaveCount(2);
+    expect($seasons->get(1)->id)->toBe(171018);
+    expect($seasons->get(2)->id)->toBe(185660);
+});
+
+it('throws on failed fetch media with relations request', function () {
+    Http::fake([
+        'graphql.anilist.co' => Http::response(['errors' => [['message' => 'Server error']]], 500),
+    ]);
+
+    app(AnilistApi::class)->fetchMediaWithRelations(99999);
+})->throws(\Illuminate\Http\Client\RequestException::class);
