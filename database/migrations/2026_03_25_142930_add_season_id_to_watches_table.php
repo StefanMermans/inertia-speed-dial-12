@@ -1,11 +1,10 @@
 <?php
 
-use App\Enums\WatchType;
-use App\Models\Season;
-use App\Models\Series;
-use App\Models\Watch;
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -34,11 +33,16 @@ return new class extends Migration
 
     private function migrateExistingWatches(): void
     {
-        Series::whereHas('seasons')->with('seasons')->each(function (Series $series): void {
-            $seasons = $series->seasons->sortBy('season_number');
+        $seriesIds = DB::table('seasons')->distinct()->pluck('series_id');
+
+        foreach ($seriesIds as $seriesId) {
+            $seasons = DB::table('seasons')
+                ->where('series_id', $seriesId)
+                ->orderBy('season_number')
+                ->get();
 
             $tvSeasons = $seasons->filter(
-                fn (Season $season) => in_array($season->format, ['TV', 'TV_SHORT', null], true)
+                fn (object $season) => in_array($season->format, ['TV', 'TV_SHORT', null], true)
             );
 
             if ($tvSeasons->isEmpty()) {
@@ -49,8 +53,9 @@ return new class extends Migration
 
             foreach ($tvSeasons as $season) {
                 if ($season->episode_count === null) {
-                    Watch::where('series_id', $series->id)
-                        ->where('type', WatchType::Episode)
+                    DB::table('watches')
+                        ->where('series_id', $seriesId)
+                        ->where('type', 'episode')
                         ->whereNull('season_id')
                         ->where('episode_number', '>', $cumulativeEpisodes)
                         ->update(['season_id' => $season->id]);
@@ -58,8 +63,9 @@ return new class extends Migration
                     break;
                 }
 
-                Watch::where('series_id', $series->id)
-                    ->where('type', WatchType::Episode)
+                DB::table('watches')
+                    ->where('series_id', $seriesId)
+                    ->where('type', 'episode')
                     ->whereNull('season_id')
                     ->where('episode_number', '>', $cumulativeEpisodes)
                     ->where('episode_number', '<=', $cumulativeEpisodes + $season->episode_count)
@@ -71,8 +77,9 @@ return new class extends Migration
             // Assign null episode_number watches to the first season
             $firstSeason = $tvSeasons->first();
             if ($firstSeason) {
-                Watch::where('series_id', $series->id)
-                    ->where('type', WatchType::Episode)
+                DB::table('watches')
+                    ->where('series_id', $seriesId)
+                    ->where('type', 'episode')
                     ->whereNull('season_id')
                     ->whereNull('episode_number')
                     ->update(['season_id' => $firstSeason->id]);
@@ -81,11 +88,12 @@ return new class extends Migration
             // Assign any remaining watches (beyond known episode counts) to the last season
             $lastSeason = $tvSeasons->last();
             if ($lastSeason) {
-                Watch::where('series_id', $series->id)
-                    ->where('type', WatchType::Episode)
+                DB::table('watches')
+                    ->where('series_id', $seriesId)
+                    ->where('type', 'episode')
                     ->whereNull('season_id')
                     ->update(['season_id' => $lastSeason->id]);
             }
-        });
+        }
     }
 };

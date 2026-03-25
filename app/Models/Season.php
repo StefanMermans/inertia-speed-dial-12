@@ -24,6 +24,15 @@ final class Season extends Model
         'format',
     ];
 
+    /** @return array<string, string> */
+    protected function casts(): array
+    {
+        return [
+            'season_number' => 'integer',
+            'anilist_id' => 'integer',
+        ];
+    }
+
     /** @return BelongsTo<Series, $this> */
     public function series(): BelongsTo
     {

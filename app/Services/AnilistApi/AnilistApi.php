@@ -169,27 +169,7 @@ class AnilistApi
      */
     public function fetchMediaWithRelations(int $anilistId, ?string $token = null): ?array
     {
-        $query = <<<'GRAPHQL'
-            query ($id: Int) {
-                Media(id: $id, type: ANIME) {
-                    id
-                    idMal
-                    episodes
-                    format
-                    relations {
-                        edges {
-                            relationType(version: 2)
-                            node {
-                                id
-                                idMal
-                                episodes
-                                format
-                            }
-                        }
-                    }
-                }
-            }
-            GRAPHQL;
+        $query = $this->mediaWithRelationsQuery('$id: Int', 'id: $id, type: ANIME');
 
         $client = $token ? $this->userClient($token) : $this->appClient();
 
@@ -208,27 +188,10 @@ class AnilistApi
      */
     private function searchAnimeWithRelations(string $title, ?string $token = null): ?array
     {
-        $query = <<<'GRAPHQL'
-            query ($search: String, $type: MediaType, $formatIn: [MediaFormat]) {
-                Media(search: $search, type: $type, format_in: $formatIn) {
-                    id
-                    idMal
-                    episodes
-                    format
-                    relations {
-                        edges {
-                            relationType(version: 2)
-                            node {
-                                id
-                                idMal
-                                episodes
-                                format
-                            }
-                        }
-                    }
-                }
-            }
-            GRAPHQL;
+        $query = $this->mediaWithRelationsQuery(
+            '$search: String, $type: MediaType, $formatIn: [MediaFormat]',
+            'search: $search, type: $type, format_in: $formatIn',
+        );
 
         $client = $token ? $this->userClient($token) : $this->appClient();
 
@@ -332,6 +295,35 @@ class AnilistApi
         }
 
         return null;
+    }
+
+    private function mediaWithRelationsQuery(string $arguments, string $filters): string
+    {
+        return str_replace(
+            ['{ARGUMENTS}', '{FILTERS}'],
+            [$arguments, $filters],
+            <<<'GRAPHQL'
+                query ({ARGUMENTS}) {
+                    Media({FILTERS}) {
+                        id
+                        idMal
+                        episodes
+                        format
+                        relations {
+                            edges {
+                                relationType(version: 2)
+                                node {
+                                    id
+                                    idMal
+                                    episodes
+                                    format
+                                }
+                            }
+                        }
+                    }
+                }
+                GRAPHQL,
+        );
     }
 
     private function appClient(): PendingRequest

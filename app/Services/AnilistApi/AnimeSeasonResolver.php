@@ -7,6 +7,7 @@ namespace App\Services\AnilistApi;
 use App\Data\Anilist\AnilistResolvedEpisode;
 use App\Enums\WatchType;
 use App\Models\Season;
+use App\Models\Series;
 use App\Models\Watch;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Collection;
@@ -36,10 +37,11 @@ class AnimeSeasonResolver
             return null;
         }
 
-        $seasons = $series->seasons()->orderBy('season_number')->get();
+        $seasons = $series->seasons->sortBy('season_number')->values();
 
         if ($seasons->isEmpty()) {
-            $seasons = $this->fetchAndCacheSeasons($watch, $token);
+            $seasons = $this->fetchAndCacheSeasons($series, $token);
+            $series->setRelation('seasons', $seasons);
         }
 
         if ($seasons->isEmpty()) {
@@ -51,6 +53,7 @@ class AnimeSeasonResolver
         if ($resolved) {
             $season = $seasons->first(fn (Season $s) => $s->anilist_id === $resolved->anilistId);
 
+            // Use updateQuietly to avoid re-triggering the WatchesCreated observer chain
             if ($season && $watch->season_id !== $season->id) {
                 $watch->updateQuietly(['season_id' => $season->id]);
             }
@@ -113,10 +116,8 @@ class AnimeSeasonResolver
     /**
      * @return Collection<int, Season>
      */
-    private function fetchAndCacheSeasons(Watch $watch, string $token): Collection
+    private function fetchAndCacheSeasons(Series $series, string $token): Collection
     {
-        $series = $watch->series;
-
         try {
             $seasons = $series->anilist_id
                 ? $this->anilistApi->fetchAnimeSeasons($series->anilist_id, $token)
@@ -139,14 +140,18 @@ class AnimeSeasonResolver
 
         foreach ($seasons as $seasonNumber => $season) {
             $persistedSeasons->push(
-                Season::create([
-                    'series_id' => $series->id,
-                    'season_number' => $seasonNumber,
-                    'anilist_id' => $season->id,
-                    'mal_id' => $season->idMal,
-                    'episode_count' => $season->episodes,
-                    'format' => $season->format,
-                ])
+                Season::updateOrCreate(
+                    [
+                        'series_id' => $series->id,
+                        'season_number' => $seasonNumber,
+                    ],
+                    [
+                        'anilist_id' => $season->id,
+                        'mal_id' => $season->idMal,
+                        'episode_count' => $season->episodes,
+                        'format' => $season->format,
+                    ]
+                )
             );
         }
 

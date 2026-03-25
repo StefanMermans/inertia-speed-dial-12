@@ -157,7 +157,7 @@ describe('search', function () {
         $user = User::factory()->create();
 
         $this->actingAs($user)
-            ->getJson('/watches/search-tv?query=dan+da+dan')
+            ->getJson(route('watches.search-tv', ['query' => 'dan da dan']))
             ->assertSuccessful()
             ->assertJsonPath('results.0.name', 'DAN DA DAN')
             ->assertJsonPath('results.0.id', 210735)
@@ -170,7 +170,7 @@ describe('search', function () {
         $user = User::factory()->create();
 
         $this->actingAs($user)
-            ->getJson('/watches/tv/210735')
+            ->getJson(route('watches.show-tv', ['tmdbId' => 210735]))
             ->assertSuccessful()
             ->assertJsonPath('details.name', 'DAN DA DAN')
             ->assertJsonPath('details.external_ids.imdb_id', 'tt21064584')
@@ -187,7 +187,7 @@ describe('saving watches', function () {
         $user = User::factory()->create();
 
         $this->actingAs($user)
-            ->post('/watches/mark-series', dandadanPayload())
+            ->post(route('watches.mark-series'), dandadanPayload())
             ->assertRedirect(route('watches.create'));
 
         $this->assertDatabaseHas(Series::class, [
@@ -225,7 +225,7 @@ describe('saving watches', function () {
 
         $user = User::factory()->create();
 
-        $this->actingAs($user)->post('/watches/mark-series', dandadanPayload());
+        $this->actingAs($user)->post(route('watches.mark-series'), dandadanPayload());
 
         Event::assertDispatched(WatchesCreated::class, function (WatchesCreated $event) use ($user) {
             return count($event->watches) === 12
@@ -238,8 +238,8 @@ describe('saving watches', function () {
 
         $user = User::factory()->create();
 
-        $this->actingAs($user)->post('/watches/mark-series', dandadanPayload());
-        $this->actingAs($user)->post('/watches/mark-series', dandadanPayload());
+        $this->actingAs($user)->post(route('watches.mark-series'), dandadanPayload());
+        $this->actingAs($user)->post(route('watches.mark-series'), dandadanPayload());
 
         $this->assertDatabaseCount(Watch::class, 12);
         $this->assertDatabaseCount(Series::class, 1);
@@ -259,7 +259,7 @@ describe('anilist sync', function () {
 
         $user = User::factory()->withAnilistConnection()->create();
 
-        $this->actingAs($user)->post('/watches/mark-series', dandadanPayload());
+        $this->actingAs($user)->post(route('watches.mark-series'), dandadanPayload());
 
         $series = Series::where('tmdb_id', 210735)->first();
         expect($series->anilist_id)->toBe(171018)
@@ -284,7 +284,7 @@ describe('anilist sync', function () {
 
         $user = User::factory()->withAnilistConnection()->create();
 
-        $this->actingAs($user)->post('/watches/mark-series', dandadanPayload());
+        $this->actingAs($user)->post(route('watches.mark-series'), dandadanPayload());
 
         $series = Series::where('tmdb_id', 210735)->first();
         $seasons = $series->seasons()->orderBy('season_number')->get();
@@ -313,7 +313,7 @@ describe('anilist sync', function () {
     it('skips anilist sync when user has no anilist connection', function () {
         $user = User::factory()->create(['anilist_access_token' => null]);
 
-        $this->actingAs($user)->post('/watches/mark-series', dandadanPayload());
+        $this->actingAs($user)->post(route('watches.mark-series'), dandadanPayload());
 
         Http::assertNothingSent();
 
@@ -327,7 +327,7 @@ describe('anilist sync', function () {
 
         $user = User::factory()->withAnilistConnection()->create();
 
-        $this->actingAs($user)->post('/watches/mark-series', dandadanPayload());
+        $this->actingAs($user)->post(route('watches.mark-series'), dandadanPayload());
 
         $this->assertDatabaseCount(Watch::class, 12);
 
@@ -348,7 +348,7 @@ describe('anilist sync', function () {
 
         $user = User::factory()->withAnilistConnection()->create();
 
-        $this->actingAs($user)->post('/watches/mark-series', dandadanPayload());
+        $this->actingAs($user)->post(route('watches.mark-series'), dandadanPayload());
 
         $this->assertDatabaseCount(Watch::class, 12);
     });
@@ -369,7 +369,7 @@ describe('trakt sync', function () {
             'trakt_token_expires_at' => now()->addDays(30),
         ]);
 
-        $this->actingAs($user)->post('/watches/mark-series', dandadanPayload());
+        $this->actingAs($user)->post(route('watches.mark-series'), dandadanPayload());
 
         Http::assertSentCount(1);
 
@@ -386,7 +386,7 @@ describe('trakt sync', function () {
     it('skips trakt sync when user has no trakt connection', function () {
         $user = User::factory()->create(['trakt_access_token' => null]);
 
-        $this->actingAs($user)->post('/watches/mark-series', dandadanPayload());
+        $this->actingAs($user)->post(route('watches.mark-series'), dandadanPayload());
 
         Http::assertNothingSent();
 
@@ -408,7 +408,7 @@ describe('trakt sync', function () {
             'trakt_token_expires_at' => now()->addDays(30),
         ]);
 
-        $this->actingAs($user)->post('/watches/mark-series', dandadanPayload());
+        $this->actingAs($user)->post(route('watches.mark-series'), dandadanPayload());
 
         $this->assertDatabaseCount(Watch::class, 12);
     });
@@ -437,7 +437,7 @@ describe('anilist and trakt sync together', function () {
             'trakt_token_expires_at' => now()->addDays(30),
         ]);
 
-        $this->actingAs($user)->post('/watches/mark-series', dandadanPayload());
+        $this->actingAs($user)->post(route('watches.mark-series'), dandadanPayload());
 
         $this->assertDatabaseCount(Watch::class, 12);
 
