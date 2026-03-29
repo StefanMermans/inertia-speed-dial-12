@@ -1,0 +1,86 @@
+{
+    "event": "media.scrobble",
+    "user": true,
+    "owner": true,
+    "Account": { "id": 63204474, "thumb": "https://plex.tv/users/ea224c9df2051e82/avatar?c=1774639166", "title": "StefanMermans" },
+    "Server": { "title": "ServerStefan", "uuid": "8144439e00f0464b52a9ecbb225b4d04771150e9" },
+    "Player": { "local": true, "publicAddress": "77.160.0.253", "title": "TV 2023", "uuid": "372pmqefm4bvlhy6q6t57lia" },
+    "Metadata": {
+        "librarySectionType": "show",
+        "ratingKey": "1971",
+        "key": "/library/metadata/1971",
+        "parentRatingKey": "1720",
+        "grandparentRatingKey": "1054",
+        "guid": "plex://episode/69611e7f69a2da2ec599dbdf",
+        "parentGuid": "plex://season/690f897e1ede0498c8adba5c",
+        "grandparentGuid": "plex://show/5e1622a5124ae9003e3ccd14",
+        "grandparentSlug": "jujutsu-kaisen",
+        "type": "episode",
+        "title": "Sendai Colony",
+        "grandparentKey": "/library/metadata/1054",
+        "parentKey": "/library/metadata/1720",
+        "librarySectionTitle": "TV Shows",
+        "librarySectionID": 2,
+        "librarySectionKey": "/library/sections/2",
+        "grandparentTitle": "呪術廻戦",
+        "parentTitle": "Season 3",
+        "originalTitle": "仙台結界",
+        "contentRating": "TV-14",
+        "summary": "Okkotsu fights three powerful sorcerers in Sendai Colony.",
+        "index": 12,
+        "parentIndex": 3,
+        "viewCount": 1,
+        "lastViewedAt": 1774646720,
+        "year": 2026,
+        "thumb": "/library/metadata/1971/thumb/1774586030",
+        "art": "/library/metadata/1720/art/1769055209",
+        "parentThumb": "/library/metadata/1720/thumb/1769055209",
+        "grandparentThumb": "/library/metadata/1054/thumb/1774586031",
+        "grandparentArt": "/library/metadata/1054/art/1774586031",
+        "grandparentTheme": "/library/metadata/1054/theme/1774586031",
+        "originallyAvailableAt": "2026-03-27",
+        "addedAt": 1774546748,
+        "updatedAt": 1774586030,
+        "Image": [
+            { "alt": "Sendai Colony", "type": "coverPoster", "url": "/library/metadata/1054/thumb/1774586031" },
+            { "alt": "Sendai Colony", "type": "snapshot", "url": "/library/metadata/1971/thumb/1774586030" },
+            { "alt": "Sendai Colony", "type": "background", "url": "/library/metadata/1720/art/1769055209" },
+            { "alt": "Sendai Colony", "type": "clearLogo", "url": "/library/metadata/1054/clearLogo/1774586031" }
+        ],
+        "UltraBlurColors": { "topLeft": "0a172e", "topRight": "030403", "bottomRight": "0f1706", "bottomLeft": "574fa4" },
+        "Guid": [{ "id": "imdb://tt40339350" }, { "id": "tmdb://6827074" }, { "id": "tvdb://11547982" }],
+        "Director": [{ "id": 6327, "filter": "director=6327", "tag": "Shota Goshozono", "tagKey": "6389b30e692793bbde0c9647" }],
+        "Writer": [
+            {
+                "id": 4187,
+                "filter": "writer=4187",
+                "tag": "Hiroshi Seko",
+                "tagKey": "5d9c08162df347001e3aa708",
+                "thumb": "https://metadata-static.plex.tv/b/people/bbc6cf1762fd24983e929bac943fbe98.jpg"
+            }
+        ],
+        "Role": [
+            {
+                "id": 6271,
+                "filter": "actor=6271",
+                "tag": "Megumi Ogata",
+                "tagKey": "5d77683d54f42c001f8c5d0f",
+                "role": "Yuta Okkotsu (voice)",
+                "thumb": "https://metadata-static.plex.tv/9/people/953bcaada2f35657b54b4c4ad6724895.jpg"
+            }
+        ],
+        "Producer": [
+            {
+                "id": 9805,
+                "filter": "producer=9805",
+                "tag": "Tatsuya Omori",
+                "tagKey": "669a5dba0028d2ded5b6f960",
+                "thumb": "https://metadata-static.plex.tv/9/people/927ca004a74efa3f35f2caf7f02796aa.jpg"
+            },
+            { "id": 6308, "filter": "producer=6308", "tag": "Hiroaki Matsutani", "tagKey": "64240662ccbdd3c291722674" },
+            { "id": 6329, "filter": "producer=6329", "tag": "Hiroaki Yamazaki", "tagKey": "60ed4a0469f972002d190c77" },
+            { "id": 9806, "filter": "producer=9806", "tag": "Takamitsu Sueyoshi", "tagKey": "61a7765dcc600f0393b5a30d" },
+            { "id": 9807, "filter": "producer=9807", "tag": "Takumi Tamura", "tagKey": "651e8430639869b2c9f47ed5" }
+        ]
+    }
+}

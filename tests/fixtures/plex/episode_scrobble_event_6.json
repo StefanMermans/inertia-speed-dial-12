@@ -1,0 +1,142 @@
+{
+    "event": "media.scrobble",
+    "user": true,
+    "owner": true,
+    "Account": { "id": 63204474, "thumb": "https://plex.tv/users/ea224c9df2051e82/avatar?c=1774639166", "title": "StefanMermans" },
+    "Server": { "title": "ServerStefan", "uuid": "8144439e00f0464b52a9ecbb225b4d04771150e9" },
+    "Player": { "local": true, "publicAddress": "77.160.0.253", "title": "TV 2023", "uuid": "372pmqefm4bvlhy6q6t57lia" },
+    "Metadata": {
+        "librarySectionType": "show",
+        "ratingKey": "1964",
+        "key": "/library/metadata/1964",
+        "parentRatingKey": "1715",
+        "grandparentRatingKey": "1714",
+        "guid": "plex://episode/694901b8b86b9e15c1e40d74",
+        "parentGuid": "plex://season/6788faca956434396c87a7a0",
+        "grandparentGuid": "plex://show/65fec75d4ec68f9b9b37358d",
+        "grandparentSlug": "sentenced-to-be-a-hero-1",
+        "type": "episode",
+        "title": "Sentence: Aid In Evacuation of Ioff Cheg Port 2",
+        "grandparentKey": "/library/metadata/1714",
+        "parentKey": "/library/metadata/1715",
+        "librarySectionTitle": "TV Shows",
+        "librarySectionID": 2,
+        "librarySectionKey": "/library/sections/2",
+        "grandparentTitle": "勇者刑に処す 懲罰勇者9004隊刑務記録",
+        "parentTitle": "Season 1",
+        "originalTitle": "刑罰：ヨーフ・チェグ港湾避難救助 2",
+        "contentRating": "TV-14",
+        "summary": "Xylo and Teoritta make a charge for Tua Jia tower while Kivia pursues a mystery of her own.",
+        "index": 11,
+        "parentIndex": 1,
+        "audienceRating": 8.0,
+        "viewCount": 3,
+        "lastViewedAt": 1774696483,
+        "year": 2026,
+        "thumb": "/library/metadata/1964/thumb/1774407039",
+        "art": "/library/metadata/1715/art/1772252652",
+        "parentThumb": "/library/metadata/1715/thumb/1772252652",
+        "grandparentThumb": "/library/metadata/1714/thumb/1774670933",
+        "grandparentArt": "/library/metadata/1714/art/1774670933",
+        "duration": 1500000,
+        "originallyAvailableAt": "2026-03-19",
+        "addedAt": 1773930839,
+        "updatedAt": 1774407039,
+        "audienceRatingImage": "themoviedb://image.rating",
+        "Image": [
+            { "alt": "Sentence: Aid In Evacuation of Ioff Cheg Port 2", "type": "coverPoster", "url": "/library/metadata/1714/thumb/1774670933" },
+            { "alt": "Sentence: Aid In Evacuation of Ioff Cheg Port 2", "type": "snapshot", "url": "/library/metadata/1964/thumb/1774407039" },
+            { "alt": "Sentence: Aid In Evacuation of Ioff Cheg Port 2", "type": "background", "url": "/library/metadata/1715/art/1772252652" },
+            { "alt": "Sentence: Aid In Evacuation of Ioff Cheg Port 2", "type": "clearLogo", "url": "/library/metadata/1714/clearLogo/1774670933" }
+        ],
+        "UltraBlurColors": { "topLeft": "110303", "topRight": "140306", "bottomRight": "46131a", "bottomLeft": "321013" },
+        "Guid": [{ "id": "imdb://tt39335779" }, { "id": "tmdb://6810059" }, { "id": "tvdb://11518453" }],
+        "Rating": [
+            { "image": "imdb://image.rating", "value": 9.0, "type": "audience" },
+            { "image": "themoviedb://image.rating", "value": 8.0, "type": "audience" }
+        ],
+        "Director": [{ "id": 11577, "filter": "director=11577", "tag": "Shawn Gann", "tagKey": "5ec418fc43d47400431f4151" }],
+        "Role": [
+            {
+                "id": 4465,
+                "filter": "actor=4465",
+                "tag": "Yohei Azakami",
+                "tagKey": "5f4030f703883a0040b50b88",
+                "role": "Xylo Forbartz (voice)",
+                "thumb": "https://metadata-static.plex.tv/c/people/c7b91df98b2cf039e9ccb27f25f69a18.jpg"
+            },
+            {
+                "id": 9762,
+                "filter": "actor=9762",
+                "tag": "Mayu Iizuka",
+                "tagKey": "5f40714ece2564003f978c90",
+                "role": "Teoritta (voice)",
+                "thumb": "https://metadata-static.plex.tv/c/people/c91a86de2900e0f9bc69c7a24e10aa06.jpg"
+            },
+            {
+                "id": 1697,
+                "filter": "actor=1697",
+                "tag": "Shizuka Ishigami",
+                "tagKey": "5d776c0196b655001fe22de9",
+                "role": "Patouche Kivia (voice)",
+                "thumb": "https://metadata-static.plex.tv/3/people/3c1f15f7ec8fc483e633e6d4dfd10bde.jpg"
+            },
+            {
+                "id": 7006,
+                "filter": "actor=7006",
+                "tag": "Shun Horie",
+                "tagKey": "5e624da15dd74b003de87bcc",
+                "role": "Dotta Luzlas (voice)",
+                "thumb": "https://metadata-static.plex.tv/9/people/952d4dcae4395e58223d5bcf650691cb.jpg"
+            },
+            {
+                "id": 9639,
+                "filter": "actor=9639",
+                "tag": "Shunichi Toki",
+                "tagKey": "5d9c08db705e7a001e6e5718",
+                "role": "Venetim Leopold (voice)",
+                "thumb": "https://metadata-static.plex.tv/4/people/469c1f0a9c8d8918441acb3de0dd56fe.jpg"
+            },
+            {
+                "id": 1689,
+                "filter": "actor=1689",
+                "tag": "Yoji Ueda",
+                "tagKey": "5d776a7dad5437001f77f3de",
+                "role": "Norgayu Senridge (voice)",
+                "thumb": "https://metadata-static.plex.tv/7/people/70a5358fafff9a62a9047fcad41c4030.jpg"
+            },
+            {
+                "id": 937,
+                "filter": "actor=937",
+                "tag": "Yoshitsugu Matsuoka",
+                "tagKey": "5d7768a133f255001e85b5f5",
+                "role": "Tatsuya (voice)",
+                "thumb": "https://metadata-static.plex.tv/2/people/299e9612ada944c02af9132ac3ee2b02.jpg"
+            },
+            {
+                "id": 4817,
+                "filter": "actor=4817",
+                "tag": "Jun Fukushima",
+                "tagKey": "5d776868fb0d55001f50fa59",
+                "role": "Tsav (voice)",
+                "thumb": "https://metadata-static.plex.tv/8/people/809c57904388770178b367a1c46c40cb.jpg"
+            },
+            {
+                "id": 9499,
+                "filter": "actor=9499",
+                "tag": "Shoya Chiba",
+                "tagKey": "5d7768a7d11dd30020229410",
+                "role": "Jace Pertilact (voice)",
+                "thumb": "https://metadata-static.plex.tv/c/people/c636e42877454091a94ec4aac7a724a1.jpg"
+            },
+            {
+                "id": 2883,
+                "filter": "actor=2883",
+                "tag": "Yoko Hikasa",
+                "tagKey": "5d776a2196b655001fde4274",
+                "role": "Neely (voice)",
+                "thumb": "https://metadata-static.plex.tv/f/people/f4a7133e568f0cc06748b04198212995.jpg"
+            }
+        ]
+    }
+}

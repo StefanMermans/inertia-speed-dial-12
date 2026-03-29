@@ -1,0 +1,111 @@
+{
+    "event": "media.scrobble",
+    "user": true,
+    "owner": true,
+    "Account": { "id": 63204474, "thumb": "https://plex.tv/users/ea224c9df2051e82/avatar?c=1774376923", "title": "StefanMermans" },
+    "Server": { "title": "ServerStefan", "uuid": "8144439e00f0464b52a9ecbb225b4d04771150e9" },
+    "Player": { "local": true, "publicAddress": "77.160.0.253", "title": "Stefans-MacBook-Pro.local", "uuid": "bdae9whg65mm9li5ganbgs8j" },
+    "Metadata": {
+        "librarySectionType": "show",
+        "ratingKey": "747",
+        "key": "/library/metadata/747",
+        "parentRatingKey": "625",
+        "grandparentRatingKey": "601",
+        "guid": "plex://episode/686076668bbcca4c622ba505",
+        "parentGuid": "plex://season/67644560b018ba1e737ca029",
+        "grandparentGuid": "plex://show/656559673cdc9021485a92f2",
+        "grandparentSlug": "dan-da-dan",
+        "type": "episode",
+        "title": "You Can Do It, Okarun!",
+        "grandparentKey": "/library/metadata/601",
+        "parentKey": "/library/metadata/625",
+        "librarySectionTitle": "TV Shows",
+        "librarySectionID": 2,
+        "librarySectionKey": "/library/sections/2",
+        "grandparentTitle": "ダンダダン",
+        "parentTitle": "Season 2",
+        "originalTitle": "DAN DA DAN",
+        "contentRating": "TV-MA",
+        "summary": "Aira and Okarun battle the classical composer spirits. As Okarun struggles to avoid their attacks, Turbo Granny orders him to feel the rhythm.",
+        "index": 8,
+        "parentIndex": 2,
+        "audienceRating": 7.7,
+        "viewCount": 3,
+        "lastViewedAt": 1774462426,
+        "year": 2025,
+        "thumb": "/library/metadata/747/thumb/1758766708",
+        "art": "/library/metadata/625/art/1758255916",
+        "parentThumb": "/library/metadata/625/thumb/1758255916",
+        "grandparentThumb": "/library/metadata/601/thumb/1771818129",
+        "grandparentArt": "/library/metadata/601/art/1771818129",
+        "duration": 1440000,
+        "originallyAvailableAt": "2025-08-22",
+        "addedAt": 1755793247,
+        "updatedAt": 1758766708,
+        "deletedAt": 1755796038,
+        "audienceRatingImage": "themoviedb://image.rating",
+        "Image": [
+            { "alt": "You Can Do It, Okarun!", "type": "coverPoster", "url": "/library/metadata/601/thumb/1771818129" },
+            { "alt": "You Can Do It, Okarun!", "type": "snapshot", "url": "/library/metadata/747/thumb/1758766708" },
+            { "alt": "You Can Do It, Okarun!", "type": "background", "url": "/library/metadata/625/art/1758255916" },
+            { "alt": "You Can Do It, Okarun!", "type": "clearLogo", "url": "/library/metadata/601/clearLogo/1771818129" }
+        ],
+        "UltraBlurColors": { "topLeft": "540f0c", "topRight": "9c0909", "bottomRight": "370d0a", "bottomLeft": "31040b" },
+        "Guid": [{ "id": "tmdb://6358145" }, { "id": "tvdb://11217478" }],
+        "Rating": [{ "image": "themoviedb://image.rating", "value": 7.7, "type": "audience" }],
+        "Director": [
+            {
+                "id": 4186,
+                "filter": "director=4186",
+                "tag": "Tetsuya Wakano",
+                "tagKey": "5f3fefdbfea1a1003f9a6ec0",
+                "thumb": "https://metadata-static.plex.tv/6/people/66337b3fd5718dce366469c3fbaa994a.jpg"
+            },
+            { "id": 4207, "filter": "director=4207", "tag": "Yoshihiko Mori", "tagKey": "6125170874c19a002d310a35" },
+            { "id": 5928, "filter": "director=5928", "tag": "Takuya Fujikura", "tagKey": "5f47704e25037f00412d921e" }
+        ],
+        "Writer": [
+            {
+                "id": 4187,
+                "filter": "writer=4187",
+                "tag": "Hiroshi Seko",
+                "tagKey": "5d9c08162df347001e3aa708",
+                "thumb": "https://metadata-static.plex.tv/b/people/bbc6cf1762fd24983e929bac943fbe98.jpg"
+            }
+        ],
+        "Role": [
+            {
+                "id": 4042,
+                "filter": "actor=4042",
+                "tag": "Shion Wakayama",
+                "tagKey": "5e43f7771cbdce003fe3cc03",
+                "role": "Momo Ayase (voice)",
+                "thumb": "https://metadata-static.plex.tv/2/people/2dcd3f1effa4e6ae2ff6bd3e3307838b.jpg"
+            },
+            {
+                "id": 3518,
+                "filter": "actor=3518",
+                "tag": "Natsuki Hanae",
+                "tagKey": "5d776aa79ab5440021501ac8",
+                "role": "Ken 'Okarun' Takakura (voice)",
+                "thumb": "https://metadata-static.plex.tv/1/people/1389be21fb6aa62e8cd0bef6f3bc460d.jpg"
+            },
+            {
+                "id": 4043,
+                "filter": "actor=4043",
+                "tag": "Mayumi Tanaka",
+                "tagKey": "5d776835999c64001ec2f4ae",
+                "role": "Turbo Granny (voice)",
+                "thumb": "https://metadata-static.plex.tv/c/people/c50c1a967de84b1ad14975d7e3a2f4fc.jpg"
+            },
+            {
+                "id": 93,
+                "filter": "actor=93",
+                "tag": "Nana Mizuki",
+                "tagKey": "5d77683ce6d55c002040e3f7",
+                "role": "Seiko (voice)",
+                "thumb": "https://metadata-static.plex.tv/6/people/6ccfef67b5d9a755ff282915b24cd4e9.jpg"
+            }
+        ]
+    }
+}

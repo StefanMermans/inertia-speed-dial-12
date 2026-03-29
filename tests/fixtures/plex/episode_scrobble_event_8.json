@@ -1,0 +1,224 @@
+{
+    "event": "media.scrobble",
+    "user": true,
+    "owner": true,
+    "Account": { "id": 63204474, "thumb": "https://plex.tv/users/ea224c9df2051e82/avatar?c=1774464189", "title": "StefanMermans" },
+    "Server": { "title": "ServerStefan", "uuid": "8144439e00f0464b52a9ecbb225b4d04771150e9" },
+    "Player": { "local": true, "publicAddress": "77.160.0.253", "title": "Apple TV", "uuid": "79FD7E5F-813E-4255-A13A-A03FD2B08464" },
+    "Metadata": {
+        "librarySectionType": "show",
+        "ratingKey": "1946",
+        "key": "/library/metadata/1946",
+        "parentRatingKey": "1940",
+        "grandparentRatingKey": "1939",
+        "guid": "plex://episode/68b68aa63999009646d2b351",
+        "parentGuid": "plex://season/66855cf639521e05a89db3e1",
+        "grandparentGuid": "plex://show/5f7c9b1c9b958e00415de6bb",
+        "grandparentSlug": "one-piece-2023",
+        "type": "episode",
+        "title": "NAMI DEEREST",
+        "grandparentKey": "/library/metadata/1939",
+        "parentKey": "/library/metadata/1940",
+        "librarySectionTitle": "TV Shows",
+        "librarySectionID": 2,
+        "librarySectionKey": "/library/sections/2",
+        "grandparentTitle": "ONE PIECE (2023)",
+        "parentTitle": "Season 2",
+        "originalTitle": "Episode #2.6",
+        "contentRating": "TV-14",
+        "summary": "When Nami is stricken by a mysterious illness, Luffy and Sanji embark on a perilous mission to save her. Smoker and Tashigi investigate a Marine outpost.",
+        "index": 6,
+        "parentIndex": 2,
+        "audienceRating": 6.2,
+        "viewCount": 1,
+        "skipCount": 1,
+        "lastViewedAt": 1774473024,
+        "year": 2026,
+        "thumb": "/library/metadata/1946/thumb/1773627126",
+        "art": "/library/metadata/1940/art/1773589379",
+        "parentThumb": "/library/metadata/1940/thumb/1773589379",
+        "grandparentThumb": "/library/metadata/1939/thumb/1773627127",
+        "grandparentArt": "/library/metadata/1939/art/1773627127",
+        "duration": 3360000,
+        "originallyAvailableAt": "2026-03-10",
+        "addedAt": 1773477930,
+        "updatedAt": 1773627126,
+        "audienceRatingImage": "themoviedb://image.rating",
+        "chapterSource": "media",
+        "Image": [
+            { "alt": "NAMI DEEREST", "type": "coverPoster", "url": "/library/metadata/1939/thumb/1773627127" },
+            { "alt": "NAMI DEEREST", "type": "snapshot", "url": "/library/metadata/1946/thumb/1773627126" },
+            { "alt": "NAMI DEEREST", "type": "background", "url": "/library/metadata/1940/art/1773589379" },
+            { "alt": "NAMI DEEREST", "type": "clearLogo", "url": "/library/metadata/1939/clearLogo/1773627127" }
+        ],
+        "UltraBlurColors": { "topLeft": "272f34", "topRight": "2f628b", "bottomRight": "28557b", "bottomLeft": "163650" },
+        "Guid": [{ "id": "imdb://tt38079837" }, { "id": "tmdb://6640519" }, { "id": "tvdb://11426056" }],
+        "Rating": [{ "image": "themoviedb://image.rating", "value": 6.2, "type": "audience" }],
+        "Director": [{ "id": 11529, "filter": "director=11529", "tag": "Lukas Ettlin", "tagKey": "5ddba96f572c3a001d515740" }],
+        "Writer": [{ "id": 11530, "filter": "writer=11530", "tag": "Alex Regnery", "tagKey": "65fec51bc08d186ada63717e" }],
+        "Role": [
+            {
+                "id": 11329,
+                "filter": "actor=11329",
+                "tag": "Iñaki Godoy",
+                "tagKey": "5d7770a06afb3d002061e54c",
+                "role": "Monkey D. Luffy",
+                "thumb": "https://metadata-static.plex.tv/8/people/808ea518c7f643d860da2dbc90dc82b2.jpg"
+            },
+            {
+                "id": 11330,
+                "filter": "actor=11330",
+                "tag": "Emily Rudd",
+                "tagKey": "5d776f02ad5437001f80825a",
+                "role": "Nami",
+                "thumb": "https://metadata-static.plex.tv/d/people/d3e01ce871db8417865de7f945b94c3d.jpg"
+            },
+            {
+                "id": 11331,
+                "filter": "actor=11331",
+                "tag": "Mackenyu",
+                "tagKey": "5d776ad57a53e9001e7110e2",
+                "role": "Roronoa Zoro",
+                "thumb": "https://metadata-static.plex.tv/c/people/c8fee277f03f462aa7cc0809d624e3cf.jpg"
+            },
+            {
+                "id": 11332,
+                "filter": "actor=11332",
+                "tag": "Jacob Gibson",
+                "tagKey": "5e624d9aedfb02003ecdd04d",
+                "role": "Usopp",
+                "thumb": "https://metadata-static.plex.tv/f/people/fedf5a1e2e06849f2472de5759903ac6.jpg"
+            },
+            {
+                "id": 11333,
+                "filter": "actor=11333",
+                "tag": "Taz Skylar",
+                "tagKey": "5d7770ec31d95e001f1acdb3",
+                "role": "Sanji",
+                "thumb": "https://metadata-static.plex.tv/0/people/02edfcb4b5d795f9d788cf37899cf376.jpg"
+            },
+            {
+                "id": 445,
+                "filter": "actor=445",
+                "tag": "Charithra Chandran",
+                "tagKey": "6024e43bad99f8002c3a5a45",
+                "role": "Miss Wednesday / Nefertari Vivi",
+                "thumb": "https://metadata-static.plex.tv/c/people/c7b85d9dde25af367b1ea117f9f2b691.jpg"
+            },
+            {
+                "id": 11340,
+                "filter": "actor=11340",
+                "tag": "Mikaela Hoover",
+                "tagKey": "5d77685885719b001f3a9b0e",
+                "role": "Tony Tony Chopper (voice)",
+                "thumb": "https://metadata-static.plex.tv/f/people/fcaec3d70a739a0a32a1bac6306658d9.jpg"
+            },
+            {
+                "id": 11338,
+                "filter": "actor=11338",
+                "tag": "Lera Abova",
+                "tagKey": "5d776d74ad5437001f7d64d5",
+                "role": "Miss All Sunday",
+                "thumb": "https://metadata-static.plex.tv/6/people/6234be4b30d6777c5478037df54aa7d7.jpg"
+            },
+            {
+                "id": 11368,
+                "filter": "actor=11368",
+                "tag": "Sendhil Ramamurthy",
+                "tagKey": "5d776877103a2d001f572642",
+                "role": "Nefertari Cobra",
+                "thumb": "https://metadata-static.plex.tv/1/people/1105015981ef9e9e579027479c8e1be4.jpg"
+            },
+            {
+                "id": 11385,
+                "filter": "actor=11385",
+                "tag": "Yonda Thomas",
+                "tagKey": "5e624df1f188ac003a8dfdd0",
+                "role": "Igaram",
+                "thumb": "https://metadata-static.plex.tv/a/people/a5d8ca2b04e481420a5efd21ba276d54.jpg"
+            },
+            {
+                "id": 11347,
+                "filter": "actor=11347",
+                "tag": "Callum Kerr",
+                "tagKey": "5f4063ad427eeb0041ed9108",
+                "role": "Captain Smoker",
+                "thumb": "https://metadata-static.plex.tv/b/people/bbedae452294c7d1cdbcee64bc0450bd.jpg"
+            },
+            {
+                "id": 11348,
+                "filter": "actor=11348",
+                "tag": "Julia Rehwald",
+                "tagKey": "5d7770cc31d95e001f1aa091",
+                "role": "Tashigi",
+                "thumb": "https://image.tmdb.org/t/p/original/vkWc4jBWywVfni6fw3x8R2iH0gU.jpg"
+            },
+            { "id": 11360, "filter": "actor=11360", "tag": "Rob Colletti", "tagKey": "61507fbdb33bd58337124f43", "role": "Wapol" },
+            {
+                "id": 11361,
+                "filter": "actor=11361",
+                "tag": "Katey Sagal",
+                "tagKey": "5d77684485719b001f3a6865",
+                "role": "Dr. Kureha",
+                "thumb": "https://metadata-static.plex.tv/c/people/c0a6c0204992938fe969b9191e81d8d2.jpg"
+            },
+            { "id": 11362, "filter": "actor=11362", "tag": "Anton David Jeftha", "tagKey": "5d77708a31d95e001f1a3e4c", "role": "K.M." },
+            {
+                "id": 11363,
+                "filter": "actor=11363",
+                "tag": "Tyrone Keogh",
+                "tagKey": "5d77682aa091de001f2e677d",
+                "role": "Dalton",
+                "thumb": "https://metadata-static.plex.tv/people/5d77682aa091de001f2e677d.jpg"
+            },
+            { "id": 11364, "filter": "actor=11364", "tag": "Mark Penwill", "tagKey": "6336dab94f1a3d1d234ab866", "role": "Chess" },
+            { "id": 11467, "filter": "actor=11467", "tag": "Sanchia Davids", "tagKey": "69b159ed84faf5ad3f872199", "role": "Miss Thursday" },
+            {
+                "id": 11389,
+                "filter": "actor=11389",
+                "tag": "Candice van Litsenborgh",
+                "tagKey": "5f3fc7c803883a0040ab070a",
+                "role": "Maria",
+                "thumb": "https://metadata-static.plex.tv/0/people/0dec192cb5d83c6722c18818c3fecbbf.jpg"
+            },
+            { "id": 11468, "filter": "actor=11468", "tag": "Alan Foulis", "tagKey": "649ec4715fa13cf34f3523d0", "role": "Mr. Eleven" },
+            { "id": 11477, "filter": "actor=11477", "tag": "Aroop Shergill", "tagKey": "60fbcaa2a17771002dba8865", "role": "Young Vivi" },
+            {
+                "id": 11478,
+                "filter": "actor=11478",
+                "tag": "Peter Butler",
+                "tagKey": "5d776834880197001ec931d9",
+                "role": "Thalassa Lucas",
+                "thumb": "https://metadata-static.plex.tv/people/5d776834880197001ec931d9.jpg"
+            },
+            {
+                "id": 11479,
+                "filter": "actor=11479",
+                "tag": "Rob van Vuuren",
+                "tagKey": "5d776878f59e58002189e129",
+                "role": "King Seki",
+                "thumb": "https://metadata-static.plex.tv/b/people/b683b5a877ae9f383410f6560ea179a3.jpg"
+            },
+            {
+                "id": 11480,
+                "filter": "actor=11480",
+                "tag": "Mark Elderkin",
+                "tagKey": "5d7768a07a53e9001e6d4556",
+                "role": "Ham Burger",
+                "thumb": "https://metadata-static.plex.tv/f/people/f971db02bb0d332308c40e1f54489c43.jpg"
+            },
+            { "id": 11365, "filter": "actor=11365", "tag": "Gavin Gomes", "tagKey": "5f404a6504a8650040a39929", "role": "Heavy Point Chopper" },
+            {
+                "id": 11366,
+                "filter": "actor=11366",
+                "tag": "N’kone Mametja",
+                "tagKey": "65c34bea731960e7c1a09343",
+                "role": "On Set Proxy Chopper",
+                "thumb": "https://metadata-static.plex.tv/a/people/aad704280f881ad817458b406a870aff.jpg"
+            },
+            { "id": 11481, "filter": "actor=11481", "tag": "Anton Revell", "tagKey": "69b159ee4ee58263bc4fbc27", "role": "King Tacos" },
+            { "id": 11482, "filter": "actor=11482", "tag": "Lauren Hawker-Jehring", "tagKey": "69b159ed458aad339ec90957", "role": "Queen Morollon" },
+            { "id": 11367, "filter": "actor=11367", "tag": "Gareth Ehret", "tagKey": "647708c6144a2d06cecce740", "role": "Guardsman" }
+        ]
+    }
+}

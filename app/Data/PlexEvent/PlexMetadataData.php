@@ -25,11 +25,11 @@ class PlexMetadataData extends Data
         public readonly int $year,
         public readonly string $thumb,
         public readonly string $art,
-        public readonly int $duration,
         public readonly int $addedAt,
         public readonly int $updatedAt,
 
         // Present on most events but not guaranteed
+        public readonly int|Optional $duration,
         public readonly string|Optional $contentRating,
         public readonly float|Optional $audienceRating,
         public readonly int|Optional $viewCount,

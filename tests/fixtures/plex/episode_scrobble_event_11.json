@@ -1,0 +1,139 @@
+{
+    "event": "media.scrobble",
+    "user": true,
+    "owner": true,
+    "Account": { "id": 63204474, "thumb": "https://plex.tv/users/ea224c9df2051e82/avatar?c=1774295580", "title": "StefanMermans" },
+    "Server": { "title": "ServerStefan", "uuid": "8144439e00f0464b52a9ecbb225b4d04771150e9" },
+    "Player": { "local": true, "publicAddress": "77.160.0.253", "title": "Apple TV", "uuid": "79FD7E5F-813E-4255-A13A-A03FD2B08464" },
+    "Metadata": {
+        "librarySectionType": "show",
+        "ratingKey": "1937",
+        "key": "/library/metadata/1937",
+        "parentRatingKey": "1720",
+        "grandparentRatingKey": "1054",
+        "guid": "plex://episode/69611e7f69a2da2ec599dc13",
+        "parentGuid": "plex://season/690f897e1ede0498c8adba5c",
+        "grandparentGuid": "plex://show/5e1622a5124ae9003e3ccd14",
+        "grandparentSlug": "jujutsu-kaisen",
+        "type": "episode",
+        "title": "Tokyo Colony No. 1 (4)",
+        "grandparentKey": "/library/metadata/1054",
+        "parentKey": "/library/metadata/1720",
+        "librarySectionTitle": "TV Shows",
+        "librarySectionID": 2,
+        "librarySectionKey": "/library/sections/2",
+        "grandparentTitle": "呪術廻戦",
+        "parentTitle": "Season 3",
+        "originalTitle": "東京第１結界④",
+        "contentRating": "TV-14",
+        "summary": "Takaba handles the minions while Fushiguro has his showdown with Reggie.",
+        "index": 10,
+        "parentIndex": 3,
+        "audienceRating": 8.0,
+        "viewCount": 1,
+        "lastViewedAt": 1774303468,
+        "year": 2026,
+        "thumb": "/library/metadata/1937/thumb/1773548804",
+        "art": "/library/metadata/1720/art/1769055209",
+        "parentThumb": "/library/metadata/1720/thumb/1769055209",
+        "grandparentThumb": "/library/metadata/1054/thumb/1774239593",
+        "grandparentArt": "/library/metadata/1054/art/1774239593",
+        "grandparentTheme": "/library/metadata/1054/theme/1774239593",
+        "duration": 1440000,
+        "originallyAvailableAt": "2026-03-13",
+        "addedAt": 1773335174,
+        "updatedAt": 1773548804,
+        "audienceRatingImage": "themoviedb://image.rating",
+        "chapterSource": "media",
+        "Image": [
+            { "alt": "Tokyo Colony No. 1 (4)", "type": "coverPoster", "url": "/library/metadata/1054/thumb/1774239593" },
+            { "alt": "Tokyo Colony No. 1 (4)", "type": "snapshot", "url": "/library/metadata/1937/thumb/1773548804" },
+            { "alt": "Tokyo Colony No. 1 (4)", "type": "background", "url": "/library/metadata/1720/art/1769055209" },
+            { "alt": "Tokyo Colony No. 1 (4)", "type": "clearLogo", "url": "/library/metadata/1054/clearLogo/1774239593" }
+        ],
+        "UltraBlurColors": { "topLeft": "12187f", "topRight": "1d1390", "bottomRight": "07165d", "bottomLeft": "1244e3" },
+        "Guid": [{ "id": "tmdb://6827072" }, { "id": "tvdb://11547980" }],
+        "Rating": [{ "image": "themoviedb://image.rating", "value": 8.0, "type": "audience" }],
+        "Director": [{ "id": 9928, "filter": "director=9928", "tag": "Takumi Ishikawa", "tagKey": "5f3fc2321ae7100041fcc1da" }],
+        "Writer": [
+            {
+                "id": 4187,
+                "filter": "writer=4187",
+                "tag": "Hiroshi Seko",
+                "tagKey": "5d9c08162df347001e3aa708",
+                "thumb": "https://metadata-static.plex.tv/b/people/bbc6cf1762fd24983e929bac943fbe98.jpg"
+            }
+        ],
+        "Role": [
+            {
+                "id": 6175,
+                "filter": "actor=6175",
+                "tag": "Yuma Uchida",
+                "tagKey": "5d776eff594b2b001e734c02",
+                "role": "Megumi Fushiguro (voice)",
+                "thumb": "https://metadata-static.plex.tv/6/people/6a5d75c91418198f671335ea1f25af66.jpg"
+            },
+            {
+                "id": 9929,
+                "filter": "actor=9929",
+                "tag": "Satoshi Tsuruoka",
+                "tagKey": "5d776d20ad5437001f7cdb68",
+                "role": "Fumihiko Takaba (voice)",
+                "thumb": "https://metadata-static.plex.tv/f/people/f14107d1102880c6c5111773e9aeae2d.jpg"
+            },
+            {
+                "id": 9500,
+                "filter": "actor=9500",
+                "tag": "NEEKO",
+                "tagKey": "5f401d44cae2c60042ef62f9",
+                "role": "Kogane (voice)",
+                "thumb": "https://metadata-static.plex.tv/f/people/f68ef4b0d9fe5f9395ecb8b0fda639c4.jpg"
+            },
+            {
+                "id": 10670,
+                "filter": "actor=10670",
+                "tag": "Ari Ozawa",
+                "tagKey": "5d776c70594b2b001e6f3c22",
+                "role": "Remi (voice)",
+                "thumb": "https://metadata-static.plex.tv/1/people/1553c935613c583c15d8d7da1ae8135f.jpg"
+            },
+            {
+                "id": 3982,
+                "filter": "actor=3982",
+                "tag": "Yutaka Aoyama",
+                "tagKey": "62fb7cdb2bbf858f2c189e0f",
+                "role": "Reggie Star (voice)",
+                "thumb": "https://metadata-static.plex.tv/6/people/6f192a86ff49a03d19631d0993a83c9f.jpg"
+            },
+            {
+                "id": 6940,
+                "filter": "actor=6940",
+                "tag": "Ryota Osaka",
+                "tagKey": "5d776af3fb0d55001f5569ca",
+                "role": "Iori Hazenoki (voice)",
+                "thumb": "https://metadata-static.plex.tv/people/5d776af3fb0d55001f5569ca.jpg"
+            },
+            {
+                "id": 11495,
+                "filter": "actor=11495",
+                "tag": "Toshitsugu Takashina",
+                "tagKey": "5f3fe9d286422500427e02a1",
+                "role": "Chizuru Hari (voice)",
+                "thumb": "https://metadata-static.plex.tv/3/people/37fe7f13196c5e60901b5fc013918f58.jpg"
+            }
+        ],
+        "Producer": [
+            {
+                "id": 9805,
+                "filter": "producer=9805",
+                "tag": "Tatsuya Omori",
+                "tagKey": "669a5dba0028d2ded5b6f960",
+                "thumb": "https://metadata-static.plex.tv/9/people/927ca004a74efa3f35f2caf7f02796aa.jpg"
+            },
+            { "id": 6308, "filter": "producer=6308", "tag": "Hiroaki Matsutani", "tagKey": "64240662ccbdd3c291722674" },
+            { "id": 6329, "filter": "producer=6329", "tag": "Hiroaki Yamazaki", "tagKey": "60ed4a0469f972002d190c77" },
+            { "id": 9806, "filter": "producer=9806", "tag": "Takamitsu Sueyoshi", "tagKey": "61a7765dcc600f0393b5a30d" },
+            { "id": 9807, "filter": "producer=9807", "tag": "Takumi Tamura", "tagKey": "651e8430639869b2c9f47ed5" }
+        ]
+    }
+}

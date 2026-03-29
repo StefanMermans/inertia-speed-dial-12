@@ -1,0 +1,181 @@
+{
+    "event": "media.scrobble",
+    "user": true,
+    "owner": true,
+    "Account": { "id": 63204474, "thumb": "https://plex.tv/users/ea224c9df2051e82/avatar?c=1774295580", "title": "StefanMermans" },
+    "Server": { "title": "ServerStefan", "uuid": "8144439e00f0464b52a9ecbb225b4d04771150e9" },
+    "Player": { "local": true, "publicAddress": "77.160.0.253", "title": "TV 2023", "uuid": "372pmqefm4bvlhy6q6t57lia" },
+    "Metadata": {
+        "librarySectionType": "show",
+        "ratingKey": "1945",
+        "key": "/library/metadata/1945",
+        "parentRatingKey": "1940",
+        "grandparentRatingKey": "1939",
+        "guid": "plex://episode/68b68aa63999009646d2b350",
+        "parentGuid": "plex://season/66855cf639521e05a89db3e1",
+        "grandparentGuid": "plex://show/5f7c9b1c9b958e00415de6bb",
+        "grandparentSlug": "one-piece-2023",
+        "type": "episode",
+        "title": "WAX ON, WAX OFF",
+        "grandparentKey": "/library/metadata/1939",
+        "parentKey": "/library/metadata/1940",
+        "librarySectionTitle": "TV Shows",
+        "librarySectionID": 2,
+        "librarySectionKey": "/library/sections/2",
+        "grandparentTitle": "ONE PIECE (2023)",
+        "parentTitle": "Season 2",
+        "originalTitle": "Episode #2.5",
+        "contentRating": "TV-14",
+        "summary": "The Straw Hats are held captive by two artists: one who colors emotions, and one intent on making them part of his latest — and deadliest — masterwork.",
+        "index": 5,
+        "parentIndex": 2,
+        "audienceRating": 6.1,
+        "viewCount": 1,
+        "lastViewedAt": 1774299886,
+        "year": 2026,
+        "thumb": "/library/metadata/1945/thumb/1773627126",
+        "art": "/library/metadata/1940/art/1773589379",
+        "parentThumb": "/library/metadata/1940/thumb/1773589379",
+        "grandparentThumb": "/library/metadata/1939/thumb/1773627127",
+        "grandparentArt": "/library/metadata/1939/art/1773627127",
+        "duration": 3480000,
+        "originallyAvailableAt": "2026-03-10",
+        "addedAt": 1773477930,
+        "updatedAt": 1773627126,
+        "audienceRatingImage": "themoviedb://image.rating",
+        "chapterSource": "media",
+        "Image": [
+            { "alt": "WAX ON, WAX OFF", "type": "coverPoster", "url": "/library/metadata/1939/thumb/1773627127" },
+            { "alt": "WAX ON, WAX OFF", "type": "snapshot", "url": "/library/metadata/1945/thumb/1773627126" },
+            { "alt": "WAX ON, WAX OFF", "type": "background", "url": "/library/metadata/1940/art/1773589379" },
+            { "alt": "WAX ON, WAX OFF", "type": "clearLogo", "url": "/library/metadata/1939/clearLogo/1773627127" }
+        ],
+        "UltraBlurColors": { "topLeft": "1b1c1d", "topRight": "485e2d", "bottomRight": "172812", "bottomLeft": "3a403a" },
+        "Guid": [{ "id": "imdb://tt38079834" }, { "id": "tmdb://6640518" }, { "id": "tvdb://11426055" }],
+        "Rating": [{ "image": "themoviedb://image.rating", "value": 6.1, "type": "audience" }],
+        "Director": [
+            {
+                "id": 11519,
+                "filter": "director=11519",
+                "tag": "Christoph Schrewe",
+                "tagKey": "5d7768375af944001f1fa650",
+                "thumb": "https://metadata-static.plex.tv/4/people/4df710074fa9becad0b192940984e1b7.jpg"
+            }
+        ],
+        "Writer": [
+            {
+                "id": 11525,
+                "filter": "writer=11525",
+                "tag": "Joe Tracz",
+                "tagKey": "5d7770b17a53e9001e7a9057",
+                "thumb": "https://metadata-static.plex.tv/9/people/9e62ace70af620a23e476d79798c0c78.jpg"
+            }
+        ],
+        "Role": [
+            {
+                "id": 11329,
+                "filter": "actor=11329",
+                "tag": "Iñaki Godoy",
+                "tagKey": "5d7770a06afb3d002061e54c",
+                "role": "Monkey D. Luffy",
+                "thumb": "https://metadata-static.plex.tv/8/people/808ea518c7f643d860da2dbc90dc82b2.jpg"
+            },
+            {
+                "id": 11330,
+                "filter": "actor=11330",
+                "tag": "Emily Rudd",
+                "tagKey": "5d776f02ad5437001f80825a",
+                "role": "Nami",
+                "thumb": "https://metadata-static.plex.tv/d/people/d3e01ce871db8417865de7f945b94c3d.jpg"
+            },
+            {
+                "id": 11331,
+                "filter": "actor=11331",
+                "tag": "Mackenyu",
+                "tagKey": "5d776ad57a53e9001e7110e2",
+                "role": "Roronoa Zoro",
+                "thumb": "https://metadata-static.plex.tv/c/people/c8fee277f03f462aa7cc0809d624e3cf.jpg"
+            },
+            {
+                "id": 11332,
+                "filter": "actor=11332",
+                "tag": "Jacob Gibson",
+                "tagKey": "5e624d9aedfb02003ecdd04d",
+                "role": "Usopp",
+                "thumb": "https://metadata-static.plex.tv/f/people/fedf5a1e2e06849f2472de5759903ac6.jpg"
+            },
+            {
+                "id": 11333,
+                "filter": "actor=11333",
+                "tag": "Taz Skylar",
+                "tagKey": "5d7770ec31d95e001f1acdb3",
+                "role": "Sanji",
+                "thumb": "https://metadata-static.plex.tv/0/people/02edfcb4b5d795f9d788cf37899cf376.jpg"
+            },
+            {
+                "id": 445,
+                "filter": "actor=445",
+                "tag": "Charithra Chandran",
+                "tagKey": "6024e43bad99f8002c3a5a45",
+                "role": "Miss Wednesday / Nefertari Vivi",
+                "thumb": "https://metadata-static.plex.tv/c/people/c7b85d9dde25af367b1ea117f9f2b691.jpg"
+            },
+            {
+                "id": 11349,
+                "filter": "actor=11349",
+                "tag": "Joe Manganiello",
+                "tagKey": "5d7768268718ba001e311bed",
+                "role": "Mr. 0",
+                "thumb": "https://metadata-static.plex.tv/2/people/24d872defc12de837a94d77cbb638143.jpg"
+            },
+            {
+                "id": 11345,
+                "filter": "actor=11345",
+                "tag": "Camrus Johnson",
+                "tagKey": "5d776d45594b2b001e70544f",
+                "role": "Mr. 5",
+                "thumb": "https://metadata-static.plex.tv/c/people/cd036b606e8d313d1e9b500fcd17dc75.jpg"
+            },
+            {
+                "id": 11346,
+                "filter": "actor=11346",
+                "tag": "Jazzara Jaslyn",
+                "tagKey": "5d776c5b96b655001fe2dfe7",
+                "role": "Miss Valentine",
+                "thumb": "https://metadata-static.plex.tv/e/people/edeb785c0c8a6d0f97c0e3adbf31de51.jpg"
+            },
+            {
+                "id": 11386,
+                "filter": "actor=11386",
+                "tag": "Sophia Anne Caruso",
+                "tagKey": "5d776ba9594b2b001e6e04a6",
+                "role": "Miss Goldenweek",
+                "thumb": "https://metadata-static.plex.tv/d/people/ddbd67390c532e3b8d2108007b8fa40b.jpg"
+            },
+            {
+                "id": 11387,
+                "filter": "actor=11387",
+                "tag": "Brendan Sean Murray",
+                "tagKey": "5d776bb7f617c90020179572",
+                "role": "Brogy",
+                "thumb": "https://metadata-static.plex.tv/c/people/c22f26caf4e1d9b5263106d19264c725.jpg"
+            },
+            {
+                "id": 11388,
+                "filter": "actor=11388",
+                "tag": "Werner Coetser",
+                "tagKey": "5d7769e523d5a3001f4fdd30",
+                "role": "Dorry",
+                "thumb": "https://metadata-static.plex.tv/9/people/9f71fa45c9b659d653bf8bf2ae8e8fec.jpg"
+            },
+            {
+                "id": 1311,
+                "filter": "actor=1311",
+                "tag": "David Dastmalchian",
+                "tagKey": "5d7768267e9a3c0020c6aa30",
+                "role": "Mr. 3",
+                "thumb": "https://metadata-static.plex.tv/4/people/402299efa1543cb08682f5ec12aa18ff.jpg"
+            }
+        ]
+    }
+}
