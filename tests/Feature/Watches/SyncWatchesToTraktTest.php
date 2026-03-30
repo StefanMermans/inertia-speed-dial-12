@@ -212,7 +212,7 @@ describe('SyncWatchesToTrakt listener', function () {
             'api.trakt.tv/sync/history' => Http::response(['error' => 'server_error'], 500),
         ]);
 
-        Log::shouldReceive('warning')
+        Log::shouldReceive('error')
             ->once()
             ->withArgs(fn ($message) => $message === 'Failed to sync watches to Trakt');
 

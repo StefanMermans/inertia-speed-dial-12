@@ -263,12 +263,12 @@ it('only syncs newly created watches to trakt', function () {
     });
 });
 
-it('logs warning when trakt sync fails', function () {
+it('reports exception when trakt sync fails', function () {
     Http::fake([
         'api.trakt.tv/sync/history' => Http::response(['error' => 'server_error'], 500),
     ]);
 
-    Log::shouldReceive('warning')
+    Log::shouldReceive('error')
         ->once()
         ->withArgs(fn ($message) => $message === 'Failed to sync watches to Trakt');
 

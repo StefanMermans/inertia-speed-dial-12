@@ -8,6 +8,7 @@ use App\Data\PlexEvent\PlexEventData;
 use App\Data\PlexEvent\PlexEventRequestData;
 use App\Events\PlexScrobbleEvent;
 use App\Events\WatchesCreated;
+use App\Models\Season;
 use App\Models\Series;
 use App\Models\User;
 use App\Models\Watch;
@@ -199,4 +200,75 @@ describe('SaveWatch listener', function () {
 
         Event::assertNotDispatched(WatchesCreated::class);
     });
+
+    it('does not create season for movie', function (array $plexEvent) {
+        $plexEvent = PlexEventData::factory()
+            ->alwaysValidate()
+            ->from(json_decode($plexEvent['payload'], true));
+
+        dispatchScrobble($plexEvent, $this->user);
+
+        $this->assertDatabaseCount(Watch::class, 1);
+        $this->assertDatabaseCount(Season::class, 0);
+    })->with('plex-events.scrobble.movie');
+
+    it('saves episode watches with season', function (array $plexEvent) {
+        $plexEvent = PlexEventData::factory()
+            ->alwaysValidate()
+            ->from(json_decode($plexEvent['payload'], true));
+
+        dispatchScrobble($plexEvent, $this->user);
+
+        $this->assertDatabaseCount(Watch::class, 1);
+        $watch = Watch::firstOrFail();
+        $this->assertNotNull($watch->season);
+        $this->assertNotNull($watch->season_number);
+        $this->assertSame($watch->season_number, $watch->season->season_number);
+    })->with('plex-events.scrobble.episode');
+
+    it('does not create duplicate season', function (array $plexEvent) {
+        $plexEvent = PlexEventData::factory()
+            ->alwaysValidate()
+            ->from(json_decode($plexEvent['payload'], true));
+
+        dispatchScrobble($plexEvent, $this->user);
+        dispatchScrobble($plexEvent, $this->user);
+
+        $this->assertDatabaseCount(Watch::class, 1);
+        $this->assertDatabaseCount(Season::class, 1);
+    })->with('plex-events.scrobble.episode');
+
+    it('saves watches with season 2', function (array $plexEvent) {
+        $plexEvent = PlexEventData::factory()
+            ->alwaysValidate()
+            ->from(json_decode($plexEvent['payload'], true));
+
+        dispatchScrobble($plexEvent, $this->user);
+
+        $this->assertDatabaseCount(Watch::class, 1);
+        $this->assertDatabaseCount(Season::class, 1);
+        $this->assertDatabaseHas(Watch::class, [
+            'season_number' => 2,
+        ]);
+        $this->assertDatabaseHas(Season::class, [
+            'season_number' => 2,
+        ]);
+    })->with('plex-events.scrobble.episode.season-2');
+
+    it('saves watches with season 3', function (array $plexEvent) {
+        $plexEvent = PlexEventData::factory()
+            ->alwaysValidate()
+            ->from(json_decode($plexEvent['payload'], true));
+
+        dispatchScrobble($plexEvent, $this->user);
+
+        $this->assertDatabaseCount(Watch::class, 1);
+        $this->assertDatabaseCount(Season::class, 1);
+        $this->assertDatabaseHas(Watch::class, [
+            'season_number' => 3,
+        ]);
+        $this->assertDatabaseHas(Season::class, [
+            'season_number' => 3,
+        ]);
+    })->with('plex-events.scrobble.episode.season-3');
 });

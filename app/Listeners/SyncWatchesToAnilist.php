@@ -7,12 +7,14 @@ namespace App\Listeners;
 use App\Data\Anilist\AnilistSaveMediaListEntryVariables;
 use App\Enums\WatchType;
 use App\Events\WatchesCreated;
+use App\Exceptions\AnilistSynFailedException;
 use App\Models\Watch;
 use App\Services\AnilistApi\AnilistApi;
 use App\Services\AnilistApi\AnimeSeasonResolver;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class SyncWatchesToAnilist
 {
@@ -23,6 +25,8 @@ class SyncWatchesToAnilist
 
     public function handle(WatchesCreated $event): void
     {
+        // anilist temporarily disabled due to anilist api being down
+        return;
         $user = $event->user;
 
         if (! $user->hasAnilistConnection()) {
@@ -66,11 +70,11 @@ class SyncWatchesToAnilist
 
             try {
                 $this->anilistApi->saveMediaListEntry($token, $variables);
-            } catch (RequestException $e) {
-                Log::warning('Failed to sync watch to AniList', [
-                    'status' => $e->response->status(),
-                    'anilist_id' => $anilistId,
-                ]);
+            } catch (Throwable $exception) {
+                report(new AnilistSynFailedException(
+                    anilistId: $variables->mediaId,
+                    previous: $exception,
+                ));
             }
         }
     }
