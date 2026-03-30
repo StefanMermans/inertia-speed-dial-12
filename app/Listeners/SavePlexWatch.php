@@ -8,6 +8,7 @@ use App\Data\PlexEvent\PlexMetadataData;
 use App\Enums\WatchType;
 use App\Events\PlexScrobbleEvent;
 use App\Events\WatchesCreated;
+use App\Models\Season;
 use App\Models\Series;
 use App\Models\User;
 use App\Models\Watch;
@@ -22,8 +23,15 @@ class SavePlexWatch
         $metadata = $event->plexEvent->Metadata;
         $watchType = $this->resolveWatchType($metadata);
         $series = $this->updateOrCreateSeries($metadata, $watchType);
+        $season = $this->updateOrCreateSeason($metadata, $series);
 
-        $watch = $this->createWatch($event->user, $metadata, $watchType, $series);
+        $watch = $this->createWatch(
+            $event->user,
+            $metadata,
+            $watchType,
+            $series,
+            $season,
+        );
 
         if ($watch->wasRecentlyCreated) {
             WatchesCreated::dispatch([$watch], $event->user);
@@ -33,6 +41,22 @@ class SavePlexWatch
     private function resolveWatchType(PlexMetadataData $metadata): WatchType
     {
         return $metadata->type === 'episode' ? WatchType::Episode : WatchType::Movie;
+    }
+
+    private function updateOrCreateSeason(PlexMetadataData $metadata, null|Series $series): ?Season
+    {
+        if (!$series) {
+            return null;
+        }
+
+        $season = Season::where('series_id', $series->id)
+            ->where('season_number', $metadata->parentIndex)
+            ->firstOrNew();
+        $season->series()->associate($series);
+        $season->fill(['season_number' => $metadata->parentIndex]);
+        $season->save();
+
+        return $season;
     }
 
     private function updateOrCreateSeries(PlexMetadataData $metadata, WatchType $watchType): ?Series
@@ -51,17 +75,24 @@ class SavePlexWatch
         );
     }
 
-    private function createWatch(User $user, PlexMetadataData $metadata, WatchType $watchType, ?Series $series): Watch
+    private function createWatch(
+        User $user,
+        PlexMetadataData $metadata,
+        WatchType $watchType,
+        null|Series $series,
+        null|Season $season,
+    ): Watch
     {
-        return Watch::firstOrCreate(
+        return Watch::updateOrCreate(
             [
                 'user_id' => $user->id,
                 'tmdb_id' => $metadata->tmdbId(),
                 'type' => $watchType,
-                'season_number' => $metadata->parentIndex instanceof Optional ? null : $metadata->parentIndex,
-                'episode_number' => $metadata->index instanceof Optional ? null : $metadata->index,
             ],
             [
+                'episode_number' => $metadata->index instanceof Optional ? null : $metadata->index,
+                'season_id' => $season?->id,
+                'season_number' => $season?->season_number,
                 'plex_rating_key' => $metadata->ratingKey,
                 'watched_at' => $this->resolveWatchedAt($metadata->lastViewedAt),
                 'title' => $metadata->title,

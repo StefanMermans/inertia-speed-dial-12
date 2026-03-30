@@ -21,7 +21,6 @@ class SeasonFactory extends Factory
             'anilist_id' => fake()->unique()->randomNumber(5),
             'mal_id' => fake()->randomNumber(5),
             'episode_count' => fake()->numberBetween(12, 25),
-            'format' => 'TV',
         ];
     }
 }
