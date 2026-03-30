@@ -34,14 +34,14 @@ class WatchFactory extends Factory
         ]);
     }
 
-    public function forMovie(): static
+    public function movie(): static
     {
         return $this->state([
             'type' => WatchType::Movie,
         ]);
     }
 
-    public function forEpisode(): static
+    public function episode(): static
     {
         return $this->state(fn () => [
             'type' => WatchType::Episode,

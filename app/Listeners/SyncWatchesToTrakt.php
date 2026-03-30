@@ -38,7 +38,7 @@ class SyncWatchesToTrakt
         try {
             $this->traktApi->addToHistory($token, $payload);
         } catch (RequestException $e) {
-            Log::warning('Failed to sync watches to Trakt', [
+            Log::error('Failed to sync watches to Trakt', [
                 'status' => $e->response->status(),
                 'watch_count' => count($event->watches),
             ]);
