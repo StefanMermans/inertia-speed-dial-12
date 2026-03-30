@@ -6,28 +6,23 @@ namespace Tests\Datasets\Datasets;
 
 use Generator;
 
-function fixturesPath(string $glob): string
-{
+function fixturesPath(string $glob): string {
     return dirname(__DIR__)."/fixtures/plex/$glob.json";
 }
 
-function wrapParam(array $content): array
-{
+function wrapParam(array $content): array {
     return ['plexEvent' => $content];
 }
 
-function wrapPayload(string $payload): array
-{
+function wrapPayload(string $payload): array {
     return ['payload' => $payload];
 }
 
-function plexEventFromPayloadArray(array $payload): array
-{
+function plexEventFromPayloadArray(array $payload): array {
     return wrapParam(wrapPayload(json_encode($payload)));
 }
 
-function plexEventFromPayloadFilePath(string $filepath): array
-{
+function plexEventFromPayloadFilePath(string $filepath): array {
     return wrapParam(wrapPayload(file_get_contents($filepath)));
 }
 

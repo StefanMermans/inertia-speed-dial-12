@@ -43,9 +43,9 @@ class SavePlexWatch
         return $metadata->type === 'episode' ? WatchType::Episode : WatchType::Movie;
     }
 
-    private function updateOrCreateSeason(PlexMetadataData $metadata, ?Series $series): ?Season
+    private function updateOrCreateSeason(PlexMetadataData $metadata, null|Series $series): ?Season
     {
-        if (! $series) {
+        if (!$series) {
             return null;
         }
 
@@ -79,9 +79,10 @@ class SavePlexWatch
         User $user,
         PlexMetadataData $metadata,
         WatchType $watchType,
-        ?Series $series,
-        ?Season $season,
-    ): Watch {
+        null|Series $series,
+        null|Season $season,
+    ): Watch
+    {
         return Watch::updateOrCreate(
             [
                 'user_id' => $user->id,

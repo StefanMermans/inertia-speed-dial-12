@@ -8,7 +8,6 @@ use App\Data\PlexEvent\PlexEventData;
 use App\Data\PlexEvent\PlexEventRequestData;
 use App\Events\PlexScrobbleEvent;
 use App\Events\WatchesCreated;
-use App\Listeners\SavePlexWatch;
 use App\Models\Season;
 use App\Models\Series;
 use App\Models\User;
@@ -20,7 +19,7 @@ use Spatie\LaravelData\Optional;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
 
-covers(SavePlexWatch::class);
+covers(\App\Listeners\SavePlexWatch::class);
 
 function parseFixture(string $name, array $metadataOverrides = []): PlexEventData
 {
@@ -228,9 +227,9 @@ describe('SaveWatch listener', function () {
     })->with('plex-events.scrobble.episode');
 
     it('does not create duplicate season', function (array $plexEvent) {
-        $plexEvent = PlexEventData::factory()
+       $plexEvent = PlexEventData::factory()
             ->alwaysValidate()
-            ->from(json_decode($plexEvent['payload'], true));
+           ->from(json_decode($plexEvent['payload'], true));
 
         dispatchScrobble($plexEvent, $this->user);
         dispatchScrobble($plexEvent, $this->user);
@@ -249,10 +248,10 @@ describe('SaveWatch listener', function () {
         $this->assertDatabaseCount(Watch::class, 1);
         $this->assertDatabaseCount(Season::class, 1);
         $this->assertDatabaseHas(Watch::class, [
-            'season_number' => 2,
+            'season_number' => 2
         ]);
         $this->assertDatabaseHas(Season::class, [
-            'season_number' => 2,
+            'season_number' => 2
         ]);
     })->with('plex-events.scrobble.episode.season-2');
 
@@ -266,10 +265,10 @@ describe('SaveWatch listener', function () {
         $this->assertDatabaseCount(Watch::class, 1);
         $this->assertDatabaseCount(Season::class, 1);
         $this->assertDatabaseHas(Watch::class, [
-            'season_number' => 3,
+            'season_number' => 3
         ]);
         $this->assertDatabaseHas(Season::class, [
-            'season_number' => 3,
+            'season_number' => 3
         ]);
     })->with('plex-events.scrobble.episode.season-3');
 });
