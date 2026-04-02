@@ -24,4 +24,9 @@ export default defineConfig({
             'ziggy-js': path.resolve('vendor/tightenco/ziggy'),
         },
     },
+    server: {
+        watch: {
+            ignored: ['**/storage/framework/views/**'],
+        },
+    },
 });
