@@ -1,5 +1,9 @@
 <?php
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Arr;
+use Tests\TestCase;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -11,8 +15,8 @@
 |
 */
 
-pest()->extend(Tests\TestCase::class)
-    ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+pest()->extend(TestCase::class)
+    ->use(RefreshDatabase::class)
     ->in('Feature', 'Unit');
 
 /*
@@ -47,7 +51,7 @@ function fixtureAccountId(array|string $fixtureJson): int
         $fixtureJson = json_decode($fixtureJson, true);
     }
 
-    if (\Illuminate\Support\Arr::has($fixtureJson, 'payload')) {
+    if (Arr::has($fixtureJson, 'payload')) {
         $payload = $fixtureJson['payload'];
         $fixtureJson = is_array($payload) ? $payload : json_decode($payload, true);
     }

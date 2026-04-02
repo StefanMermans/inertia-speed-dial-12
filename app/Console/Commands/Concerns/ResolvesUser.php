@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Console\Commands\Concerns;
 
 use App\Models\User;
+use Illuminate\Console\Command;
 
-/** @mixin \Illuminate\Console\Command */
+/** @mixin Command */
 trait ResolvesUser
 {
     private function resolveUser(): ?User

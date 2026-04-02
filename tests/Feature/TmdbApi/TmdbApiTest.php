@@ -7,6 +7,7 @@ namespace Tests\Feature\TmdbApi;
 use App\Data\Tmdb\TmdbListItemData;
 use App\Enums\TmdbMediaType;
 use App\Services\TmdbApi\TmdbApi;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 
 covers(TmdbApi::class);
@@ -186,4 +187,4 @@ it('throws on failed api requests', function () {
     ]);
 
     app(TmdbApi::class)->createRequestToken(fake()->url());
-})->throws(\Illuminate\Http\Client\RequestException::class);
+})->throws(RequestException::class);

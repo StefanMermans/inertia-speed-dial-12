@@ -19,6 +19,7 @@ use App\Data\PlexEvent\PlexRoleData;
 use App\Data\PlexEvent\PlexServerData;
 use App\Data\PlexEvent\PlexTagData;
 use App\Data\PlexEvent\PlexUltraBlurColorsData;
+use Spatie\LaravelData\Optional;
 
 covers(
     PlexAccountData::class,
@@ -60,8 +61,8 @@ it('parses admin event without Player and Metadata', function (array $plexEvent)
     $dto = PlexEventRequestData::from($decoded);
 
     expect($dto->payload->event)->toBe('admin.database.backup')
-        ->and($dto->payload->Player)->toBeInstanceOf(\Spatie\LaravelData\Optional::class)
-        ->and($dto->payload->Metadata)->toBeInstanceOf(\Spatie\LaravelData\Optional::class)
+        ->and($dto->payload->Player)->toBeInstanceOf(Optional::class)
+        ->and($dto->payload->Metadata)->toBeInstanceOf(Optional::class)
         ->and($dto->payload->Server)->toBeInstanceOf(PlexServerData::class)
         ->and($dto->payload->isScrobble())->toBeFalse();
 })->with('plex-events.admin');
