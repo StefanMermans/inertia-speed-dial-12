@@ -5,7 +5,6 @@ import { Site as SiteComponent } from '@/components/speed-dial/site';
 import { cn } from '@/lib/utils';
 import { type Site } from '@/pages/speed-dial';
 import { router, useForm } from '@inertiajs/react';
-import axios from 'axios';
 import { ComponentProps, FormEvent, FormEventHandler, useMemo } from 'react';
 
 type Props = {
@@ -61,7 +60,7 @@ export default function SiteForm({ site, creating }: Props) {
         }
 
         if (confirm('Are you sure you want to delete this site?')) {
-            await axios.delete(route('sites.destroy', { site: site.id }));
+            await router.delete(route('sites.destroy', { site: site.id }));
             router.visit(route('speed-dial'));
         }
     };
