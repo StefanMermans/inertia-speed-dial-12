@@ -2,7 +2,7 @@
 
 arch('Should have laravel architecture')
     ->preset()->laravel()
-    ->ignoring('App\Providers\TelescopeServiceProvider');
+    ->ignoring(\App\Providers\TelescopeServiceProvider::class);
 
 arch('Should have php architecture')->preset()->php();
 
