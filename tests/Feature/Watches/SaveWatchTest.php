@@ -8,6 +8,7 @@ use App\Data\PlexEvent\PlexEventData;
 use App\Data\PlexEvent\PlexEventRequestData;
 use App\Events\PlexScrobbleEvent;
 use App\Events\WatchesCreated;
+use App\Listeners\SavePlexWatch;
 use App\Models\Season;
 use App\Models\Series;
 use App\Models\User;
@@ -19,7 +20,7 @@ use Spatie\LaravelData\Optional;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
 
-covers(\App\Listeners\SavePlexWatch::class);
+covers(SavePlexWatch::class);
 
 function parseFixture(string $name, array $metadataOverrides = []): PlexEventData
 {

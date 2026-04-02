@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\TraktApi;
 
 use App\Services\TraktApi\TraktApi;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 
 covers(TraktApi::class);
@@ -160,7 +161,7 @@ it('throws on failed exchange code request', function () {
     ]);
 
     app(TraktApi::class)->exchangeCodeForToken('bad-code');
-})->throws(\Illuminate\Http\Client\RequestException::class);
+})->throws(RequestException::class);
 
 it('throws on failed refresh token request', function () {
     Http::fake([
@@ -171,7 +172,7 @@ it('throws on failed refresh token request', function () {
     ]);
 
     app(TraktApi::class)->refreshToken('bad-refresh-token');
-})->throws(\Illuminate\Http\Client\RequestException::class);
+})->throws(RequestException::class);
 
 it('throws on failed add to history request', function () {
     Http::fake([
@@ -185,7 +186,7 @@ it('throws on failed add to history request', function () {
             ['ids' => ['tmdb' => 550]],
         ],
     ]);
-})->throws(\Illuminate\Http\Client\RequestException::class);
+})->throws(RequestException::class);
 
 it('throws on failed revoke token request', function () {
     Http::fake([
@@ -193,4 +194,4 @@ it('throws on failed revoke token request', function () {
     ]);
 
     app(TraktApi::class)->revokeToken('token-to-revoke');
-})->throws(\Illuminate\Http\Client\RequestException::class);
+})->throws(RequestException::class);

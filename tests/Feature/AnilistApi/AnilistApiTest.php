@@ -8,6 +8,7 @@ use App\Data\Anilist\AnilistSaveMediaListEntryVariables;
 use App\Enums\WatchType;
 use App\Models\User;
 use App\Services\AnilistApi\AnilistApi;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 
 covers(AnilistApi::class);
@@ -126,7 +127,7 @@ it('throws on failed search request', function () {
     ]);
 
     app(AnilistApi::class)->searchAnime('Something', WatchType::Movie);
-})->throws(\Illuminate\Http\Client\RequestException::class);
+})->throws(RequestException::class);
 
 // ─── GraphQL: SaveMediaListEntry ─────────────────────────────────────────────
 
@@ -200,7 +201,7 @@ it('throws on failed exchange code request', function () {
     ]);
 
     app(AnilistApi::class)->exchangeCodeForToken('bad-code');
-})->throws(\Illuminate\Http\Client\RequestException::class);
+})->throws(RequestException::class);
 
 it('throws on failed save media list entry request', function () {
     Http::fake([
@@ -213,7 +214,7 @@ it('throws on failed save media list entry request', function () {
         mediaId: 21519,
         status: 'COMPLETED',
     ));
-})->throws(\Illuminate\Http\Client\RequestException::class);
+})->throws(RequestException::class);
 
 // ─── Resolve User Access Token ──────────────────────────────────────────────
 
@@ -440,4 +441,4 @@ it('throws on failed fetch media with relations request', function () {
     ]);
 
     app(AnilistApi::class)->fetchMediaWithRelations(99999);
-})->throws(\Illuminate\Http\Client\RequestException::class);
+})->throws(RequestException::class);

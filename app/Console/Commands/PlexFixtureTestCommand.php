@@ -5,26 +5,16 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Console\Commands\Concerns\ResolvesUser;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 
+#[Signature('plex:fixtures-test {user : The user email or ID}')]
+#[Description('Send all Plex fixture files to a user\'s webhook URL')]
 class PlexFixtureTestCommand extends Command
 {
     use ResolvesUser;
-
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'plex:fixtures-test {user : The user email or ID}';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Send all Plex fixture files to a user\'s webhook URL';
 
     /**
      * Execute the console command.

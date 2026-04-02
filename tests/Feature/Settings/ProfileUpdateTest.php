@@ -5,6 +5,8 @@ declare(strict_types=1);
 use App\Models\User;
 use App\Services\TmdbApi\TmdbApi;
 use App\Services\TraktApi\TraktApi;
+use GuzzleHttp\Psr7\Response;
+use Illuminate\Http\Client\RequestException;
 
 it('renders the profile settings page', function () {
     $this->actingAs(User::factory()->create())
@@ -89,8 +91,8 @@ it('returns false for tmdb verification when api call fails', function () {
     $mock = Mockery::mock(TmdbApi::class);
     $mock->shouldReceive('getAccountLists')
         ->once()
-        ->andThrow(new \Illuminate\Http\Client\RequestException(
-            new \Illuminate\Http\Client\Response(new \GuzzleHttp\Psr7\Response(401))
+        ->andThrow(new RequestException(
+            new Illuminate\Http\Client\Response(new Response(401))
         ));
     $this->app->instance(TmdbApi::class, $mock);
 

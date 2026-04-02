@@ -1,6 +1,9 @@
 <?php
 
+use App\Providers\AppServiceProvider;
+use App\Providers\HealthServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    App\Providers\HealthServiceProvider::class,
+    AppServiceProvider::class,
+    HealthServiceProvider::class,
 ];

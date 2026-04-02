@@ -10,7 +10,7 @@ use Illuminate\Http\UploadedFile;
 use Override;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Site>
+ * @extends Factory<Site>
  */
 class SiteFactory extends Factory
 {
