@@ -5,26 +5,16 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Database\Factories\PlexRequestLogFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+#[Fillable(['user_id', 'method', 'url', 'ip', 'headers', 'payload', 'files', 'response_status', 'duration_ms'])]
 final class PlexRequestLog extends Model
 {
     /** @use HasFactory<PlexRequestLogFactory> */
     use HasFactory;
-
-    protected $fillable = [
-        'user_id',
-        'method',
-        'url',
-        'ip',
-        'headers',
-        'payload',
-        'files',
-        'response_status',
-        'duration_ms',
-    ];
 
     /** @return array<string, string> */
     protected function casts(): array

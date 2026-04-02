@@ -5,25 +5,15 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Console\Commands\Concerns\ResolvesUser;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 
+#[Signature('plex:url {user : The user email or ID}')]
+#[Description('Display the Plex webhook URL for a user')]
 class PlexUrlCommand extends Command
 {
     use ResolvesUser;
-
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'plex:url {user : The user email or ID}';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Display the Plex webhook URL for a user';
 
     /**
      * Execute the console command.
