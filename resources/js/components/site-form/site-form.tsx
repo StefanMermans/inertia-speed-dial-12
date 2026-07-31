@@ -54,15 +54,14 @@ export default function SiteForm({ site, creating }: Props) {
         }
     };
 
-    const destroy = async () => {
+    const destroy = () => {
         if (!site) {
             return;
         }
 
-        if (confirm('Are you sure you want to delete this site?')) {
-            await router.delete(route('sites.destroy', { site: site.id }));
-            router.visit(route('speed-dial'));
-        }
+        router.delete(route('sites.destroy', { site: site.id }), {
+            onBefore: () => confirm('Are you sure you want to delete this site?'),
+        });
     };
 
     const submit: FormEventHandler = (e: FormEvent<HTMLFormElement>) => {
