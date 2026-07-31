@@ -8,14 +8,13 @@ use App\Http\Requests\StoreSiteRequest;
 use App\Http\Requests\UpdateSiteRequest;
 use App\Models\Site;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Storage;
 
 class SiteController extends Controller
 {
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSiteRequest $request)
+    public function store(StoreSiteRequest $request): RedirectResponse
     {
         $site = Site::make($request->safe()->except(['icon']));
         $site->addMedia($request->file('icon'))->toMediaCollection();
@@ -44,8 +43,10 @@ class SiteController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Site $site)
+    public function destroy(Site $site): RedirectResponse
     {
         $site->delete();
+
+        return to_route('speed-dial');
     }
 }
