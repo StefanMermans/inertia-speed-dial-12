@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['user_id', 'type', 'title', 'year', 'tmdb_id', 'imdb_id', 'tvdb_id', 'series_id', 'season_id', 'season_number', 'episode_number', 'sort_order', 'watched_at', 'plex_rating_key', 'anilist_id', 'mal_id'])]
+#[Fillable(['user_id', 'type', 'title', 'year', 'tmdb_id', 'imdb_id', 'tvdb_id', 'series_id', 'season_id', 'season_number', 'episode_number', 'sort_order', 'watched_at', 'plex_rating_key'])]
 final class Watch extends Model
 {
     /** @use HasFactory<WatchFactory> */

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['title', 'year', 'plex_rating_key', 'tmdb_id', 'imdb_id', 'tvdb_id', 'poster_path', 'anilist_id', 'mal_id'])]
+#[Fillable(['title', 'year', 'plex_rating_key', 'tmdb_id', 'imdb_id', 'tvdb_id', 'poster_path'])]
 final class Series extends Model
 {
     /** @use HasFactory<SeriesFactory> */

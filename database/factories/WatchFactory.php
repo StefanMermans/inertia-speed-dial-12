@@ -23,7 +23,6 @@ class WatchFactory extends Factory
             'title' => fake()->words(3, true),
             'year' => fake()->year(),
             'watched_at' => fake()->dateTimeBetween('-1 year'),
-            'anilist_id' => null,
         ];
     }
 
