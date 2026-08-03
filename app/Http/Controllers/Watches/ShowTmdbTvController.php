@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Watches;
 
+use App\Data\Tmdb\TmdbTvSeasonData;
 use App\Services\TmdbApi\TmdbApi;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\JsonResponse;
@@ -21,7 +22,7 @@ class ShowTmdbTvController
                 ->map(fn ($season) => Cache::remember(
                     "tmdb_tv_{$tmdbId}_season_{$season->season_number}",
                     now()->addHour(),
-                    fn () => $tmdbApi->getTvSeason($tmdbId, $season->season_number),
+                    fn (): TmdbTvSeasonData => $tmdbApi->getTvSeason($tmdbId, $season->season_number),
                 ))
                 ->values()
                 ->all();

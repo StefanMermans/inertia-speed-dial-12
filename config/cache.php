@@ -1,5 +1,7 @@
 <?php
 
+use App\Data\Tmdb\TmdbTvEpisodeData;
+use App\Data\Tmdb\TmdbTvSeasonData;
 use Illuminate\Support\Str;
 
 return [
@@ -125,6 +127,8 @@ return [
     |
     */
 
-    'serializable_classes' => false,
-
+    'serializable_classes' => [
+        TmdbTvSeasonData::class,
+        TmdbTvEpisodeData::class,
+    ],
 ];

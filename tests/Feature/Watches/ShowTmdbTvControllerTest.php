@@ -108,6 +108,46 @@ it('filters out season 0 specials', function () {
     Http::assertNotSent(fn ($request) => str_contains($request->url(), '/season/0'));
 });
 
+it('returns identical seasons when they are served from a serializing cache store', function () {
+    config()->set('cache.default', 'database');
+
+    Http::fake([
+        'api.themoviedb.org/3/tv/1396/season/1' => Http::response([
+            'id' => 2,
+            'name' => 'Season 1',
+            'season_number' => 1,
+            'episodes' => [
+                ['id' => 62085, 'name' => 'Pilot', 'episode_number' => 1, 'season_number' => 1, 'air_date' => '2008-01-20'],
+            ],
+        ]),
+        'api.themoviedb.org/3/tv/1396?*' => Http::response([
+            'id' => 1396,
+            'name' => 'Breaking Bad',
+            'first_air_date' => '2008-01-20',
+            'overview' => 'A chemistry teacher.',
+            'poster_path' => '/path.jpg',
+            'number_of_seasons' => 1,
+            'number_of_episodes' => 7,
+            'seasons' => [
+                ['id' => 2, 'name' => 'Season 1', 'season_number' => 1, 'episode_count' => 7],
+            ],
+            'external_ids' => [
+                'imdb_id' => 'tt0903747',
+                'tvdb_id' => 81189,
+            ],
+        ]),
+    ]);
+
+    $user = User::factory()->create();
+
+    $uncached = $this->actingAs($user)->getJson('/watches/tv/1396')->assertSuccessful();
+    $cached = $this->actingAs($user)->getJson('/watches/tv/1396')->assertSuccessful();
+
+    expect($cached->json('seasons'))->toBe($uncached->json('seasons'));
+
+    Http::assertSentCount(3);
+});
+
 it('returns 404 when tmdb show not found', function () {
     Http::fake([
         'api.themoviedb.org/3/tv/99999*' => Http::response(['status_message' => 'Not Found'], 404),
