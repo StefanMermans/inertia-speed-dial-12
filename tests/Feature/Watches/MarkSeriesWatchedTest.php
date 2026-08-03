@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Watches;
 
+use App\Enums\TmdbMatchSource;
 use App\Events\WatchesCreated;
 use App\Http\Controllers\Watches\MarkSeriesWatchedController;
+use App\Jobs\SyncSeriesFromTmdb;
 use App\Listeners\SyncWatchesToTrakt;
 use App\Models\Series;
 use App\Models\User;
@@ -13,11 +15,13 @@ use App\Models\Watch;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Queue;
 
 covers(MarkSeriesWatchedController::class, SyncWatchesToTrakt::class);
 
 beforeEach(function () {
     Http::preventStrayRequests();
+    Queue::fake();
     config()->set('services.trakt.client_id', 'fake-client-id');
     config()->set('services.trakt.client_secret', 'fake-client-secret');
     config()->set('services.trakt.base_url', 'https://api.trakt.tv');
@@ -281,4 +285,39 @@ it('reports exception when trakt sync fails', function () {
     $this->actingAs($user)->post('/watches/mark-series', validPayload());
 
     $this->assertDatabaseCount(Watch::class, 3);
+});
+
+it('queues a tmdb sync for a newly marked series', function () {
+    $this->actingAs(User::factory()->create())->post('/watches/mark-series', validPayload());
+
+    Queue::assertPushed(SyncSeriesFromTmdb::class);
+});
+
+it('does not queue a tmdb sync for a series already synced', function () {
+    Series::factory()->create([
+        'tmdb_id' => 1396,
+        'tmdb_synced_at' => now(),
+    ]);
+
+    $this->actingAs(User::factory()->create())->post('/watches/mark-series', validPayload());
+
+    Queue::assertNotPushed(SyncSeriesFromTmdb::class);
+});
+
+it('records that the series was matched manually', function () {
+    $this->actingAs(User::factory()->create())->post('/watches/mark-series', validPayload());
+
+    $this->assertDatabaseHas(Series::class, [
+        'tmdb_id' => 1396,
+        'tmdb_match_source' => TmdbMatchSource::Manual->value,
+    ]);
+});
+
+it('links each watch to its season', function () {
+    $this->actingAs(User::factory()->create())->post('/watches/mark-series', validPayload());
+
+    $series = Series::query()->where('tmdb_id', 1396)->sole();
+
+    expect(Watch::query()->whereNull('season_id')->count())->toBe(0)
+        ->and($series->seasons()->count())->toBe(2);
 });

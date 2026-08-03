@@ -18,9 +18,21 @@ class SeasonFactory extends Factory
         return [
             'series_id' => Series::factory(),
             'season_number' => 1,
-            'anilist_id' => fake()->unique()->randomNumber(5),
-            'mal_id' => fake()->randomNumber(5),
             'episode_count' => fake()->numberBetween(12, 25),
         ];
+    }
+
+    public function number(int $seasonNumber): static
+    {
+        return $this->state([
+            'season_number' => $seasonNumber,
+        ]);
+    }
+
+    public function withEpisodes(int $episodeCount): static
+    {
+        return $this->state([
+            'episode_count' => $episodeCount,
+        ]);
     }
 }

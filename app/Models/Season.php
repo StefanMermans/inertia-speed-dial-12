@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['series_id', 'season_number', 'anilist_id', 'mal_id', 'episode_count'])]
+#[Fillable(['series_id', 'season_number', 'episode_count'])]
 final class Season extends Model
 {
     /** @use HasFactory<SeasonFactory> */
@@ -22,7 +22,7 @@ final class Season extends Model
     {
         return [
             'season_number' => 'integer',
-            'anilist_id' => 'integer',
+            'episode_count' => 'integer',
         ];
     }
 

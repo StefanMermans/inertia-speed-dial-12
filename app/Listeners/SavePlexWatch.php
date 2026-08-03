@@ -8,6 +8,7 @@ use App\Data\PlexEvent\PlexMetadataData;
 use App\Enums\WatchType;
 use App\Events\PlexScrobbleEvent;
 use App\Events\WatchesCreated;
+use App\Jobs\SyncSeriesFromTmdb;
 use App\Models\Season;
 use App\Models\Series;
 use App\Models\User;
@@ -59,20 +60,42 @@ class SavePlexWatch
         return $season;
     }
 
+    /**
+     * Keyed on the Plex rating key because a scrobble never carries the show's TMDB id —
+     * episode payloads only ever hold episode-level guids. The queued sync resolves the
+     * TMDB id afterwards, and folds this row into an existing one if they turn out to be
+     * the same show.
+     */
     private function updateOrCreateSeries(PlexMetadataData $metadata, WatchType $watchType): ?Series
     {
         if ($watchType !== WatchType::Episode || $metadata->grandparentRatingKey instanceof Optional) {
             return null;
         }
 
-        return Series::updateOrCreate(
+        $series = Series::updateOrCreate(
             ['plex_rating_key' => $metadata->grandparentRatingKey],
             [
                 'title' => $metadata->grandparentTitle instanceof Optional
                     ? $metadata->title
                     : $metadata->grandparentTitle,
             ],
-        );
+        )->current();
+
+        if ($this->needsFirstSync($series)) {
+            SyncSeriesFromTmdb::dispatch($series->id)->afterCommit();
+        }
+
+        return $series;
+    }
+
+    /**
+     * Only on the first sighting. Retrying a series TMDB could not identify is the
+     * scheduled sweep's job, on a backoff — dispatching here would retry on every
+     * single scrobble of an unmatchable show.
+     */
+    private function needsFirstSync(Series $series): bool
+    {
+        return $series->tmdb_synced_at === null && $series->tmdb_match_attempted_at === null;
     }
 
     private function createWatch(

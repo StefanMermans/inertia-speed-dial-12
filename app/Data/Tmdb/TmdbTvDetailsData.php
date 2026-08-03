@@ -21,5 +21,30 @@ class TmdbTvDetailsData extends Data
         public readonly int $number_of_episodes,
         public readonly array $seasons,
         public readonly TmdbTvExternalIdsData $external_ids,
+        public readonly ?string $status = null,
     ) {}
+
+    /**
+     * Episode total across regular seasons, excluding specials.
+     *
+     * Derived from the season summaries rather than TMDB's own `number_of_episodes`,
+     * which is not guaranteed to exclude season 0.
+     *
+     * @return array{episodes: int, seasons: int}
+     */
+    public function regularSeasonTotals(): array
+    {
+        $regular = array_filter(
+            $this->seasons,
+            fn (TmdbTvSeasonSummaryData $season): bool => $season->season_number > 0,
+        );
+
+        return [
+            'episodes' => array_sum(array_map(
+                fn (TmdbTvSeasonSummaryData $season): int => $season->episode_count,
+                $regular,
+            )),
+            'seasons' => count($regular),
+        ];
+    }
 }

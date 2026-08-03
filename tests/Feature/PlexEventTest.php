@@ -12,9 +12,14 @@ use App\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Exceptions;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 
 covers(PlexEventController::class, PlexEventFileMissedException::class);
+
+beforeEach(function () {
+    Queue::fake();
+});
 
 function buildNonsenseArray(int $depth = 0): array
 {
