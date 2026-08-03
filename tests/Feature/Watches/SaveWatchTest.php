@@ -8,6 +8,7 @@ use App\Data\PlexEvent\PlexEventData;
 use App\Data\PlexEvent\PlexEventRequestData;
 use App\Events\PlexScrobbleEvent;
 use App\Events\WatchesCreated;
+use App\Jobs\SyncSeriesFromTmdb;
 use App\Listeners\SavePlexWatch;
 use App\Models\Season;
 use App\Models\Series;
@@ -15,12 +16,17 @@ use App\Models\User;
 use App\Models\Watch;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Queue;
 use Spatie\LaravelData\Optional;
 
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
 
 covers(SavePlexWatch::class);
+
+beforeEach(function () {
+    Queue::fake();
+});
 
 function parseFixture(string $name, array $metadataOverrides = []): PlexEventData
 {
@@ -272,4 +278,41 @@ describe('SaveWatch listener', function () {
             'season_number' => 3,
         ]);
     })->with('plex-events.scrobble.episode.season-3');
+});
+
+describe('TMDB sync dispatch', function () {
+    it('queues a tmdb sync for a newly seen series', function (array $plexEvent) {
+        $plexEvent = PlexEventData::factory()
+            ->alwaysValidate()
+            ->from(json_decode($plexEvent['payload'], true));
+
+        dispatchScrobble($plexEvent, $this->user);
+
+        Queue::assertPushed(SyncSeriesFromTmdb::class);
+    })->with('plex-events.scrobble.episode');
+
+    it('does not queue a tmdb sync for a series already synced', function (array $plexEvent) {
+        $plexEvent = PlexEventData::factory()
+            ->alwaysValidate()
+            ->from(json_decode($plexEvent['payload'], true));
+
+        Series::factory()->create([
+            'plex_rating_key' => $plexEvent->Metadata->grandparentRatingKey,
+            'tmdb_synced_at' => now(),
+        ]);
+
+        dispatchScrobble($plexEvent, $this->user);
+
+        Queue::assertNotPushed(SyncSeriesFromTmdb::class);
+    })->with('plex-events.scrobble.episode');
+
+    it('does not queue a tmdb sync for a movie scrobble', function (array $plexEvent) {
+        $plexEvent = PlexEventData::factory()
+            ->alwaysValidate()
+            ->from(json_decode($plexEvent['payload'], true));
+
+        dispatchScrobble($plexEvent, $this->user);
+
+        Queue::assertNotPushed(SyncSeriesFromTmdb::class);
+    })->with('plex-events.scrobble.movie');
 });

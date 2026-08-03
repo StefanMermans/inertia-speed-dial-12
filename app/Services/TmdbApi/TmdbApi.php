@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Services\TmdbApi;
 
 use App\Data\Tmdb\TmdbAccessTokenData;
+use App\Data\Tmdb\TmdbFindResultsData;
 use App\Data\Tmdb\TmdbListItemData;
 use App\Data\Tmdb\TmdbRequestTokenData;
 use App\Data\Tmdb\TmdbTvDetailsData;
 use App\Data\Tmdb\TmdbTvSearchResultsData;
 use App\Data\Tmdb\TmdbTvSeasonData;
+use App\Enums\TmdbExternalSource;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 
@@ -123,6 +125,24 @@ class TmdbApi
         $response->throw();
 
         return TmdbTvSearchResultsData::from($response->json());
+    }
+
+    /**
+     * Resolve an external id to its TMDB entries.
+     *
+     * Plex only ever reports episode-level external ids, so this is the one reliable
+     * way to get from a scrobble back to the show it belongs to.
+     */
+    public function find(string $externalId, TmdbExternalSource $source): TmdbFindResultsData
+    {
+        $response = $this->appClient()
+            ->get('/3/find/'.rawurlencode($externalId), [
+                'external_source' => $source->value,
+            ]);
+
+        $response->throw();
+
+        return TmdbFindResultsData::from($response->json());
     }
 
     public function getTvDetails(int $tvId): TmdbTvDetailsData

@@ -9,6 +9,7 @@ use App\Listeners\SavePlexWatch;
 use App\Models\User;
 use App\Models\Watch;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Queue;
 
 use function fixtureAccountId;
 
@@ -20,6 +21,7 @@ beforeEach(function () {
     config()->set('services.trakt.base_url', 'https://api.trakt.tv');
 
     Http::preventStrayRequests();
+    Queue::fake();
 });
 
 describe('Full plex webhook integration', function () {

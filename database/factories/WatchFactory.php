@@ -8,6 +8,7 @@ use App\Enums\WatchType;
 use App\Models\Series;
 use App\Models\User;
 use App\Models\Watch;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -40,13 +41,36 @@ class WatchFactory extends Factory
         ]);
     }
 
+    /**
+     * Only falls back to a fresh Series when the caller has not supplied one, so
+     * `->episode()->for($series)` associates rather than creating a second series.
+     */
     public function episode(): static
     {
-        return $this->state(fn () => [
+        return $this->state(fn (array $attributes) => [
             'type' => WatchType::Episode,
-            'series_id' => Series::factory(),
+            'series_id' => $attributes['series_id'] ?? Series::factory(),
             'season_number' => fake()->numberBetween(1, 5),
             'episode_number' => fake()->numberBetween(1, 24),
+        ]);
+    }
+
+    /**
+     * A specific episode, so progress totals can be asserted deterministically.
+     */
+    public function at(int $seasonNumber, int $episodeNumber): static
+    {
+        return $this->state([
+            'type' => WatchType::Episode,
+            'season_number' => $seasonNumber,
+            'episode_number' => $episodeNumber,
+        ]);
+    }
+
+    public function watchedAt(DateTimeInterface $watchedAt): static
+    {
+        return $this->state([
+            'watched_at' => $watchedAt,
         ]);
     }
 }

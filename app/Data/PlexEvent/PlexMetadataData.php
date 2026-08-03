@@ -132,9 +132,16 @@ class PlexMetadataData extends Data
         return null;
     }
 
+    /**
+     * Validated at the boundary because this value is stored and later interpolated into
+     * an outbound TMDB request path. Plex guids are attacker-controllable by anyone
+     * holding a webhook token, and a real IMDb id is always `tt` followed by digits.
+     */
     public function imdbId(): ?string
     {
-        return $this->extractGuid('imdb://');
+        $id = $this->extractGuid('imdb://');
+
+        return $id !== null && preg_match('/^tt\d+$/', $id) === 1 ? $id : null;
     }
 
     public function tvdbId(): ?int

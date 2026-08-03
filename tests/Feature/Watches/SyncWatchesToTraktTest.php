@@ -12,6 +12,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Queue;
 use Spatie\LaravelData\Optional;
 
 covers(SyncWatchesToTrakt::class);
@@ -46,6 +47,7 @@ function fakeTraktSyncResponse(): void
 
 beforeEach(function () {
     Http::preventStrayRequests();
+    Queue::fake();
     config()->set('services.trakt.client_id', 'fake-client-id');
     config()->set('services.trakt.client_secret', 'fake-client-secret');
     config()->set('services.trakt.base_url', 'https://api.trakt.tv');

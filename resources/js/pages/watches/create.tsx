@@ -3,6 +3,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import AppLayout from '@/layouts/app-layout';
+import { posterUrl } from '@/lib/tmdb';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Head, router, usePage } from '@inertiajs/react';
 import { ArrowLeft, Loader2, Search, Tv } from 'lucide-react';
@@ -274,7 +275,7 @@ export default function Create() {
                                     >
                                         {result.poster_path ? (
                                             <img
-                                                src={`https://image.tmdb.org/t/p/w92${result.poster_path}`}
+                                                src={posterUrl(result.poster_path, 'w92') ?? undefined}
                                                 alt={result.name}
                                                 className="h-24 w-16 shrink-0 rounded object-cover"
                                             />
@@ -322,7 +323,7 @@ export default function Create() {
                         <div className="mb-6 flex gap-4">
                             {showData.details.poster_path ? (
                                 <img
-                                    src={`https://image.tmdb.org/t/p/w185${showData.details.poster_path}`}
+                                    src={posterUrl(showData.details.poster_path, 'w185') ?? undefined}
                                     alt={showData.details.name}
                                     className="h-48 w-32 shrink-0 rounded-lg object-cover"
                                 />
