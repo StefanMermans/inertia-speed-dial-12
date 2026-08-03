@@ -1,0 +1,11 @@
+*.log
+.DS_Store
+.env.backup
+.env.production
+.phpactor.json
+.phpumit.result.cache
+node_modules
+public/build
+public/hot
+vendor
+
