@@ -27,4 +27,28 @@ class PlexRequestLogFactory extends Factory
             'duration_ms' => fake()->numberBetween(10, 500),
         ];
     }
+
+    public function createdDaysAgo(int $days): static
+    {
+        return $this->state(fn (): array => [
+            'created_at' => now()->subDays($days),
+            'updated_at' => now()->subDays($days),
+        ]);
+    }
+
+    /**
+     * @param  list<string|false>  $storedPaths
+     */
+    public function withFiles(array $storedPaths): static
+    {
+        return $this->state(fn (): array => [
+            'files' => array_map(fn (string|false $path): array => [
+                'field_name' => 'thumb',
+                'original_name' => 'thumb.jpg',
+                'mime' => 'image/jpeg',
+                'size' => fake()->numberBetween(1000, 50000),
+                'stored_path' => $path,
+            ], $storedPaths),
+        ]);
+    }
 }

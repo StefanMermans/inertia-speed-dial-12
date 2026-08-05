@@ -84,4 +84,8 @@ EXPOSE 80
 # Start services with Supervisor
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
 
-HEALTHCHECK --interval=30s --timeout=30s --retries=3 CMD [ "php", "artisan", "health:check", "--fail-command-on-failing-check"]
+# Probes the framework health endpoint rather than running the spatie checks:
+# those persist a row per check per run, which at this interval was the largest
+# table in the database. They now run on the schedule instead.
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
+    CMD curl -fsS http://localhost/up || exit 1
