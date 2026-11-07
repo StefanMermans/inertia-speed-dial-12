@@ -16,7 +16,7 @@ permissions:
 jobs:
   composer-lint:
     name: Composer lint
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     strategy:
       matrix:
         php-version: [ '8.4', '8.5' ]
@@ -35,7 +35,7 @@ jobs:
 
   composer-test:
     name: Composer test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     strategy:
       matrix:
         php-version: [ '8.4', '8.5' ]
@@ -49,7 +49,7 @@ jobs:
         run: |
           composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
           npm ci
-          npx playwright install
+          npx playwright install --with-deps chromium
       - name: Copy Environment File
         run: cp .env.example .env
       - name: Generate Application Key
@@ -61,7 +61,7 @@ jobs:
 
   npm-format-check:
     name: Npm format:check
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v6
       - name: Install Dependencies
@@ -71,7 +71,7 @@ jobs:
 
   npm-lint-check:
     name: npm lint:check
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v6
       - name: Install Dependencies
