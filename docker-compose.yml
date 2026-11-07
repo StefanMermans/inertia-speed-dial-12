@@ -23,7 +23,7 @@ services:
         networks:
             - app
     db:
-        image: postgres:17.3
+        image: postgres:17.11
         restart: unless-stopped
         volumes:
             - speed-dial-db:/var/lib/postgresql/data
