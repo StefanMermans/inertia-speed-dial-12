@@ -26,3 +26,23 @@ it('renders the dashboard for authenticated users in the browser', function () {
         ->assertRoute('dashboard')
         ->assertTitleContains('Dashboard');
 });
+
+it('shows the sidebar inline on desktop in the browser', function () {
+    $this->actingAs(User::factory()->create());
+
+    visit('/dashboard')
+        ->assertVisible('[data-slot="sidebar"][data-state="expanded"]')
+        ->assertMissing('[data-mobile="true"]')
+        ->assertNoJavaScriptErrors();
+});
+
+it('opens the sidebar as a sheet on mobile in the browser', function () {
+    $this->actingAs(User::factory()->create());
+
+    visit('/dashboard')
+        ->on()->mobile()
+        ->assertMissing('[data-mobile="true"]')
+        ->click('[data-sidebar="trigger"]')
+        ->assertVisible('[data-mobile="true"]')
+        ->assertNoJavaScriptErrors();
+});
