@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from '@inertiajs/react';
-import { CheckCircle, XCircle } from 'lucide-react';
+import { CircleCheckBig, CircleX } from 'lucide-react';
 
 interface AuthResultCardProps {
     success: boolean;
@@ -17,7 +17,7 @@ export function AuthResultCard({ success, message, serviceName, successDescripti
         <div className="flex flex-1 items-center justify-center p-4">
             <Card className="w-full max-w-md">
                 <CardHeader className="items-center text-center">
-                    {success ? <CheckCircle className="size-12 text-green-500" /> : <XCircle className="text-destructive size-12" />}
+                    {success ? <CircleCheckBig className="size-12 text-green-500" /> : <CircleX className="text-destructive size-12" />}
                     <CardTitle className="text-xl">{success ? `${serviceName} Connected` : 'Connection Failed'}</CardTitle>
                     <CardDescription>{message}</CardDescription>
                 </CardHeader>

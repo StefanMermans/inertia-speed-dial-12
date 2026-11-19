@@ -27,10 +27,10 @@
         "laravel/sail": "^1.53",
         "laravel/telescope": "^5.18",
         "mockery/mockery": "^1.6",
-        "pestphp/pest": "^4.0",
-        "pestphp/pest-plugin-browser": "^4.3",
-        "pestphp/pest-plugin-laravel": "^4.1",
-        "nunomaduro/collision": "^8.6"
+        "nunomaduro/collision": "^8.6",
+        "pestphp/pest": "^5.3",
+        "pestphp/pest-plugin-browser": "^5.2",
+        "pestphp/pest-plugin-laravel": "^5.0"
     },
     "autoload": {
         "psr-4": {
@@ -82,7 +82,8 @@
             "@lint",
             "@php artisan test --parallel",
             "npm run format",
-            "npm run lint"
+            "npm run lint",
+            "npm run types:check"
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",

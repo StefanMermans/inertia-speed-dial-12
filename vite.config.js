@@ -1,10 +1,8 @@
+import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
-import * as path from 'path';
 import laravel from 'laravel-vite-plugin';
-import {
-    defineConfig
-} from 'vite';
-import tailwindcss from "@tailwindcss/vite";
+import path from 'node:path';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
     plugins: [
@@ -16,9 +14,6 @@ export default defineConfig({
         react(),
         tailwindcss(),
     ],
-    esbuild: {
-        jsx: 'automatic',
-    },
     resolve: {
         alias: {
             'ziggy-js': path.resolve('vendor/tightenco/ziggy'),

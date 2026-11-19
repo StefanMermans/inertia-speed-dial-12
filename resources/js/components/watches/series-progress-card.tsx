@@ -2,7 +2,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { type SeriesProgress } from '@/types';
-import { AlertTriangle, Link2 } from 'lucide-react';
+import { Link2, TriangleExclamationPoint } from 'lucide-react';
 import { TmdbPoster } from './tmdb-poster';
 
 interface SeriesProgressCardProps {
@@ -98,7 +98,7 @@ export function SeriesProgressCard({ series, onFixMatch }: SeriesProgressCardPro
                             aria-label={`Check the TMDB match for ${series.title}`}
                         >
                             <Badge variant="outline" className="gap-1 font-normal">
-                                <AlertTriangle className="size-3" />
+                                <TriangleExclamationPoint className="size-3" />
                                 Check match
                             </Badge>
                         </button>
