@@ -2,7 +2,7 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { router, useForm } from '@inertiajs/react';
-import { CheckCircle, Copy, MonitorPlay, RefreshCw } from 'lucide-react';
+import { CircleCheckBig, Copy, MonitorPlay, RefreshCw } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
 
 const COPY_FEEDBACK_DURATION_MS = 2000;
@@ -53,7 +53,7 @@ export function PlexConnectionCard({ plexAccountId, plexWebhookUrl }: PlexConnec
                     <p className="text-muted-foreground text-sm">
                         {connected ? (
                             <span className="flex items-center gap-1 text-green-600 dark:text-green-400">
-                                <CheckCircle className="size-3.5" />
+                                <CircleCheckBig className="size-3.5" />
                                 Connected
                             </span>
                         ) : (

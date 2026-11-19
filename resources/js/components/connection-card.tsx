@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Link, router } from '@inertiajs/react';
-import { CheckCircle, LoaderCircle, LucideIcon, Unplug } from 'lucide-react';
+import { CircleCheckBig, LoaderCircle, LucideIcon, Unplug } from 'lucide-react';
 
 export type ConnectionStatus = 'disconnected' | 'verifying' | 'connected' | 'error';
 
@@ -29,7 +29,7 @@ export function ConnectionCard({ label, description, icon: Icon, status, connect
                     <p className="text-muted-foreground text-sm">
                         {status === 'connected' && (
                             <span className="flex items-center gap-1 text-green-600 dark:text-green-400">
-                                <CheckCircle className="size-3.5" />
+                                <CircleCheckBig className="size-3.5" />
                                 Connected
                             </span>
                         )}

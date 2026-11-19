@@ -6,7 +6,7 @@ import AppLayout from '@/layouts/app-layout';
 import { posterUrl } from '@/lib/tmdb';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Head, router, usePage } from '@inertiajs/react';
-import { ArrowLeft, Loader2, Search, Tv } from 'lucide-react';
+import { ArrowLeft, LoaderCircle, Search, Tv } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -302,7 +302,7 @@ export default function Create() {
 
                         {loadingShow && (
                             <div className="mt-4 flex items-center justify-center">
-                                <Loader2 className="text-muted-foreground size-6 animate-spin" />
+                                <LoaderCircle className="text-muted-foreground size-6 animate-spin" />
                                 <span className="text-muted-foreground ml-2 text-sm">Loading show details...</span>
                             </div>
                         )}
@@ -377,7 +377,7 @@ export default function Create() {
                         <Button onClick={markAsWatched} disabled={submitting || selectedEpisodeCount === 0} className="w-full">
                             {submitting ? (
                                 <>
-                                    <Loader2 className="mr-2 size-4 animate-spin" />
+                                    <LoaderCircle className="mr-2 size-4 animate-spin" />
                                     Marking as watched...
                                 </>
                             ) : (
