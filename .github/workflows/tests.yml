@@ -59,28 +59,8 @@ jobs:
       - name: Composer test
         run: composer run test
 
-  npm-format-check:
-    name: Npm format:check
-    runs-on: ubuntu-26.04
-    steps:
-      - uses: actions/checkout@v7
-      - name: Install Dependencies
-        run: npm ci
-      - name: npm run format:check
-        run: npm run format:check
-
-  npm-lint-check:
-    name: npm lint:check
-    runs-on: ubuntu-26.04
-    steps:
-      - uses: actions/checkout@v7
-      - name: Install Dependencies
-        run: npm ci
-      - name: npm run lint:check
-        run: npm run lint:check
-
   npm-build-check:
-    name: Npm types:check & build:ssr
+    name: Npm check, types:check & build:ssr
     runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
@@ -92,6 +72,8 @@ jobs:
         run: |
           composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
           npm ci
+      - name: npm run check
+        run: npm run check
       - name: npm run types:check
         run: npm run types:check
       - name: npm run build:ssr
@@ -102,8 +84,6 @@ jobs:
     needs:
       - composer-lint
       - composer-test
-      - npm-format-check
-      - npm-lint-check
       - npm-build-check
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
     uses: ./.github/workflows/deploy.yml

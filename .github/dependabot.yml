@@ -20,20 +20,15 @@ updates:
     cooldown:
       default-days: 14
     groups:
-      vite-major:
+      vite-plus:
         patterns:
+          - vite-plus
           - vite
+          - '@voidzero-dev/*'
+      vite-plugins-major:
+        patterns:
           - '@vitejs/*'
           - laravel-vite-plugin
-        update-types:
-          - major
-      eslint-major:
-        patterns:
-          - eslint
-          - '@eslint/*'
-          - 'eslint-plugin-*'
-          - 'eslint-config-*'
-          - typescript-eslint
         update-types:
           - major
       react-major:
