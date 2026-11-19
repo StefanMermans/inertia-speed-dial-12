@@ -1,5 +1,5 @@
 # Base PHP + Composer + Node.js
-FROM php:8.4.27-fpm
+FROM php:8.5.12-fpm
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
