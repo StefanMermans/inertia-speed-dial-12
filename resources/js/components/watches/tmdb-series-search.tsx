@@ -28,11 +28,18 @@ export function TmdbSeriesSearch({ initialQuery = '', onSelect, disabled = false
     const [error, setError] = useState<string | null>(null);
     const abortRef = useRef<AbortController | null>(null);
 
-    useEffect(() => {
-        if (query.trim().length < MIN_QUERY_LENGTH) {
+    const changeQuery = (nextQuery: string) => {
+        setQuery(nextQuery);
+
+        if (nextQuery.trim().length < MIN_QUERY_LENGTH) {
+            abortRef.current?.abort();
             setResults([]);
             setSearching(false);
+        }
+    };
 
+    useEffect(() => {
+        if (query.trim().length < MIN_QUERY_LENGTH) {
             return;
         }
 
@@ -83,7 +90,7 @@ export function TmdbSeriesSearch({ initialQuery = '', onSelect, disabled = false
                 <Input
                     type="search"
                     value={query}
-                    onChange={(event) => setQuery(event.target.value)}
+                    onChange={(event) => changeQuery(event.target.value)}
                     placeholder="Search TMDB for the right show…"
                     className="pl-9"
                     aria-label="Search TMDB"
