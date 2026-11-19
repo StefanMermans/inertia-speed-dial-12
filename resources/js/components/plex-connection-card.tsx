@@ -45,12 +45,12 @@ export function PlexConnectionCard({ plexAccountId, plexWebhookUrl }: PlexConnec
     return (
         <div className="rounded-lg border p-4">
             <div className="flex items-center gap-3">
-                <div className="bg-muted flex size-10 shrink-0 items-center justify-center rounded-lg">
-                    <MonitorPlay className="text-muted-foreground size-5" />
+                <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+                    <MonitorPlay className="size-5 text-muted-foreground" />
                 </div>
                 <div className="min-w-0 flex-1">
                     <p className="font-medium">Plex</p>
-                    <p className="text-muted-foreground text-sm">
+                    <p className="text-sm text-muted-foreground">
                         {connected ? (
                             <span className="flex items-center gap-1 text-green-600 dark:text-green-400">
                                 <CircleCheckBig className="size-3.5" />
@@ -81,7 +81,7 @@ export function PlexConnectionCard({ plexAccountId, plexWebhookUrl }: PlexConnec
             </form>
             {plexWebhookUrl && (
                 <div className="mt-3 flex flex-col gap-2">
-                    <label htmlFor="plex-webhook-url" className="text-muted-foreground text-xs font-medium">
+                    <label htmlFor="plex-webhook-url" className="text-xs font-medium text-muted-foreground">
                         Webhook URL
                     </label>
                     <div className="flex items-center gap-2">

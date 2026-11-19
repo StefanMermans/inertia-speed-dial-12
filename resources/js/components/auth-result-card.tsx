@@ -17,12 +17,12 @@ export function AuthResultCard({ success, message, serviceName, successDescripti
         <div className="flex flex-1 items-center justify-center p-4">
             <Card className="w-full max-w-md">
                 <CardHeader className="items-center text-center">
-                    {success ? <CircleCheckBig className="size-12 text-green-500" /> : <CircleX className="text-destructive size-12" />}
+                    {success ? <CircleCheckBig className="size-12 text-green-500" /> : <CircleX className="size-12 text-destructive" />}
                     <CardTitle className="text-xl">{success ? `${serviceName} Connected` : 'Connection Failed'}</CardTitle>
                     <CardDescription>{message}</CardDescription>
                 </CardHeader>
                 <CardContent className="text-center">
-                    <p className="text-muted-foreground text-sm">{success ? successDescription : failureDescription}</p>
+                    <p className="text-sm text-muted-foreground">{success ? successDescription : failureDescription}</p>
                 </CardContent>
                 <CardFooter className="justify-center gap-3">
                     <Button variant="outline" asChild>

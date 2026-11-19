@@ -17,10 +17,10 @@ export function WatchSection({ title, description, series, onFixMatch }: WatchSe
         <section className="mt-8 first:mt-0">
             <div className="mb-3 flex items-baseline gap-2">
                 <h2 className="text-lg font-semibold">{title}</h2>
-                <span className="text-muted-foreground text-sm tabular-nums">{series.length}</span>
+                <span className="text-sm text-muted-foreground tabular-nums">{series.length}</span>
             </div>
 
-            {description && <p className="text-muted-foreground -mt-2 mb-3 text-sm">{description}</p>}
+            {description && <p className="-mt-2 mb-3 text-sm text-muted-foreground">{description}</p>}
 
             <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
                 {series.map((item) => (

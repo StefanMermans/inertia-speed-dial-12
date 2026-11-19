@@ -16,7 +16,7 @@ export function MovieWatchListSkeleton() {
 
 export function MovieWatchList({ movies }: { movies: MovieWatch[] }) {
     if (movies.length === 0) {
-        return <p className="text-muted-foreground text-sm">No movies watched yet.</p>;
+        return <p className="text-sm text-muted-foreground">No movies watched yet.</p>;
     }
 
     return (
@@ -25,9 +25,9 @@ export function MovieWatchList({ movies }: { movies: MovieWatch[] }) {
                 <div key={movie.id} className="flex items-center justify-between gap-4 rounded-lg border p-4">
                     <p className="truncate font-medium">
                         {movie.title}
-                        {movie.year && <span className="text-muted-foreground ml-2 font-normal">{movie.year}</span>}
+                        {movie.year && <span className="ml-2 font-normal text-muted-foreground">{movie.year}</span>}
                     </p>
-                    <time dateTime={movie.watched_at} className="text-muted-foreground shrink-0 text-sm">
+                    <time dateTime={movie.watched_at} className="shrink-0 text-sm text-muted-foreground">
                         {new Date(movie.watched_at).toLocaleDateString()}
                     </time>
                 </div>

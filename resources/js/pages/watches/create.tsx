@@ -229,7 +229,7 @@ export default function Create() {
                 {!showData ? (
                     <div>
                         <div className="relative">
-                            <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
+                            <Search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
                             <Input
                                 type="text"
                                 placeholder="Search for a TV show..."
@@ -242,7 +242,7 @@ export default function Create() {
                         </div>
 
                         {searchError && (
-                            <p role="alert" className="text-destructive mt-4 text-center text-sm">
+                            <p role="alert" className="mt-4 text-center text-sm text-destructive">
                                 {searchError}
                             </p>
                         )}
@@ -271,7 +271,7 @@ export default function Create() {
                                         aria-selected={false}
                                         onClick={() => selectShow(result.id)}
                                         disabled={loadingShow}
-                                        className="hover:bg-accent flex w-full gap-3 rounded-lg p-3 text-left transition-colors"
+                                        className="flex w-full gap-3 rounded-lg p-3 text-left transition-colors hover:bg-accent"
                                     >
                                         {result.poster_path ? (
                                             <img
@@ -280,16 +280,16 @@ export default function Create() {
                                                 className="h-24 w-16 shrink-0 rounded object-cover"
                                             />
                                         ) : (
-                                            <div className="bg-muted flex h-24 w-16 shrink-0 items-center justify-center rounded">
-                                                <Tv className="text-muted-foreground size-6" />
+                                            <div className="flex h-24 w-16 shrink-0 items-center justify-center rounded bg-muted">
+                                                <Tv className="size-6 text-muted-foreground" />
                                             </div>
                                         )}
                                         <div className="min-w-0 flex-1">
                                             <p className="font-medium">{result.name}</p>
                                             {result.first_air_date && (
-                                                <p className="text-muted-foreground text-sm">{result.first_air_date.substring(0, 4)}</p>
+                                                <p className="text-sm text-muted-foreground">{result.first_air_date.substring(0, 4)}</p>
                                             )}
-                                            {result.overview && <p className="text-muted-foreground mt-1 line-clamp-2 text-sm">{result.overview}</p>}
+                                            {result.overview && <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{result.overview}</p>}
                                         </div>
                                     </button>
                                 ))}
@@ -297,18 +297,18 @@ export default function Create() {
                         )}
 
                         {!searching && query.length >= 2 && results.length === 0 && !searchError && (
-                            <p className="text-muted-foreground mt-4 text-center text-sm">No results found.</p>
+                            <p className="mt-4 text-center text-sm text-muted-foreground">No results found.</p>
                         )}
 
                         {loadingShow && (
                             <div className="mt-4 flex items-center justify-center">
-                                <LoaderCircle className="text-muted-foreground size-6 animate-spin" />
-                                <span className="text-muted-foreground ml-2 text-sm">Loading show details...</span>
+                                <LoaderCircle className="size-6 animate-spin text-muted-foreground" />
+                                <span className="ml-2 text-sm text-muted-foreground">Loading show details...</span>
                             </div>
                         )}
 
                         {showError && !loadingShow && (
-                            <p role="alert" className="text-destructive mt-4 text-center text-sm">
+                            <p role="alert" className="mt-4 text-center text-sm text-destructive">
                                 {showError}
                             </p>
                         )}
@@ -328,16 +328,16 @@ export default function Create() {
                                     className="h-48 w-32 shrink-0 rounded-lg object-cover"
                                 />
                             ) : (
-                                <div className="bg-muted flex h-48 w-32 shrink-0 items-center justify-center rounded-lg">
-                                    <Tv className="text-muted-foreground size-8" />
+                                <div className="flex h-48 w-32 shrink-0 items-center justify-center rounded-lg bg-muted">
+                                    <Tv className="size-8 text-muted-foreground" />
                                 </div>
                             )}
                             <div>
                                 <h2 className="text-xl font-bold">{showData.details.name}</h2>
                                 {showData.details.first_air_date && (
-                                    <p className="text-muted-foreground text-sm">{showData.details.first_air_date.substring(0, 4)}</p>
+                                    <p className="text-sm text-muted-foreground">{showData.details.first_air_date.substring(0, 4)}</p>
                                 )}
-                                <p className="text-muted-foreground mt-1 text-sm">
+                                <p className="mt-1 text-sm text-muted-foreground">
                                     {showData.details.number_of_seasons} season{showData.details.number_of_seasons !== 1 ? 's' : ''} &middot;{' '}
                                     {showData.details.number_of_episodes} episodes
                                 </p>
@@ -346,7 +346,7 @@ export default function Create() {
                         </div>
 
                         {showError && (
-                            <p role="alert" className="text-destructive mb-4 text-center text-sm">
+                            <p role="alert" className="mb-4 text-center text-sm text-destructive">
                                 {showError}
                             </p>
                         )}
@@ -357,7 +357,7 @@ export default function Create() {
                                 {showData.seasons.map((season) => (
                                     <label
                                         key={season.season_number}
-                                        className="hover:bg-accent flex cursor-pointer items-center gap-3 rounded-lg p-3 transition-colors"
+                                        className="flex cursor-pointer items-center gap-3 rounded-lg p-3 transition-colors hover:bg-accent"
                                     >
                                         <Checkbox
                                             checked={selectedSeasons.has(season.season_number)}
@@ -365,7 +365,7 @@ export default function Create() {
                                         />
                                         <div className="flex-1">
                                             <span className="font-medium">{season.name}</span>
-                                            <span className="text-muted-foreground ml-2 text-sm">
+                                            <span className="ml-2 text-sm text-muted-foreground">
                                                 {season.episodes.length} episode{season.episodes.length !== 1 ? 's' : ''}
                                             </span>
                                         </div>

@@ -166,6 +166,7 @@ export default defineConfig({
         sortPackageJson: false,
         sortTailwindcss: {
             functions: ['clsx', 'cn'],
+            stylesheet: './resources/css/app.css',
         },
         overrides: [
             {
