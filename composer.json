@@ -82,7 +82,8 @@
             "@lint",
             "@php artisan test --parallel",
             "npm run format",
-            "npm run lint"
+            "npm run lint",
+            "npm run types:check"
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
