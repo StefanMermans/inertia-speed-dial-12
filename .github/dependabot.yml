@@ -16,6 +16,41 @@ updates:
     schedule:
       interval: weekly
     groups:
+      vite-major:
+        patterns:
+          - vite
+          - '@vitejs/*'
+          - laravel-vite-plugin
+        update-types:
+          - major
+      eslint-major:
+        patterns:
+          - eslint
+          - '@eslint/*'
+          - 'eslint-plugin-*'
+          - 'eslint-config-*'
+          - typescript-eslint
+        update-types:
+          - major
+      react-major:
+        patterns:
+          - react
+          - react-dom
+          - '@types/react'
+          - '@types/react-dom'
+        update-types:
+          - major
+      inertia-major:
+        patterns:
+          - '@inertiajs/*'
+        update-types:
+          - major
+      tailwind-major:
+        patterns:
+          - tailwindcss
+          - '@tailwindcss/*'
+        update-types:
+          - major
       npm-minor-and-patch:
         update-types:
           - minor
