@@ -21,7 +21,7 @@ jobs:
       matrix:
         php-version: [ '8.4', '8.5' ]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -40,7 +40,7 @@ jobs:
       matrix:
         php-version: [ '8.4', '8.5' ]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -63,7 +63,7 @@ jobs:
     name: Npm format:check
     runs-on: ubuntu-26.04
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Install Dependencies
         run: npm ci
       - name: npm run format:check
@@ -73,7 +73,7 @@ jobs:
     name: npm lint:check
     runs-on: ubuntu-26.04
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Install Dependencies
         run: npm ci
       - name: npm run lint:check
