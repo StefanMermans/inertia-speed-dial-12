@@ -5,6 +5,8 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 14
     groups:
       composer-minor-and-patch:
         update-types:
@@ -15,6 +17,8 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 14
     groups:
       vite-major:
         patterns:
@@ -64,6 +68,8 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 14
     groups:
       github-actions:
         patterns:
@@ -73,11 +79,15 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 14
 
   - package-ecosystem: docker-compose
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 14
     ignore:
       - dependency-name: postgres
         update-types:
