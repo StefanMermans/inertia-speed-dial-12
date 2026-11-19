@@ -21,12 +21,12 @@ export function ConnectionCard({ label, description, icon: Icon, status, connect
     return (
         <div className="flex items-center justify-between rounded-lg border p-4">
             <div className="flex items-center gap-3">
-                <div className="bg-muted flex size-10 items-center justify-center rounded-lg">
-                    <Icon className="text-muted-foreground size-5" />
+                <div className="flex size-10 items-center justify-center rounded-lg bg-muted">
+                    <Icon className="size-5 text-muted-foreground" />
                 </div>
                 <div>
                     <p className="font-medium">{label}</p>
-                    <p className="text-muted-foreground text-sm">
+                    <p className="text-sm text-muted-foreground">
                         {status === 'connected' && (
                             <span className="flex items-center gap-1 text-green-600 dark:text-green-400">
                                 <CircleCheckBig className="size-3.5" />

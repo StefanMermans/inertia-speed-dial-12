@@ -81,8 +81,7 @@
         "validate:fix": [
             "@lint",
             "@php artisan test --parallel",
-            "npm run format",
-            "npm run lint",
+            "npm run check:fix",
             "npm run types:check"
         ],
         "dev": [

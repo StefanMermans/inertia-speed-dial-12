@@ -53,7 +53,7 @@ export function SeriesProgressCard({ series, onFixMatch }: SeriesProgressCardPro
     const isCaughtUp = series.status === 'completed' && series.tmdb_status === 'Returning Series';
 
     return (
-        <div className="bg-card flex gap-4 rounded-xl border p-4">
+        <div className="flex gap-4 rounded-xl border bg-card p-4">
             <TmdbPoster path={series.poster_path} alt={series.title} size="w185" className="h-32 w-22 shrink-0" />
 
             <div className="flex min-w-0 flex-1 flex-col">
@@ -61,11 +61,11 @@ export function SeriesProgressCard({ series, onFixMatch }: SeriesProgressCardPro
                     <h3 className="truncate font-medium" title={series.title}>
                         {series.title}
                     </h3>
-                    {series.year && <span className="text-muted-foreground shrink-0 text-sm">{series.year}</span>}
+                    {series.year && <span className="shrink-0 text-sm text-muted-foreground">{series.year}</span>}
                 </div>
 
-                <p className="text-muted-foreground mt-0.5 text-sm">
-                    {marker && <span className="text-foreground font-medium">{marker}</span>}
+                <p className="mt-0.5 text-sm text-muted-foreground">
+                    {marker && <span className="font-medium text-foreground">{marker}</span>}
                     {marker && ' · '}
                     {relativeDate(series.last_watched_at)}
                 </p>
@@ -80,10 +80,10 @@ export function SeriesProgressCard({ series, onFixMatch }: SeriesProgressCardPro
                         <>
                             <Progress value={percent} aria-label={`${percent}% of ${series.title} watched`} />
                             <div className="mt-2 flex items-center justify-between gap-2">
-                                <span className="text-muted-foreground text-sm">
+                                <span className="text-sm text-muted-foreground">
                                     {series.watched_episodes} / {series.total_episodes} episodes
                                 </span>
-                                <span className="text-muted-foreground text-sm font-medium tabular-nums">
+                                <span className="text-sm font-medium text-muted-foreground tabular-nums">
                                     {isCaughtUp ? 'Caught up' : `${percent}%`}
                                 </span>
                             </div>

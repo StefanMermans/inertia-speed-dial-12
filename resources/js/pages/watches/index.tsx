@@ -59,14 +59,14 @@ export default function WatchProgress({ continueWatching, needsMatch, completed,
                     </>
                 ) : (
                     <div className="flex flex-col items-center justify-center rounded-xl border border-dashed py-16 text-center">
-                        <Tv className="text-muted-foreground size-8" />
+                        <Tv className="size-8 text-muted-foreground" />
                         <h2 className="mt-3 font-medium">Nothing watched yet</h2>
-                        <p className="text-muted-foreground mt-1 max-w-sm text-sm">
+                        <p className="mt-1 max-w-sm text-sm text-muted-foreground">
                             Shows appear here as Plex scrobbles them, or you can add what you have already seen by hand.
                         </p>
                         <Link
                             href={route('watches.create')}
-                            className="bg-primary text-primary-foreground hover:bg-primary/90 mt-4 rounded-md px-4 py-2 text-sm font-medium transition-colors"
+                            className="mt-4 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
                         >
                             Add a show
                         </Link>

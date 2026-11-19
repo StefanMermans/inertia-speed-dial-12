@@ -52,7 +52,7 @@ export function FixMatchDialog({ series, onOpenChange }: FixMatchDialogProps) {
                 </DialogHeader>
 
                 {error && (
-                    <p role="alert" className="text-destructive text-sm">
+                    <p role="alert" className="text-sm text-destructive">
                         {error}
                     </p>
                 )}

@@ -14,8 +14,8 @@ export function TmdbPoster({ path, alt, size = 'w185', className }: TmdbPosterPr
 
     if (!url) {
         return (
-            <div className={cn('bg-muted flex items-center justify-center rounded', className)}>
-                <Tv className="text-muted-foreground size-6" />
+            <div className={cn('flex items-center justify-center rounded bg-muted', className)}>
+                <Tv className="size-6 text-muted-foreground" />
             </div>
         );
     }

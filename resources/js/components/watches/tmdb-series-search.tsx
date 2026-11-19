@@ -28,11 +28,18 @@ export function TmdbSeriesSearch({ initialQuery = '', onSelect, disabled = false
     const [error, setError] = useState<string | null>(null);
     const abortRef = useRef<AbortController | null>(null);
 
-    useEffect(() => {
-        if (query.trim().length < MIN_QUERY_LENGTH) {
+    const changeQuery = (nextQuery: string) => {
+        setQuery(nextQuery);
+
+        if (nextQuery.trim().length < MIN_QUERY_LENGTH) {
+            abortRef.current?.abort();
             setResults([]);
             setSearching(false);
+        }
+    };
 
+    useEffect(() => {
+        if (query.trim().length < MIN_QUERY_LENGTH) {
             return;
         }
 
@@ -79,11 +86,11 @@ export function TmdbSeriesSearch({ initialQuery = '', onSelect, disabled = false
     return (
         <div>
             <div className="relative">
-                <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
+                <Search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
                     type="search"
                     value={query}
-                    onChange={(event) => setQuery(event.target.value)}
+                    onChange={(event) => changeQuery(event.target.value)}
                     placeholder="Search TMDB for the right show…"
                     className="pl-9"
                     aria-label="Search TMDB"
@@ -92,7 +99,7 @@ export function TmdbSeriesSearch({ initialQuery = '', onSelect, disabled = false
             </div>
 
             {error && (
-                <p role="alert" className="text-destructive mt-3 text-sm">
+                <p role="alert" className="mt-3 text-sm text-destructive">
                     {error}
                 </p>
             )}
@@ -121,13 +128,13 @@ export function TmdbSeriesSearch({ initialQuery = '', onSelect, disabled = false
                             aria-selected={false}
                             disabled={disabled}
                             onClick={() => onSelect(result)}
-                            className="hover:bg-accent flex w-full gap-3 rounded-lg p-2 text-left transition-colors disabled:opacity-50"
+                            className="flex w-full gap-3 rounded-lg p-2 text-left transition-colors hover:bg-accent disabled:opacity-50"
                         >
                             <TmdbPoster path={result.poster_path} alt={result.name} size="w92" className="h-20 w-14 shrink-0" />
                             <div className="min-w-0 flex-1">
                                 <p className="font-medium">{result.name}</p>
-                                {result.first_air_date && <p className="text-muted-foreground text-sm">{result.first_air_date.substring(0, 4)}</p>}
-                                {result.overview && <p className="text-muted-foreground mt-1 line-clamp-2 text-sm">{result.overview}</p>}
+                                {result.first_air_date && <p className="text-sm text-muted-foreground">{result.first_air_date.substring(0, 4)}</p>}
+                                {result.overview && <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{result.overview}</p>}
                             </div>
                         </button>
                     ))}
@@ -135,7 +142,7 @@ export function TmdbSeriesSearch({ initialQuery = '', onSelect, disabled = false
             )}
 
             {!searching && query.trim().length >= MIN_QUERY_LENGTH && results.length === 0 && !error && (
-                <p className="text-muted-foreground mt-3 text-sm">No results found.</p>
+                <p className="mt-3 text-sm text-muted-foreground">No results found.</p>
             )}
         </div>
     );

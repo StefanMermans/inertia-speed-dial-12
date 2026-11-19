@@ -50,7 +50,7 @@ differs when:
 
 ## The loop
 
-1. Library A gives *Andor* rating key `100` → series **P1**. Library B gives it `200` →
+1. Library A gives _Andor_ rating key `100` → series **P1**. Library B gives it `200` →
    series **P2**.
 2. Both sync and resolve to TMDB `83867`. The unique index on `series.tmdb_id` forces a
    merge: P2 folds into P1. P1 keeps `100`; **`200` is discarded.**
@@ -75,7 +75,7 @@ churn and growth, not corruption.
 ## Why it is not currently biting
 
 The common merge is a Plex-created row (has a key, no `tmdb_id`) folding into a manual
-row created via *Add Watch* (has a `tmdb_id`, no key). The winner's key is `null`, so the
+row created via _Add Watch_ (has a `tmdb_id`, no key). The winner's key is `null`, so the
 loser's **is** salvaged and nothing is lost.
 
 The loop needs **both** rows to carry a Plex key, i.e. two Plex-created series for one
